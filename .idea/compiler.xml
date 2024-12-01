@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="TransGeo_2D" />
+        <module name="TG_3D" />
         <module name="ProgramaGraficacion" />
       </profile>
     </annotationProcessing>

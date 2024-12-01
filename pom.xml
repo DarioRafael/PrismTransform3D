@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>TransGeo_2D</artifactId>
+    <artifactId>TG_3D</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
