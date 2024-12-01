@@ -52,7 +52,7 @@ public class CreditosParaFG extends JFrame {
         Font textFont = new Font("Segoe UI", Font.PLAIN, 18);
 
         // Títulos y contenido
-        addLabelAndText(creditPanel, "Software Utilizado para Transformaciones Geométricas en 2D", titleFont, 0, 0);
+        addLabelAndText(creditPanel, "Software Utilizado para Transformaciones Geométricas en 3D", titleFont, 0, 0);
         addLogosPanel(creditPanel, 0, 1);
         addLabelAndText(creditPanel, "INTEGRANTES DEL EQUIPO:", headerFont, 0, 2);
         addTextArea(creditPanel, "22380382 --- Dario Rafael García Bárcenas\n22380426 --- Juan Carlos Torres Reyna", textFont, 0, 3);
@@ -68,8 +68,8 @@ public class CreditosParaFG extends JFrame {
         addTextArea(creditPanel, "- Procesador: Pentium II 600 MHz.\n- Disco Duro: 350 Mb\n", textFont, 0, 8);
         addLabelAndText(creditPanel, "REQUERIMIENTOS DEL SOFTWARE:", headerFont, 0, 9);
         addTextArea(creditPanel, "- Sistema Operativo: Windows XP, Vista, Windows 7, Windows 8, Windows 10, Windows 11\n- Lenguaje de Programación: Java (NetBeans)", textFont, 0, 10);
-        addLabelAndText(creditPanel, "EJECUCIÓN DE LAS TRANSFORMACIONES GEOMÉTRICAS EN 2D:", headerFont, 0, 11);
-        addTextArea(creditPanel, "- Insertar la USB con el archivo.\n- Ejecutar el Programa: TransGeo_2D.exe", textFont, 0, 12);
+        addLabelAndText(creditPanel, "EJECUCIÓN DE LAS TRANSFORMACIONES GEOMÉTRICAS EN 3D:", headerFont, 0, 11);
+        addTextArea(creditPanel, "- Insertar la USB con el archivo.\n- Ejecutar el Programa: TG_3D.exe", textFont, 0, 12);
 
         return creditPanel;
     }

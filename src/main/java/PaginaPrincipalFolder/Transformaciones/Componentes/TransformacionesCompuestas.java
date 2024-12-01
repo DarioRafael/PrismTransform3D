@@ -22,7 +22,7 @@ public class TransformacionesCompuestas extends JFrame {
     public AjustesVentana ajustesVentana = new AjustesVentana();
 
     public TransformacionesCompuestas() {
-        setTitle("Transformaciones Geométricas 2D Compuestas");
+        setTitle("Transformaciones Geométricas 3D Compuestas");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -35,7 +35,7 @@ public class TransformacionesCompuestas extends JFrame {
         JPanel headerPanel = new JPanel(new GridLayout(2, 1, 5, 5));
         headerPanel.setBackground(BACKGROUND_COLOR);
 
-        JLabel titleLabel = new JLabel("Transformaciones Geométricas 2D Compuestas", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Transformaciones Geométricas 3D Compuestas", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
         JLabel descLabel = new JLabel("Aplique múltiples transformaciones del mismo tipo en secuencia", SwingConstants.CENTER);

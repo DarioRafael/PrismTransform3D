@@ -20,7 +20,7 @@ public class TransformacionesBasicas extends JFrame {
     public AjustesVariables ajustesVariables = new AjustesVariables();
 
     public TransformacionesBasicas() {
-        setTitle("Transformaciones Geométricas 2D Básicas");
+        setTitle("Transformaciones Geométricas 3D Básicas");
         setSize(ajustesVentana.getWindowSize());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -30,7 +30,7 @@ public class TransformacionesBasicas extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
 
         // Título
-        JLabel titleLabel = new JLabel("Transformaciones Geométricas 2D Básicas", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Transformaciones Geométricas 3D Básicas", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 

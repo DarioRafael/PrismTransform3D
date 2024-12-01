@@ -23,7 +23,7 @@ public class MenuTransformaciones {
             e.printStackTrace();
         }
 
-        JFrame frame = new JFrame("Transformaciones Geométricas en 2D");
+        JFrame frame = new JFrame("Transformaciones Geométricas en 3D");
         frame.setSize(ajustesVentana.getWindowSize());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -36,7 +36,7 @@ public class MenuTransformaciones {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BACKGROUND_COLOR);
 
-        JLabel titleLabel = new JLabel("Transformaciones Geométricas en 2D ", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Transformaciones Geométricas en 3D ", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
         titleLabel.setForeground(TEXT_COLOR);
         headerPanel.add(titleLabel, BorderLayout.CENTER);
@@ -47,8 +47,8 @@ public class MenuTransformaciones {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 100, 40, 100));
 
         // Creación de botones personalizados
-        JButton basicasButton = createStyledButton("Transformaciones Geométricas 2D Básicas", "Traslación, Escalación y Rotación");
-        JButton compuestasButton = createStyledButton("Transformaciones Geométricas 2D Compuestas", "Transformaciones sucesivas");
+        JButton basicasButton = createStyledButton("Transformaciones Geométricas 3D Básicas", "Traslación, Escalación y Rotación");
+        JButton compuestasButton = createStyledButton("Transformaciones Geométricas 3D Compuestas", "Transformaciones sucesivas");
         JButton creditosButton = createStyledButton("Créditos", "Dario Rafael & Juan Carlos");
 
         basicasButton.addActionListener(e -> {

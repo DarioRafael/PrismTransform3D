@@ -15,6 +15,8 @@ import java.util.List;
 public class PlanoCartesianoTraslacion extends JPanel {
 
     private double offsetX = 0, offsetY = 0;
+    private double offsetZ = 0; // Desplazamiento en el eje Z
+    private double viewportDepth; // Profundidad de la vista
     private int gridSize = 50;
     private double zoomFactor = 1.0;
     private Point dragStart = null;
@@ -37,7 +39,10 @@ public class PlanoCartesianoTraslacion extends JPanel {
     public PlanoCartesianoTraslacion() {
         offsetX = -GRID_SIZE * 4; // Desplazar hacia la derecha
         offsetY = GRID_SIZE * 4; // Desplazar hacia arriba
+        offsetZ = 0; // Inicializar desplazamiento en Z
         zoomFactor = 0.7; // Ajustar el zoom inicial a 0.8x
+        viewportDepth = getHeight() / zoomFactor;
+
         setupMouseListeners();
     }
 
@@ -160,10 +165,8 @@ public class PlanoCartesianoTraslacion extends JPanel {
     }
 
     private void drawAxes(Graphics2D g2) {
-
-        //COLOR DE LOS EJES
+        // COLOR DE LOS EJES
         g2.setColor(Color.BLACK);
-
         g2.setStroke(new BasicStroke(AXIS_THICKNESS));
 
         double viewportWidth = getWidth() / zoomFactor;
@@ -172,6 +175,13 @@ public class PlanoCartesianoTraslacion extends JPanel {
         // Dibujar los ejes X e Y
         g2.drawLine((int) (-offsetX - viewportWidth / 2), 0, (int) (-offsetX + viewportWidth / 2), 0); // Eje X
         g2.drawLine(0, (int) (-offsetY - viewportHeight / 2), 0, (int) (-offsetY + viewportHeight / 2)); // Eje Y
+
+        // Proyección del eje Z en el plano 2D
+        int zOffsetX = (int) (GRID_SIZE * Math.cos(Math.toRadians(45))); // Proyección en X
+        int zOffsetY = (int) (GRID_SIZE * Math.sin(Math.toRadians(45))); // Proyección en Y
+
+        g2.drawLine(0, 0, zOffsetX * 8, -zOffsetY * 8); // Eje Z positivo
+        g2.drawLine(0, 0, -zOffsetX * 8, zOffsetY * 8); // Eje Z negativo
 
         g2.setFont(new Font("Arial", Font.PLAIN, 12));
         String prefix = (currentCoordSystem == CoordinateSystem.Type.CARTESIAN_RELATIVE ||
@@ -183,21 +193,32 @@ public class PlanoCartesianoTraslacion extends JPanel {
         g2.drawString(prefix + "Y", LABEL_OFFSET, (int) (-offsetY - viewportHeight / 2) + LABEL_OFFSET);
         g2.drawString("-" + prefix + "Y", LABEL_OFFSET, (int) (-offsetY + viewportHeight / 2) - LABEL_OFFSET);
 
+        // Etiquetas del eje Z
+        g2.drawString(prefix + "Z", zOffsetX * 8 + LABEL_OFFSET, -zOffsetY * 8 + LABEL_OFFSET);
+        g2.drawString("-" + prefix + "Z", -zOffsetX * 8 + LABEL_OFFSET, zOffsetY * 8 + LABEL_OFFSET);
+
         g2.setFont(new Font("Arial", Font.BOLD, 14));
 
-
-        // Dibujar las marcas y números en los ejes
+        // Dibujar marcas en los ejes
         int startX = (int) Math.floor((-offsetX - viewportWidth / 2) / GRID_SIZE);
         int endX = (int) Math.ceil((-offsetX + viewportWidth / 2) / GRID_SIZE);
         int startY = (int) Math.floor((-offsetY - viewportHeight / 2) / GRID_SIZE);
         int endY = (int) Math.ceil((-offsetY + viewportHeight / 2) / GRID_SIZE);
+        int startZ = (int) Math.floor((-offsetZ - viewportDepth / 2) / GRID_SIZE);
+        int endZ = (int) Math.ceil((-offsetZ + viewportDepth / 2) / GRID_SIZE);
 
-        // Dibujar marcas en el eje X
-        for (int i = startX; i <= endX; i++) {
+
+        // Dibujar marcas en el eje Z de manera similar a X e Y
+        for (int i = startZ; i <= endZ; i++) {
             if (i != 0) {
-                int x = i * GRID_SIZE;
-                g2.drawLine(x, -TICK_SIZE, x, TICK_SIZE);
-                g2.drawString(Integer.toString(i), x - 5, LABEL_OFFSET);
+                int zx = (int) (i * GRID_SIZE * Math.cos(Math.toRadians(45)));
+                int zy = (int) (-i * GRID_SIZE * Math.sin(Math.toRadians(45)));
+
+                // Dibujar marca de línea
+                g2.drawLine(zx - TICK_SIZE, zy - TICK_SIZE, zx + TICK_SIZE, zy + TICK_SIZE);
+
+                // Dibujar número de marca
+                g2.drawString(Integer.toString(i), zx + 5, zy - 5);
             }
         }
 
@@ -207,6 +228,20 @@ public class PlanoCartesianoTraslacion extends JPanel {
                 int y = i * GRID_SIZE;
                 g2.drawLine(-TICK_SIZE, y, TICK_SIZE, y);
                 g2.drawString(Integer.toString(-i), -LABEL_OFFSET, y + 5);
+            }
+        }
+
+        // Replace the hardcoded Z-axis drawing with dynamic calculation
+        for (int i = startZ; i <= endZ; i++) {
+            if (i != 0) {
+                int zx = (int) (i * GRID_SIZE * Math.cos(Math.toRadians(45)));
+                int zy = (int) (-i * GRID_SIZE * Math.sin(Math.toRadians(45)));
+
+                // Dibujar marca de línea
+                g2.drawLine(zx - TICK_SIZE, zy - TICK_SIZE, zx + TICK_SIZE, zy + TICK_SIZE);
+
+                // Dibujar número de marca
+                g2.drawString(Integer.toString(i), zx + 5, zy - 5);
             }
         }
 
@@ -221,9 +256,14 @@ public class PlanoCartesianoTraslacion extends JPanel {
         drawArrow(g2, 0, (int) (-offsetY - viewportHeight / 2 + arrowSize), -90); // Flecha Y positivo
         drawArrow(g2, 0, (int) (-offsetY + viewportHeight / 2 - arrowSize), 90); // Flecha Y negativo
 
+        // Flechas del eje Z
+        drawArrow(g2, zOffsetX * 8 - arrowSize, -zOffsetY * 8 - arrowSize, -45); // Flecha Z positivo
+        drawArrow(g2, -zOffsetX * 8 + arrowSize, zOffsetY * 8 + arrowSize, 135); // Flecha Z negativo
+
         // Dibujar punto de origen
         g2.fillOval(-3, -3, 6, 6);
     }
+
 
     // Método auxiliar para dibujar las flechas
     private void drawArrow(Graphics2D g2, int x, int y, int angle) {

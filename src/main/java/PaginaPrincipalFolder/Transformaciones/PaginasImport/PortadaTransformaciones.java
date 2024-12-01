@@ -22,7 +22,7 @@ public class PortadaTransformaciones extends JFrame {
     }
 
     private void configurarVentana() {
-        setTitle("Transformaciones Geométricas en 2D");
+        setTitle("Transformaciones Geométricas en 3D");
         setMinimumSize(new Dimension(800, 600)); // Reducido significativamente
         setPreferredSize(ajustesVentana.getWindowSize()); // Tamaño preferido más pequeño
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -143,9 +143,9 @@ public class PortadaTransformaciones extends JFrame {
         }
 
         cardGbc.insets = new Insets(4, 0, 4, 0);
-        addStyledLabel(cardPanel, "Transformaciones Geométricas 2D",
+        addStyledLabel(cardPanel, "Transformaciones Geométricas 3D",
                 new Font("Segoe UI", Font.BOLD, 18), TEXT_COLOR, cardGbc);
-        addStyledLabel(cardPanel, "Polilíneas",
+        addStyledLabel(cardPanel, "Prisma cuadrangular",
                 new Font("Segoe UI Light", Font.PLAIN, 16), SECONDARY_COLOR, cardGbc);
 
         entrarButton = createStyledButton("Entrar");
