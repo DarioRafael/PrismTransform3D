@@ -173,12 +173,10 @@ public class PlanoCartesianoTraslacion extends JPanel {
         g2.drawLine((int) (-offsetX - viewportWidth / 2), 0, (int) (-offsetX + viewportWidth / 2), 0); // Eje X
         g2.drawLine(0, (int) (-offsetY - viewportHeight / 2), 0, (int) (-offsetY + viewportHeight / 2)); // Eje Y
 
-        // Proyección del eje Z en el plano 2D
-        int zOffsetX = (int) (GRID_SIZE * Math.cos(Math.toRadians(45))); // Proyección en X
-        int zOffsetY = (int) (GRID_SIZE * Math.sin(Math.toRadians(45))); // Proyección en Y
+        // Projection calculations for Z-axis
+        int zOffsetX = (int) (GRID_SIZE * Math.cos(Math.toRadians(45)));
+        int zOffsetY = (int) (GRID_SIZE * Math.sin(Math.toRadians(45)));
 
-        g2.drawLine(0, 0, zOffsetX * 8, -zOffsetY * 8); // Eje Z positivo
-        g2.drawLine(0, 0, -zOffsetX * 8, zOffsetY * 8); // Eje Z negativo
 
         g2.setFont(new Font("Arial", Font.PLAIN, 12));
         String prefix = (currentCoordSystem == CoordinateSystem.Type.CARTESIAN_RELATIVE ||
@@ -191,8 +189,8 @@ public class PlanoCartesianoTraslacion extends JPanel {
         g2.drawString("-" + prefix + "Y", LABEL_OFFSET, (int) (-offsetY + viewportHeight / 2) - LABEL_OFFSET);
 
         // Etiquetas del eje Z
-        g2.drawString(prefix + "Z", (int) (-offsetX - viewportWidth / 2) + LABEL_OFFSET, zOffsetY * 8 - LABEL_OFFSET);
-        g2.drawString("-" + prefix + "Z", (int) (-offsetX + viewportWidth / 2) - LABEL_OFFSET, -zOffsetY * 8 + LABEL_OFFSET);
+        g2.drawString(prefix + "Z", (int) (-offsetX + viewportWidth / 2) - LABEL_OFFSET, -zOffsetY * 8 + LABEL_OFFSET); // Z positiva
+        g2.drawString("-" + prefix + "Z", (int) (-offsetX - viewportWidth / 2) + LABEL_OFFSET, zOffsetY * 8 - LABEL_OFFSET); // Z negativa
 
         g2.setFont(new Font("Arial", Font.BOLD, 14));
 
@@ -205,20 +203,29 @@ public class PlanoCartesianoTraslacion extends JPanel {
         int endZ = (int) Math.ceil((-offsetZ + viewportDepth / 2) / GRID_SIZE);
 
 
+        // ejes Z
+        for (int i = startZ; i <= endZ; i++) {
+            int zx = i * zOffsetX;
+            int zy = -i * zOffsetY;
+            g2.drawLine(zx, zy, zx + zOffsetX, zy - zOffsetY); // Eje Z positivo
+            g2.drawLine(-zx, -zy, -zx - zOffsetX, -zy + zOffsetY); // Eje Z negativo
+        }
+
+
         // Dibujar marcas en el eje Z de manera similar a X e Y
+        // Dibujar marcas en el eje Z
         for (int i = startZ; i <= endZ; i++) {
             if (i != 0) {
-                int zx = (int) (i * GRID_SIZE );
-                int zy = (int) (-i * GRID_SIZE );
+                int zx = (int) (-i * GRID_SIZE); // Invertir signo aquí
+                int zy = (int) (i * GRID_SIZE); // Invertir signo aquí
 
                 // Dibujar marca de línea
                 g2.drawLine(zx - TICK_SIZE, zy - TICK_SIZE, zx + TICK_SIZE, zy + TICK_SIZE);
 
                 // Dibujar número de marca
-                g2.drawString(Integer.toString(i), zx + 5, zy - 5);
+                g2.drawString(Integer.toString(i), zx + 15, zy - 5); // Invertir el signo del texto si es necesario
             }
         }
-
         // Dibujar marcas en el eje X
         for (int i = startX; i <= endX; i++) {
             if (i != 0) {
@@ -251,8 +258,8 @@ public class PlanoCartesianoTraslacion extends JPanel {
         drawArrow(g2, 0, (int) (-offsetY + viewportHeight / 2 - arrowSize), 90); // Flecha Y negativo
 
         // Flechas del eje Z
-        drawArrow(g2, zOffsetX * 8 - arrowSize, -zOffsetY * 8 - arrowSize, -45); // Flecha Z positivo
-        drawArrow(g2, -zOffsetX * 8 + arrowSize, zOffsetY * 8 + arrowSize, 135); // Flecha Z negativo
+        drawArrow(g2, -zOffsetX * 8 + arrowSize, zOffsetY * 8 + arrowSize, -45); // Z positiva
+        drawArrow(g2, zOffsetX * 8 - arrowSize, -zOffsetY * 8 - arrowSize, 135); // Z negativa
 
         // Dibujar punto de origen
         g2.fillOval(-3, -3, 6, 6);
