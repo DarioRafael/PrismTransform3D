@@ -14,8 +14,7 @@ import java.util.List;
 
 public class PlanoCartesianoTraslacion extends JPanel {
 
-    private double offsetX = 0, offsetY = 0;
-    private double offsetZ = 0; // Desplazamiento en el eje Z
+    private double offsetX = 0, offsetY = 0,offsetZ = 0;
     private int gridSize = 50;
     private double zoomFactor = 1.0;
     private Point dragStart = null;
@@ -255,11 +254,11 @@ public class PlanoCartesianoTraslacion extends JPanel {
 
         // Flechas del eje Y
         drawArrow(g2, 0, (int) (-offsetY - viewportHeight / 2 + arrowSize), -90); // Flecha Y positivo
-        drawArrow(g2, 0, (int) (-offsetY + viewportHeight / 2 - arrowSize), 90); // Flecha Y negativo
 
-        // Flechas del eje Z
-        drawArrow(g2, -zOffsetX * 8 + arrowSize, zOffsetY * 8 + arrowSize, -45); // Z positiva
-        drawArrow(g2, zOffsetX * 8 - arrowSize, -zOffsetY * 8 - arrowSize, 135); // Z negativa
+
+// Flechas del eje Z
+        drawArrow(g2, -zOffsetX * 8, zOffsetY * 8, 135); // Z positiva
+        drawArrow(g2, zOffsetX * 8, -zOffsetY * 8, -45); // Z negativa
 
         // Dibujar punto de origen
         g2.fillOval(-3, -3, 6, 6);
