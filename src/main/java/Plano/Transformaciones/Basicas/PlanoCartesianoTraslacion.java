@@ -288,15 +288,17 @@ public class PlanoCartesianoTraslacion extends JPanel {
             int zHeight = (int) (-punto.getZ() * GRID_SIZE); // Invertir el signo de Z para altura
             int y = -punto.getY() * GRID_SIZE - zHeight; // Restar la altura Z de Y
 
-            // Mismo manejo de colores que en el código original
+
             if (punto.getNombrePunto() != null && punto.getNombrePunto().contains("'")) {
                 if (punto.getNombrePunto().contains("''")) {
                     g2.setColor(COLOR_PUNTO_TRASLADADO2);
                 } else {
                     g2.setColor(COLOR_PUNTO_TRASLADADO);
+                    System.out.println("Punto trasladado");
                 }
             } else {
                 g2.setColor(COLOR_PUNTO_ORIGINAL);
+                System.out.println("Punto original");
             }
 
             // Dibujar el punto con desplazamiento X y Z
@@ -342,7 +344,13 @@ public class PlanoCartesianoTraslacion extends JPanel {
                 }
             } else {
                 g2.setColor(COLOR_LINEA_ORIGINAL);
+                // Líneas después de la línea 8 en verde
+                if (Linea.getLineas().indexOf(linea) > 14) {
+                    g2.setColor(Color.GREEN);
+                }
             }
+
+
 
             // Dibujar línea con desplazamientos de Z
             g2.drawLine(x1 + z1Offset, y1, x2 + z2Offset, y2);

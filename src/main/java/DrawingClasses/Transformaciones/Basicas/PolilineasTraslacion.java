@@ -52,9 +52,9 @@ public class PolilineasTraslacion extends JFrame {
         yInicialField = new JTextField("0", 5);
         ZInicialField = new JTextField("1", 5);
 
-        txField = new JTextField("0", 5);
-        tyField = new JTextField("0", 5);
-        tzField = new JTextField("0", 5);
+        txField = new JTextField("-2", 5);
+        tyField = new JTextField("-1", 5);
+        tzField = new JTextField("1", 5);
 
         backButton = new JButton("Menu");
         formulaButton = new JButton("Formula");
@@ -208,12 +208,23 @@ public class PolilineasTraslacion extends JFrame {
                     new Punto(xInicio+3, yInicio, zInicio-2),
                     new Punto(xInicio+3, yInicio, zInicio),
                     new Punto(xInicio-1, yInicio, zInicio-1),
+
+                    //CODIGO
+                    new Punto(xInicio, yInicio, zInicio),
+                    new Punto(xInicio, yInicio, zInicio-2),
+                    new Punto(xInicio, yInicio+1, zInicio-2),
+                    new Punto(xInicio-1, yInicio, zInicio-1),
+                    new Punto(xInicio+3, yInicio, zInicio),
+                    new Punto(xInicio+4, yInicio, zInicio+1),
+                    new Punto(xInicio+4, yInicio, zInicio-1),
+                    new Punto(xInicio+3, yInicio, zInicio-2),
+
             };
 
             puntosList = Arrays.asList(puntosArray);
 
             // Asignar nombres a los puntos
-            for (int i = 0; i < puntosList.size(); i++) {
+            for (int i = 0; i < 8; i++) {
                 puntosList.get(i).setNombrePunto("P" + (i + 1));
             }
 
@@ -221,7 +232,7 @@ public class PolilineasTraslacion extends JFrame {
             Punto puntoAnterior = puntoInicio;
             planoCartesiano.addPunto(puntoInicio);
 
-            for (int i = 0; i < puntosList.size(); i++) {
+            for (int i = 0; i < 16; i++) {
                 Punto punto = puntosList.get(i);
                 planoCartesiano.addPunto(punto);
                 planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
@@ -238,6 +249,12 @@ public class PolilineasTraslacion extends JFrame {
     }
 
     private void realizarTraslacion() {
+        planoCartesiano.clear();
+        int xInicio = Integer.parseInt(xInicialField.getText());
+        int yInicio = Integer.parseInt(yInicialField.getText());
+        int zInicio = Integer.parseInt(ZInicialField.getText());
+        drawFiguraOriginal(xInicio, yInicio, zInicio);
+
         try {
             int tx = Integer.parseInt(txField.getText());
             int ty = Integer.parseInt(tyField.getText());
@@ -248,80 +265,46 @@ public class PolilineasTraslacion extends JFrame {
                 return;
             }
 
-            // Limpiar el plano pero mantener los datos originales
-            planoCartesiano.clear();
-
-            // Redibujar la figura original
-            Punto puntoAnteriorOriginal = puntosList.get(0);
-            planoCartesiano.addPunto(puntoAnteriorOriginal);
-
-            for (int i = 1; i < puntosList.size(); i++) {
-                Punto puntoOriginal = puntosList.get(i);
-                planoCartesiano.addPunto(puntoOriginal);
-                planoCartesiano.addLinea(new Linea(puntoAnteriorOriginal, puntoOriginal, true, i));
-                puntoAnteriorOriginal = puntoOriginal;
-            }
 
             // Crear y dibujar los puntos trasladados
-            puntosTrasladadosList = new ArrayList<>();
+            Punto[] puntosTrasladadosArray = new Punto[puntosList.size()];
 
-            // Primero mover en X (diagonal a la derecha)
+            // Crear puntos trasladados con las nuevas coordenadas
             for (int i = 0; i < puntosList.size(); i++) {
                 Punto puntoOriginal = puntosList.get(i);
                 Punto puntoTransladado = new Punto(
                         puntoOriginal.getX() + tx,  // Mover en X
-                        puntoOriginal.getY(),       // Mantener Y original
-                        puntoOriginal.getZ()        // Mantener Z original
-                );
-                puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
-                puntosTrasladadosList.add(puntoTransladado);
-            }
-
-            // Luego mover en Z (profundidad)
-            for (int i = 0; i < puntosTrasladadosList.size(); i++) {
-                Punto puntoOriginal = puntosTrasladadosList.get(i);
-                Punto puntoTransladado = new Punto(
-                        puntoOriginal.getX(),       // Mantener X actual
-                        puntoOriginal.getY(),       // Mantener Y actual
+                        puntoOriginal.getY() + ty,  // Mover en Y
                         puntoOriginal.getZ() + tz   // Mover en Z
                 );
-                puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
-                puntosTrasladadosList.set(i, puntoTransladado);
+
+                // Solo poner nombres para los primeros 8 puntos
+                if (i < 8) {
+                    puntoTransladado.setNombrePunto(puntoOriginal.getNombrePunto() + "'");
+                }
+
+                puntosTrasladadosArray[i] = puntoTransladado;
             }
 
-            // Finalmente mover en Y (subir o bajar)
-            for (int i = 0; i < puntosTrasladadosList.size(); i++) {
-                Punto puntoOriginal = puntosTrasladadosList.get(i);
-                Punto puntoTransladado = new Punto(
-                        puntoOriginal.getX(),       // Mantener X actual
-                        puntoOriginal.getY() + ty,  // Mover en Y
-                        puntoOriginal.getZ()        // Mantener Z actual
-                );
-                puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
-                puntosTrasladadosList.set(i, puntoTransladado);
-            }
+            // Convertir a lista
+            puntosTrasladadosList = Arrays.asList(puntosTrasladadosArray);
 
-            // Dibuja la figura trasladada
-            Punto puntoAnterior = puntosTrasladadosList.get(0);
-            planoCartesiano.addPunto(puntoAnterior);
+            // Dibujar la figura trasladada
+            Punto puntoInicio = puntosTrasladadosArray[0];
+            planoCartesiano.addPunto(puntoInicio);
 
-            for (int i = 1; i < puntosTrasladadosList.size(); i++) {
-                Punto punto = puntosTrasladadosList.get(i);
+            Punto puntoAnterior = puntoInicio;
+            for (int i = 1; i < puntosTrasladadosArray.length; i++) {
+                Punto punto = puntosTrasladadosArray[i];
                 planoCartesiano.addPunto(punto);
-                Linea linea = new Linea(puntoAnterior, punto, true, i);
-                planoCartesiano.addLinea(linea);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i));
                 puntoAnterior = punto;
             }
 
             // Actualiza la tabla de puntos trasladados
             updateTranslatedTable(puntosTrasladadosList);
-            planoCartesiano.repaint();
 
-            // Actualizar la etiqueta de la tabla escalada
-            Component parent = translatedTable.getParent().getParent().getParent();
-            if (parent instanceof JPanel) {
-                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados: Tx: " + tx + " Ty: " + ty + " Tz: " + tz);
-            }
+            planoCartesiano.repaint();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
