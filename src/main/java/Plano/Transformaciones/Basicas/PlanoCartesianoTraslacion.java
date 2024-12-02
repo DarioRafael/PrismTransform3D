@@ -75,6 +75,7 @@ public class PlanoCartesianoTraslacion extends JPanel {
             Point dragEnd = e.getPoint();
             offsetX += (dragEnd.x - dragStart.x) / zoomFactor;
             offsetY += (dragEnd.y - dragStart.y) / zoomFactor;
+            offsetZ += (dragEnd.y - dragStart.y) / zoomFactor;
             dragStart = dragEnd;
             repaint();
         }
@@ -281,13 +282,16 @@ public class PlanoCartesianoTraslacion extends JPanel {
         List<Punto> puntos = Punto.getPuntos();
 
         for (Punto punto : puntos) {
+            // Calcular coordenadas con consideración de Z
             int x = punto.getX() * GRID_SIZE;
-            int y = -punto.getY() * GRID_SIZE;
+            int zOffset = (int) (-punto.getZ() * GRID_SIZE); // Invertir el signo de Z para offset
+            int zHeight = (int) (-punto.getZ() * GRID_SIZE); // Invertir el signo de Z para altura
+            int y = -punto.getY() * GRID_SIZE - zHeight; // Restar la altura Z de Y
 
-            // Determinar el color basado en si es un punto escalado o no
+            // Mismo manejo de colores que en el código original
             if (punto.getNombrePunto() != null && punto.getNombrePunto().contains("'")) {
                 if (punto.getNombrePunto().contains("''")) {
-                    g2.setColor(COLOR_PUNTO_TRASLADADO2); // Color para segunda traslación
+                    g2.setColor(COLOR_PUNTO_TRASLADADO2);
                 } else {
                     g2.setColor(COLOR_PUNTO_TRASLADADO);
                 }
@@ -295,12 +299,13 @@ public class PlanoCartesianoTraslacion extends JPanel {
                 g2.setColor(COLOR_PUNTO_ORIGINAL);
             }
 
-            g2.fillOval(x - 3, y - 3, 6, 6);
+            // Dibujar el punto con desplazamiento X y Z
+            g2.fillOval(x + zOffset - 3, y - 3, 6, 6);
 
-            // Verificar si el nombre no es null antes de dibujar
+            // Dibujar nombre del punto si existe
             String nombrePunto = punto.getNombrePunto();
             if (nombrePunto != null) {
-                g2.drawString(nombrePunto, x + 2, y - 2);
+                g2.drawString(nombrePunto, x + zOffset + 2, y - 2);
             }
         }
     }
@@ -312,10 +317,21 @@ public class PlanoCartesianoTraslacion extends JPanel {
         for (Linea linea : lineas) {
             Punto inicio = linea.getPuntoInicio();
             Punto fin = linea.getPuntoFin();
+
+            // Calcular coordenadas con consideración de Z
             int x1 = inicio.getX() * GRID_SIZE;
             int y1 = -inicio.getY() * GRID_SIZE;
+            int z1Offset = (int) (-inicio.getZ() * GRID_SIZE);
+            int z1Height = (int) (-inicio.getZ() * GRID_SIZE);
+
             int x2 = fin.getX() * GRID_SIZE;
             int y2 = -fin.getY() * GRID_SIZE;
+            int z2Offset = (int) (-fin.getZ() * GRID_SIZE);
+            int z2Height = (int) (-fin.getZ() * GRID_SIZE);
+
+            // Ajustar coordenadas con desplazamientos de Z
+            y1 -= z1Height;
+            y2 -= z2Height;
 
             // Determinar el color basado en si es una línea escalada o no
             if (inicio.getNombrePunto() != null && inicio.getNombrePunto().contains("'")) {
@@ -328,7 +344,8 @@ public class PlanoCartesianoTraslacion extends JPanel {
                 g2.setColor(COLOR_LINEA_ORIGINAL);
             }
 
-            g2.drawLine(x1, y1, x2, y2);
+            // Dibujar línea con desplazamientos de Z
+            g2.drawLine(x1 + z1Offset, y1, x2 + z2Offset, y2);
 
             if (linea.isEsParteDeFiguraAnonima()) {
                 // ... (código existente sin cambios)

@@ -20,13 +20,9 @@ public class PolilineasTraslacion extends JFrame {
     private DefaultTableModel originalTableModel;
     private DefaultTableModel translatedTableModel;
     private JButton backButton, formulaButton;
-    private JTextField xInicialField;
-    private JTextField yInicialField;
-    public JTextField txField;
-    public JTextField tyField;
-    private JLabel txLabel;
-    private JLabel tyLabel;
-    public JComboBox<String> aumentoComboBox;
+    private JTextField xInicialField, yInicialField, ZInicialField;
+    public JTextField txField, tyField, tzField;
+
     private JButton regenerarFigura;
     private JButton trasladarButton;
     private List<Punto> puntosList;
@@ -37,7 +33,7 @@ public class PolilineasTraslacion extends JFrame {
     private JLabel translatedTableLabel;
 
     public PolilineasTraslacion() {
-        setTitle("Transformaciones Geométricas 2D Básica: Traslación");
+        setTitle("Transformaciones Geométricas 3D Básica: Traslación");
         setSize(1650, 960);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -52,35 +48,27 @@ public class PolilineasTraslacion extends JFrame {
         planoCartesiano = new PlanoCartesianoTraslacion();
         planoCartesiano.setPreferredSize(new Dimension(600, 400));
 
-        xInicialField = new JTextField("1", 5);
-        yInicialField = new JTextField("1", 5);
+        xInicialField = new JTextField("2", 5);
+        yInicialField = new JTextField("0", 5);
+        ZInicialField = new JTextField("1", 5);
+
         txField = new JTextField("0", 5);
         tyField = new JTextField("0", 5);
+        tzField = new JTextField("0", 5);
 
         backButton = new JButton("Menu");
         formulaButton = new JButton("Formula");
         regenerarFigura = new JButton("Graficar");
         trasladarButton = new JButton("Trasladar");
 
-        // ComboBox para seleccionar el aumento
-        String[] aumentoOptions = {"x1", "x2", "x4", "x8", "x16"};
-        aumentoComboBox = new JComboBox<>(aumentoOptions);
-        aumentoComboBox.setSelectedIndex(0); // Valor por defecto: x1
 
-        String[] columnNames = {"Punto", "X", "Y"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'"};
+        String[] columnNames = {"Punto", "X", "Y", "Z"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         translatedTableModel = new DefaultTableModel(columnNamesEdi, 0);
 
         originalTable = new JTable(originalTableModel);
         translatedTable = new JTable(translatedTableModel);
-
-        // Labels para mostrar valores de Sx y Sy después de la escalación
-        txLabel = new JLabel("Tx: 0", SwingConstants.CENTER);
-        txLabel.setFont(new Font("Arial", Font.BOLD, 12)); // Cambia "Arial" y 18 por la fuente y tamaño deseados
-
-        tyLabel = new JLabel("Ty: 0", SwingConstants.CENTER);
-        tyLabel.setFont(new Font("Arial", Font.BOLD, 12)); // Cambia "Arial" y 18 por la fuente y tamaño deseados
 
     }
 
@@ -89,7 +77,7 @@ public class PolilineasTraslacion extends JFrame {
 
         // Top Panel - Similar structure to original
         JPanel topPanel = new JPanel(new BorderLayout());
-        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 2D Básica:", SwingConstants.CENTER);
+        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
         JLabel titleLabel2 = new JLabel("Traslación", SwingConstants.CENTER);
@@ -155,8 +143,8 @@ public class PolilineasTraslacion extends JFrame {
         controlPanel.add(xInicialField);
         controlPanel.add(new JLabel("Y inicial:"));
         controlPanel.add(yInicialField);
-        controlPanel.add(new JLabel("Aumento:"));
-        controlPanel.add(aumentoComboBox);
+        controlPanel.add(new JLabel("Z inicial:"));
+        controlPanel.add(ZInicialField);
         controlPanel.add(new JLabel(""));
         controlPanel.add(regenerarFigura);
 
@@ -169,10 +157,11 @@ public class PolilineasTraslacion extends JFrame {
         controlPanel.add(txField);
         controlPanel.add(new JLabel("Ty:"));
         controlPanel.add(tyField);
+        controlPanel.add(new JLabel("Tz:"));
+        controlPanel.add(tzField);
         controlPanel.add(new JLabel(""));
         controlPanel.add(trasladarButton);
-        controlPanel.add(txLabel);
-        controlPanel.add(tyLabel);
+
 
         rightPanel.add(controlPanel, BorderLayout.NORTH);
         add(rightScrollPane, BorderLayout.EAST);
@@ -196,29 +185,29 @@ public class PolilineasTraslacion extends JFrame {
         regenerarFigura.addActionListener(e -> {
             int xInicio = Integer.parseInt(xInicialField.getText());
             int yInicio = Integer.parseInt(yInicialField.getText());
-            int aumento = Integer.parseInt(aumentoComboBox.getSelectedItem().toString().substring(1)); // Obtener el valor de aumento (x1, x2, etc.)
-            drawFiguraOriginal(xInicio, yInicio, aumento);
+            int zInicio = Integer.parseInt(ZInicialField.getText());
+            drawFiguraOriginal(xInicio, yInicio, zInicio);
         });
 
         trasladarButton.addActionListener(e -> realizarTraslacion());
     }
 
-    public void drawFiguraOriginal(int xInicio, int yInicio, int aumento) {
+    public void drawFiguraOriginal(int xInicio, int yInicio, int zInicio) {
         clearPlanoAndData();
 
         try {
-            Punto puntoInicio = new Punto(xInicio, yInicio);
+            Punto puntoInicio = new Punto(xInicio, yInicio, zInicio);
 
             // Define los puntos de la figura
             Punto[] puntosArray = {
-                    new Punto(xInicio, yInicio),
-                    new Punto(xInicio, yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio)
+                    new Punto(xInicio, yInicio, zInicio),
+                    new Punto(xInicio+4, yInicio, zInicio+1),
+                    new Punto(xInicio+4, yInicio, zInicio-1),
+                    new Punto(xInicio, yInicio, zInicio-2),
+                    new Punto(xInicio, yInicio+1, zInicio-2),
+                    new Punto(xInicio+3, yInicio, zInicio-2),
+                    new Punto(xInicio+3, yInicio, zInicio),
+                    new Punto(xInicio-1, yInicio, zInicio-1),
             };
 
             puntosList = Arrays.asList(puntosArray);
@@ -252,6 +241,7 @@ public class PolilineasTraslacion extends JFrame {
         try {
             int tx = Integer.parseInt(txField.getText());
             int ty = Integer.parseInt(tyField.getText());
+            int tz = Integer.parseInt(tzField.getText());
 
             if (puntosList == null || puntosList.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Primero debe generar la figura original");
@@ -275,14 +265,40 @@ public class PolilineasTraslacion extends JFrame {
             // Crear y dibujar los puntos trasladados
             puntosTrasladadosList = new ArrayList<>();
 
+            // Primero mover en X (diagonal a la derecha)
             for (int i = 0; i < puntosList.size(); i++) {
                 Punto puntoOriginal = puntosList.get(i);
                 Punto puntoTransladado = new Punto(
-                        puntoOriginal.getX() + tx,
-                        puntoOriginal.getY() + ty
+                        puntoOriginal.getX() + tx,  // Mover en X
+                        puntoOriginal.getY(),       // Mantener Y original
+                        puntoOriginal.getZ()        // Mantener Z original
                 );
                 puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
                 puntosTrasladadosList.add(puntoTransladado);
+            }
+
+            // Luego mover en Z (profundidad)
+            for (int i = 0; i < puntosTrasladadosList.size(); i++) {
+                Punto puntoOriginal = puntosTrasladadosList.get(i);
+                Punto puntoTransladado = new Punto(
+                        puntoOriginal.getX(),       // Mantener X actual
+                        puntoOriginal.getY(),       // Mantener Y actual
+                        puntoOriginal.getZ() + tz   // Mover en Z
+                );
+                puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
+                puntosTrasladadosList.set(i, puntoTransladado);
+            }
+
+            // Finalmente mover en Y (subir o bajar)
+            for (int i = 0; i < puntosTrasladadosList.size(); i++) {
+                Punto puntoOriginal = puntosTrasladadosList.get(i);
+                Punto puntoTransladado = new Punto(
+                        puntoOriginal.getX(),       // Mantener X actual
+                        puntoOriginal.getY() + ty,  // Mover en Y
+                        puntoOriginal.getZ()        // Mantener Z actual
+                );
+                puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
+                puntosTrasladadosList.set(i, puntoTransladado);
             }
 
             // Dibuja la figura trasladada
@@ -301,27 +317,15 @@ public class PolilineasTraslacion extends JFrame {
             updateTranslatedTable(puntosTrasladadosList);
             planoCartesiano.repaint();
 
-            // Actualizar las etiquetas para mostrar los valores de Sx y Sy
-            txLabel.setText("Tx: " + tx);
-            tyLabel.setText("Ty: " + ty);
-
             // Actualizar la etiqueta de la tabla escalada
             Component parent = translatedTable.getParent().getParent().getParent();
             if (parent instanceof JPanel) {
-                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados: Tx: " + tx + " Ty: " + ty);
+                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados: Tx: " + tx + " Ty: " + ty + " Tz: " + tz);
             }
 
-
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx y Ty");
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
         }
-    }
-
-
-    private void clearPlanoAndData() {
-        planoCartesiano.clear();
-        originalTableModel.setRowCount(0);
-        translatedTableModel.setRowCount(0);
     }
 
     private void updateOriginalTable(List<Punto> puntos) {
@@ -330,7 +334,8 @@ public class PolilineasTraslacion extends JFrame {
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
     }
@@ -341,10 +346,19 @@ public class PolilineasTraslacion extends JFrame {
             translatedTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
     }
+
+
+    private void clearPlanoAndData() {
+        planoCartesiano.clear();
+        originalTableModel.setRowCount(0);
+        translatedTableModel.setRowCount(0);
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

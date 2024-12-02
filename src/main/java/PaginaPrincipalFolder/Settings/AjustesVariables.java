@@ -1,8 +1,9 @@
 package PaginaPrincipalFolder.Settings;
 
 public class AjustesVariables {
-    private int x = 1;
-    private int y = 1;
+    private int x = 2;
+    private int y = 0;
+    private int z = 1;
 
     public AjustesVariables(){
 
@@ -16,5 +17,9 @@ public class AjustesVariables {
 
     public int getY() {
         return y;
+    }
+
+    public int getZ() {
+        return z;
     }
 }

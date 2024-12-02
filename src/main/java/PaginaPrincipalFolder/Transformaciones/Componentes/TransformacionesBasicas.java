@@ -48,8 +48,7 @@ public class TransformacionesBasicas extends JFrame {
             PolilineasTraslacion frame = new PolilineasTraslacion();
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
-            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), 1);
-            frame.aumentoComboBox.setSelectedIndex(0);
+            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
             frame.txField.setText("1");
             frame.tyField.setText("2");
         });
