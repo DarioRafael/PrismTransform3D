@@ -299,6 +299,7 @@ public class PolilineasTraslacionSuc extends JFrame {
             planoCartesiano.repaint();
 
             updateLabels(tx1Field.getText(), ty1Field.getText(), tz1Field.getText());
+            translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", 0, 0, 0));
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
