@@ -382,55 +382,78 @@ public class PlanoCartesianoTraslacion extends JPanel {
             y1 -= z1Height;
             y2 -= z2Height;
 
-            // Definir los colores para las diferentes secciones
-            // Definir los colores para las diferentes secciones
             Color[] sectionColors = {
-                    new Color(255, 0, 0, 180),    // Rojo semi-transparente para primera sección
-                    new Color(0, 0, 255, 180),    // Azul semi-transparente para segunda sección
+                    new Color(0, 0, 255, 255),   // Azul
+                    new Color(255, 0, 0, 255),   // Rojo
 
-                    new Color(0, 255, 0, 180),    // Verde semi-transparente para tercera sección
-                    new Color(255, 255, 0, 180),  // Amarillo semi-transparente para cuarta sección
+                    new Color(0, 255, 0, 255),   // Verde
+                    new Color(139, 69, 19, 255),  // Marrón
 
-                    new Color(255, 0, 255, 180),  // Magenta semi-transparente para quinta sección
-                    new Color(0, 255, 255, 180)   // Cian semi-transparente para sexta sección
+
+                    new Color(255, 0, 255, 180),
+                    new Color(0, 255, 255, 180)
             };
 
             // Determinar el color basado en la secuencia de puntos
             if (inicio.getNombrePunto() != null) {
                 // Secciones sin comillas y con comillas vacías
-                String[] firstSectionEmpty = {"P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P7",
-                                              "P1'", "P2'", "P3'", "P4'", "P5'", "P6'", "P7'", "P8'", "P7'"};
-                String[] secondSectionEmpty = {"P8","P1", "P4", "P5", "P8", "P7", "P2", "P3", "P6",
+                String[] firstSectionWithoutQuotes = {"P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P7"};
+                String[] firstSectionWithQuotes = {"P1'", "P2'", "P3'", "P4'", "P5'", "P6'", "P7'", "P8'", "P7'"};
 
-                                                "P8'", "P1'", "P4'", "P5'", "P8'", "P7'", "P2'", "P3'", "P6'"};
+                String[] secondSectionWithoutQuotes = {"P8", "P1", "P4", "P5", "P8", "P7", "P2", "P3", "P6"};
+                String[] secondSectionWithQuotes = {"P8'", "P1'", "P4'", "P5'", "P8'", "P7'", "P2'", "P3'", "P6'"};
 
                 // Verificar en qué sección se encuentra la línea actual
-                boolean isFirstSection = false;
-                boolean isSecondSection = false;
+                boolean isFirstSectionWithoutQuotes = false;
+                boolean isFirstSectionWithQuotes = false;
+                boolean isSecondSectionWithoutQuotes = false;
+                boolean isSecondSectionWithQuotes = false;
 
-                // Verificar primera sección
-                for (int i = 0; i < firstSectionEmpty.length - 1; i++) {
-                    if (inicio.getNombrePunto().equals(firstSectionEmpty[i]) &&
-                            fin.getNombrePunto().equals(firstSectionEmpty[i+1])) {
-                        isFirstSection = true;
+                // Verificar primera sección sin comillas
+                for (int i = 0; i < firstSectionWithoutQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(firstSectionWithoutQuotes[i]) &&
+                            fin.getNombrePunto().equals(firstSectionWithoutQuotes[i+1])) {
+                        isFirstSectionWithoutQuotes = true;
                         break;
                     }
                 }
 
-                // Verificar segunda sección
-                for (int i = 0; i < secondSectionEmpty.length - 1; i++) {
-                    if (inicio.getNombrePunto().equals(secondSectionEmpty[i]) &&
-                            fin.getNombrePunto().equals(secondSectionEmpty[i+1])) {
-                        isSecondSection = true;
+                // Verificar primera sección con comillas
+                for (int i = 0; i < firstSectionWithQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(firstSectionWithQuotes[i]) &&
+                            fin.getNombrePunto().equals(firstSectionWithQuotes[i+1])) {
+                        isFirstSectionWithQuotes = true;
+                        break;
+                    }
+                }
+
+                // Verificar segunda sección sin comillas
+                for (int i = 0; i < secondSectionWithoutQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(secondSectionWithoutQuotes[i]) &&
+                            fin.getNombrePunto().equals(secondSectionWithoutQuotes[i+1])) {
+                        isSecondSectionWithoutQuotes = true;
+                        break;
+                    }
+                }
+
+                // Verificar segunda sección con comillas
+                for (int i = 0; i < secondSectionWithQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(secondSectionWithQuotes[i]) &&
+                            fin.getNombrePunto().equals(secondSectionWithQuotes[i+1])) {
+                        isSecondSectionWithQuotes = true;
                         break;
                     }
                 }
 
                 // Asignar color según la sección
-                if (isFirstSection) {
+                if (isFirstSectionWithoutQuotes) {
                     g2.setColor(sectionColors[0]);
-                } else if (isSecondSection) {
+                } else if (isFirstSectionWithQuotes) {
+                    g2.setColor(sectionColors[2]);
+                } else if (isSecondSectionWithoutQuotes) {
                     g2.setColor(sectionColors[1]);
+                } else if (isSecondSectionWithQuotes) {
+                    g2.setColor(sectionColors[3]);
                 } else {
                     // Color por defecto para otras líneas
                     g2.setColor(COLOR_LINEA_ORIGINAL);
