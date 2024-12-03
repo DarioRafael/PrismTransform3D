@@ -59,10 +59,10 @@ public class TransformacionesBasicas extends JFrame {
             PolilineasEscalacion frame = new PolilineasEscalacion();
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
-            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), 1);
-            frame.aumentoComboBox.setSelectedIndex(0);
-            frame.sxField.setText("1");
+            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
+            frame.sxField.setText("2");
             frame.syField.setText("2");
+            frame.szField.setText("2");
 
         });
 
@@ -71,8 +71,8 @@ public class TransformacionesBasicas extends JFrame {
             PolilineasRotacion frame = new PolilineasRotacion();
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
-            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), 1);
-            frame.aumentoComboBox.setSelectedIndex(0);
+            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
+            frame.rotacionesComboBox.setSelectedIndex(0);
             frame.anguloField.setText("90");
         });
 

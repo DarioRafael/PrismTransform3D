@@ -27,9 +27,6 @@ public class PolilineasTraslacion extends JFrame {
     private JButton trasladarButton;
     private List<Punto> puntosList;
     private List<Punto> puntosTrasladadosList;
-    private int figuraCounter = 1;
-    public int tx = 0;
-    public int ty = 0;
     private JLabel translatedTableLabel;
 
     public PolilineasTraslacion() {

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PlanoCartesianoEscalacion extends JPanel {
 
-    private double offsetX = 0, offsetY = 0;
+    private double offsetX = 0, offsetY = 0,offsetZ = 0;
     private int gridSize = 50;
     private double zoomFactor = 1.0;
     private Point dragStart = null;
@@ -36,8 +36,7 @@ public class PlanoCartesianoEscalacion extends JPanel {
 
 
     public PlanoCartesianoEscalacion() {
-        offsetX = -GRID_SIZE * 4; // Desplazar hacia la derecha
-        offsetY = GRID_SIZE * 4; // Desplazar hacia arriba
+        offsetX = -GRID_SIZE * 6; // Desplazar hacia la derecha
         zoomFactor = 0.7; // Ajustar el zoom inicial a 0.8x
         setupMouseListeners();
     }
@@ -161,18 +160,21 @@ public class PlanoCartesianoEscalacion extends JPanel {
     }
 
     private void drawAxes(Graphics2D g2) {
-
-        //COLOR DE LOS EJES
+        // COLOR DE LOS EJES
         g2.setColor(Color.BLACK);
-
         g2.setStroke(new BasicStroke(AXIS_THICKNESS));
 
         double viewportWidth = getWidth() / zoomFactor;
         double viewportHeight = getHeight() / zoomFactor;
-
+        double viewportDepth = 100000;
         // Dibujar los ejes X e Y
         g2.drawLine((int) (-offsetX - viewportWidth / 2), 0, (int) (-offsetX + viewportWidth / 2), 0); // Eje X
         g2.drawLine(0, (int) (-offsetY - viewportHeight / 2), 0, (int) (-offsetY + viewportHeight / 2)); // Eje Y
+
+        // Projection calculations for Z-axis
+        int zOffsetX = (int) (GRID_SIZE * Math.cos(Math.toRadians(45)));
+        int zOffsetY = (int) (GRID_SIZE * Math.sin(Math.toRadians(45)));
+
 
         g2.setFont(new Font("Arial", Font.PLAIN, 12));
         String prefix = (currentCoordSystem == CoordinateSystem.Type.CARTESIAN_RELATIVE ||
@@ -184,15 +186,44 @@ public class PlanoCartesianoEscalacion extends JPanel {
         g2.drawString(prefix + "Y", LABEL_OFFSET, (int) (-offsetY - viewportHeight / 2) + LABEL_OFFSET);
         g2.drawString("-" + prefix + "Y", LABEL_OFFSET, (int) (-offsetY + viewportHeight / 2) - LABEL_OFFSET);
 
+        // Etiquetas del eje Z
+        g2.drawString(prefix + "Z", (int) (-offsetX + viewportWidth / 2) - LABEL_OFFSET, -zOffsetY * 8 + LABEL_OFFSET); // Z positiva
+        g2.drawString("-" + prefix + "Z", (int) (-offsetX - viewportWidth / 2) + LABEL_OFFSET, zOffsetY * 8 - LABEL_OFFSET); // Z negativa
+
         g2.setFont(new Font("Arial", Font.BOLD, 14));
 
-
-        // Dibujar las marcas y números en los ejes
+        // Dibujar marcas en los ejes
         int startX = (int) Math.floor((-offsetX - viewportWidth / 2) / GRID_SIZE);
         int endX = (int) Math.ceil((-offsetX + viewportWidth / 2) / GRID_SIZE);
         int startY = (int) Math.floor((-offsetY - viewportHeight / 2) / GRID_SIZE);
         int endY = (int) Math.ceil((-offsetY + viewportHeight / 2) / GRID_SIZE);
+        int startZ = (int) Math.floor((-offsetZ - viewportDepth / 2) / GRID_SIZE);
+        int endZ = (int) Math.ceil((-offsetZ + viewportDepth / 2) / GRID_SIZE);
 
+
+        // ejes Z
+        for (int i = startZ; i <= endZ; i++) {
+            int zx = i * zOffsetX;
+            int zy = -i * zOffsetY;
+            g2.drawLine(zx, zy, zx + zOffsetX, zy - zOffsetY); // Eje Z positivo
+            g2.drawLine(-zx, -zy, -zx - zOffsetX, -zy + zOffsetY); // Eje Z negativo
+        }
+
+
+        // Dibujar marcas en el eje Z de manera similar a X e Y
+        // Dibujar marcas en el eje Z
+        for (int i = startZ; i <= endZ; i++) {
+            if (i != 0) {
+                int zx = (int) (-i * GRID_SIZE); // Invertir signo aquí
+                int zy = (int) (i * GRID_SIZE); // Invertir signo aquí
+
+                // Dibujar marca de línea
+                g2.drawLine(zx - TICK_SIZE, zy - TICK_SIZE, zx + TICK_SIZE, zy + TICK_SIZE);
+
+                // Dibujar número de marca
+                g2.drawString(Integer.toString(i), zx + 15, zy - 5); // Invertir el signo del texto si es necesario
+            }
+        }
         // Dibujar marcas en el eje X
         for (int i = startX; i <= endX; i++) {
             if (i != 0) {
@@ -211,6 +242,8 @@ public class PlanoCartesianoEscalacion extends JPanel {
             }
         }
 
+
+
         int arrowSize = 10; // Tamaño de la punta de la flecha
 
         // Dibujar flechas en los ejes
@@ -220,7 +253,11 @@ public class PlanoCartesianoEscalacion extends JPanel {
 
         // Flechas del eje Y
         drawArrow(g2, 0, (int) (-offsetY - viewportHeight / 2 + arrowSize), -90); // Flecha Y positivo
-        drawArrow(g2, 0, (int) (-offsetY + viewportHeight / 2 - arrowSize), 90); // Flecha Y negativo
+
+
+// Flechas del eje Z
+        drawArrow(g2, -zOffsetX * 8, zOffsetY * 8, 135); // Z positiva
+        drawArrow(g2, zOffsetX * 8, -zOffsetY * 8, -45); // Z negativa
 
         // Dibujar punto de origen
         g2.fillOval(-3, -3, 6, 6);
@@ -240,24 +277,80 @@ public class PlanoCartesianoEscalacion extends JPanel {
 
     private void drawPoints(Graphics2D g2) {
         List<Punto> puntos = Punto.getPuntos();
+        int contador = 0;  // Contador para cambiar la ubicación
 
         for (Punto punto : puntos) {
+            // Calcular coordenadas con consideración de Z
             int x = punto.getX() * GRID_SIZE;
-            int y = -punto.getY() * GRID_SIZE;
+            int zOffset = (int) (-punto.getZ() * GRID_SIZE); // Invertir el signo de Z para offset
+            int zHeight = (int) (-punto.getZ() * GRID_SIZE); // Invertir el signo de Z para altura
+            int y = -punto.getY() * GRID_SIZE - zHeight; // Restar la altura Z de Y
 
-            // Determinar el color basado en si es un punto escalado o no
+
             if (punto.getNombrePunto() != null && punto.getNombrePunto().contains("'")) {
-                g2.setColor(COLOR_PUNTO_ESCALADO);
+                if (punto.getNombrePunto().contains("''")) {
+                    g2.setColor(COLOR_PUNTO_ESCALADO);
+                } else {
+                    g2.setColor(COLOR_PUNTO_ESCALADO);
+                }
             } else {
                 g2.setColor(COLOR_PUNTO_ORIGINAL);
+                contador++;
             }
 
-            g2.fillOval(x - 3, y - 3, 6, 6);
 
-            // Verificar si el nombre no es null antes de dibujar
+            // Dibujar el punto con desplazamiento X y Z
+            g2.fillOval(x + zOffset - 3, y - 3, 6, 6);
+
+            // Dibujar nombre del punto si existe
             String nombrePunto = punto.getNombrePunto();
             if (nombrePunto != null) {
-                g2.drawString(nombrePunto, x + 2, y - 2);
+                switch (nombrePunto) {
+                    case "P1":
+                    case "P1'":
+                    case "P1''":
+                        g2.drawString(nombrePunto, x + zOffset - 20, y - 5);
+                        break;
+                    case "P2":
+                    case "P2'":
+                    case "P2''":
+                        g2.drawString(nombrePunto, x + zOffset + 12, y);
+                        break;
+                    case "P3":
+                    case "P3'":
+                    case "P3''":
+                        g2.drawString(nombrePunto, x + zOffset + 5, y );
+                        break;
+                    case "P4":
+                    case "P4'":
+                    case "P4''":
+                        g2.drawString(nombrePunto, x + zOffset + 5, y - 5);
+                        break;
+                    case "P5":
+                    case "P5'":
+                    case "P5''":
+                        g2.drawString(nombrePunto, x + zOffset, y - 10);
+                        break;
+                    case "P6":
+                    case "P6'":
+                    case "P6''":
+                        g2.drawString(nombrePunto, x + zOffset + 5, y );
+                        break;
+                    case "P7":
+                    case "P7'":
+                    case "P7''":
+                        g2.drawString(nombrePunto, x + zOffset - 10, y - 10);
+                        break;
+                    case "P8":
+                    case "P8'":
+                    case "P8''":
+                        g2.drawString(nombrePunto, x + zOffset - 15, y - 5);
+                        break;
+                    default:
+                        g2.drawString(nombrePunto, x + zOffset + 2, y - 2);
+                        break;
+                }
+
             }
         }
     }
@@ -269,36 +362,104 @@ public class PlanoCartesianoEscalacion extends JPanel {
         for (Linea linea : lineas) {
             Punto inicio = linea.getPuntoInicio();
             Punto fin = linea.getPuntoFin();
+
+            // Calcular coordenadas con consideración de Z
             int x1 = inicio.getX() * GRID_SIZE;
             int y1 = -inicio.getY() * GRID_SIZE;
+            int z1Offset = (int) (-inicio.getZ() * GRID_SIZE);
+            int z1Height = (int) (-inicio.getZ() * GRID_SIZE);
+
             int x2 = fin.getX() * GRID_SIZE;
             int y2 = -fin.getY() * GRID_SIZE;
+            int z2Offset = (int) (-fin.getZ() * GRID_SIZE);
+            int z2Height = (int) (-fin.getZ() * GRID_SIZE);
 
-            // Determinar el color basado en si es una línea escalada o no
-            if (inicio.getNombrePunto() != null && inicio.getNombrePunto().contains("'")) {
-                g2.setColor(COLOR_LINEA_ESCALADA);
+            // Ajustar coordenadas con desplazamientos de Z
+            y1 -= z1Height;
+            y2 -= z2Height;
+
+            Color[] sectionColors = {
+                    new Color(0, 0, 255, 255),   // Azul
+                    new Color(255, 0, 0, 255),   // Rojo
+
+                    new Color(0, 255, 0, 255),   // Verde
+                    new Color(139, 69, 19, 255),  // Marrón
+
+
+                    new Color(255, 0, 255, 180),
+                    new Color(0, 255, 255, 180)
+            };
+
+            // Determinar el color basado en la secuencia de puntos
+            if (inicio.getNombrePunto() != null) {
+                // Secciones sin comillas y con comillas vacías
+                String[] firstSectionWithoutQuotes = {"P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P7"};
+                String[] firstSectionWithQuotes = {"P1'", "P2'", "P3'", "P4'", "P5'", "P6'", "P7'", "P8'", "P7'"};
+
+                String[] secondSectionWithoutQuotes = {"P8", "P1", "P4", "P5", "P8", "P7", "P2", "P3", "P6"};
+                String[] secondSectionWithQuotes = {"P8'", "P1'", "P4'", "P5'", "P8'", "P7'", "P2'", "P3'", "P6'"};
+
+                // Verificar en qué sección se encuentra la línea actual
+                boolean isFirstSectionWithoutQuotes = false;
+                boolean isFirstSectionWithQuotes = false;
+                boolean isSecondSectionWithoutQuotes = false;
+                boolean isSecondSectionWithQuotes = false;
+
+                // Verificar primera sección sin comillas
+                for (int i = 0; i < firstSectionWithoutQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(firstSectionWithoutQuotes[i]) &&
+                            fin.getNombrePunto().equals(firstSectionWithoutQuotes[i+1])) {
+                        isFirstSectionWithoutQuotes = true;
+                        break;
+                    }
+                }
+
+                // Verificar primera sección con comillas
+                for (int i = 0; i < firstSectionWithQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(firstSectionWithQuotes[i]) &&
+                            fin.getNombrePunto().equals(firstSectionWithQuotes[i+1])) {
+                        isFirstSectionWithQuotes = true;
+                        break;
+                    }
+                }
+
+                // Verificar segunda sección sin comillas
+                for (int i = 0; i < secondSectionWithoutQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(secondSectionWithoutQuotes[i]) &&
+                            fin.getNombrePunto().equals(secondSectionWithoutQuotes[i+1])) {
+                        isSecondSectionWithoutQuotes = true;
+                        break;
+                    }
+                }
+
+                // Verificar segunda sección con comillas
+                for (int i = 0; i < secondSectionWithQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(secondSectionWithQuotes[i]) &&
+                            fin.getNombrePunto().equals(secondSectionWithQuotes[i+1])) {
+                        isSecondSectionWithQuotes = true;
+                        break;
+                    }
+                }
+
+                // Asignar color según la sección
+                if (isFirstSectionWithoutQuotes) {
+                    g2.setColor(sectionColors[0]);
+                } else if (isFirstSectionWithQuotes) {
+                    g2.setColor(sectionColors[2]);
+                } else if (isSecondSectionWithoutQuotes) {
+                    g2.setColor(sectionColors[1]);
+                } else if (isSecondSectionWithQuotes) {
+                    g2.setColor(sectionColors[3]);
+                } else {
+                    // Color por defecto para otras líneas
+                    g2.setColor(COLOR_LINEA_ORIGINAL);
+                }
             } else {
                 g2.setColor(COLOR_LINEA_ORIGINAL);
             }
 
-            g2.drawLine(x1, y1, x2, y2);
-
-            if (linea.isEsParteDeFiguraAnonima()) {
-                List<Punto> puntos = Punto.getPuntos();
-                for (Punto punto : puntos) {
-                    int x = punto.getX() * GRID_SIZE;
-                    int y = -punto.getY() * GRID_SIZE;
-
-                    // Usar el mismo esquema de colores para los puntos
-                    if (punto.getNombrePunto() != null && punto.getNombrePunto().contains("'")) {
-                        g2.setColor(COLOR_PUNTO_ESCALADO);
-                    } else {
-                        g2.setColor(COLOR_PUNTO_ORIGINAL);
-                    }
-
-                    g2.fillOval(x - 3, y - 3, 6, 6);
-                }
-            }
+            // Dibujar la línea
+            g2.drawLine(x1 + z1Offset, y1, x2 + z2Offset, y2);
         }
     }
 

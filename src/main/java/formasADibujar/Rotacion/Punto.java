@@ -2,39 +2,52 @@ package formasADibujar.Rotacion;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class Punto {
     private double x;
     private double y;
-    private String nombrePunto; // Nombre del punto, solo si es parte de una línea
-    private static List<Punto> puntos = new ArrayList<>(); // Lista de puntos
+    private double z; // Changed to double
+    private String nombrePunto;
+    private static List<Punto> puntos = new ArrayList<>();
     private static int contadorPunto = 1;
-    private int puntoNumero; // Nuevo campo para el número del punto
+    private int puntoNumero;
 
-    // Constructor para un punto que no tiene nombre
+    // 2D Point Constructor
     public Punto(double x, double y) {
         this.x = x;
         this.y = y;
-        this.nombrePunto = null; // Sin nombre inicialmente
-        puntos.add(this); // Agregar el punto a la lista
-    }
-
-    // Constructor para un punto que es parte de una línea
-    public Punto(double x, double y, boolean esParteDeLinea) {
-        this(x, y); // Llama al constructor anterior
-        if (esParteDeLinea) {
-            this.nombrePunto = "P" + contadorPunto++; // Asigna un nombre
-        }
-    }
-
-    public Punto(double x, double y, int puntoNumero) {
-        this.x = x;
-        this.y = y;
-        this.puntoNumero = puntoNumero; // Asignar el número del punto
+        this.z = 0.0; // Default z to 0.0 for 2D points
         puntos.add(this);
     }
 
-    // Métodos getters
+    // 3D Point Constructor with boolean for line
+    public Punto(double x, double y, double z, boolean esParteDeLinea) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        if (esParteDeLinea) {
+            this.nombrePunto = "P" + contadorPunto++;
+        }
+        puntos.add(this);
+    }
+
+    // 3D Point Constructor with point number
+    public Punto(double x, double y, double z, int puntoNumero) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.puntoNumero = puntoNumero;
+        puntos.add(this);
+    }
+
+    // 3D Point Constructor
+    public Punto(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        puntos.add(this);
+    }
+
+    // Getters
     public double getX() {
         return x;
     }
@@ -43,8 +56,12 @@ public class Punto {
         return y;
     }
 
+    public double getZ() { // Changed return type to double
+        return z;
+    }
+
     public String getNombrePunto() {
-        return nombrePunto; // Devuelve null si no tiene nombre
+        return nombrePunto;
     }
 
     public static List<Punto> getPuntos() {

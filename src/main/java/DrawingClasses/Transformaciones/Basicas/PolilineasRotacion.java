@@ -20,19 +20,18 @@ public class PolilineasRotacion extends JFrame {
     private DefaultTableModel originalTableModel;
     private DefaultTableModel rotatedTableModel;
     private JButton backButton, formulaButton;
-    private JTextField xInicialField;
-    private JTextField yInicialField;
+    private JTextField xInicialField, yInicialField, ZInicialField;
     public JTextField anguloField;
     private JLabel anguloLabel;
     private JButton regenerarFigura;
     private JButton rotarButton;
     private List<Punto> puntosList;
     private List<Punto> puntosRotadosList;
-    public JComboBox<String> aumentoComboBox;
+    public JComboBox<String> rotacionesComboBox;
     public int anguloText = 0;
 
     public PolilineasRotacion() {
-        setTitle("Transformaciones Geométricas 2D Básica: Rotacion");
+        setTitle("Transformaciones Geométricas 3D Básica: Rotacion");
         setSize(1800, 960);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -47,8 +46,10 @@ public class PolilineasRotacion extends JFrame {
         planoCartesiano = new PlanoCartesianoRotacion();
         planoCartesiano.setPreferredSize(new Dimension(600, 400));
 
-        xInicialField = new JTextField("1", 5);
-        yInicialField = new JTextField("1", 5);
+        xInicialField = new JTextField("2", 5);
+        yInicialField = new JTextField("0", 5);
+        ZInicialField = new JTextField("1", 5);
+
         anguloField = new JTextField("0", 5);
 
         backButton = new JButton("Menu");
@@ -56,22 +57,19 @@ public class PolilineasRotacion extends JFrame {
         regenerarFigura = new JButton("Graficar");
         rotarButton = new JButton("Rotar");
 
-        // ComboBox para seleccionar el aumento
-        String[] aumentoOptions = {"x1", "x2", "x4", "x8", "x16"};
-        aumentoComboBox = new JComboBox<>(aumentoOptions);
-        aumentoComboBox.setSelectedIndex(0); // Valor por defecto: x1
 
-        String[] columnNames = {"Punto", "X", "Y"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'"};
+        String[] aumentoOptions = {"Rotacion eje x", "Rotacion eje y", "Rotacion eje z"};
+        rotacionesComboBox = new JComboBox<>(aumentoOptions);
+        rotacionesComboBox.setSelectedIndex(0); // Valor por defecto: x1
+
+        String[] columnNames = {"Punto", "X", "Y", "Z"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
 
         originalTableModel = new DefaultTableModel(columnNames, 0);
         rotatedTableModel = new DefaultTableModel(columnNamesEdi, 0);
         originalTable = new JTable(originalTableModel);
         rotatedTable = new JTable(rotatedTableModel);
 
-        // Labels para mostrar valores de Sx y Sy después de la escalación
-        anguloLabel = new JLabel("θ: 0 °", SwingConstants.CENTER);
-        anguloLabel.setFont(new Font("Arial", Font.BOLD, 12)); // Cambia "Arial" y 18 por la fuente y tamaño deseados
 
     }
 
@@ -79,7 +77,7 @@ public class PolilineasRotacion extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 2D Básica:", SwingConstants.CENTER);
+        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
         JLabel titleLabel2 = new JLabel("Rotación", SwingConstants.CENTER);
@@ -118,7 +116,7 @@ public class PolilineasRotacion extends JFrame {
 
         JPanel rotatedTablePanel = new JPanel(new BorderLayout());
 
-        JLabel scaledLabel = new JLabel("Puntos Rotados: " + "Ángulo de rotación: " + anguloText + "°" , SwingConstants.CENTER);
+        JLabel scaledLabel = new JLabel("Puntos Rotados (θ: 0°)", SwingConstants.CENTER);
         scaledLabel.setFont(new Font("Arial", Font.BOLD, 12)); // Set font to Arial, bold, size 18
         rotatedTablePanel.add(scaledLabel, BorderLayout.NORTH);
 
@@ -136,22 +134,24 @@ public class PolilineasRotacion extends JFrame {
         JPanel controlPanel = new JPanel(new GridLayout(10, 2, 5, 5));
         controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+        // Initial configuration inputs
         controlPanel.add(new JLabel("X inicial:"));
         controlPanel.add(xInicialField);
         controlPanel.add(new JLabel("Y inicial:"));
         controlPanel.add(yInicialField);
-        controlPanel.add(new JLabel("Aumento:"));
-        controlPanel.add(aumentoComboBox); // Añadimos el ComboBox del aumento
+        controlPanel.add(new JLabel("Z inicial:"));
+        controlPanel.add(ZInicialField);
         controlPanel.add(new JLabel(""));
         controlPanel.add(regenerarFigura);
+
         controlPanel.add(new JSeparator());
         controlPanel.add(new JSeparator());
+
+
         controlPanel.add(new JLabel ("R(θ):"));
-        controlPanel.add(anguloLabel);
         controlPanel.add(anguloField);
-        controlPanel.add(new JLabel(""));
+        controlPanel.add(rotacionesComboBox);
         controlPanel.add(rotarButton);
-        controlPanel.add(anguloLabel);
 
         rightPanel.add(controlPanel, BorderLayout.NORTH);
         add(rightScrollPane, BorderLayout.EAST);
@@ -171,38 +171,65 @@ public class PolilineasRotacion extends JFrame {
         regenerarFigura.addActionListener(e -> {
             int xInicio = Integer.parseInt(xInicialField.getText());
             int yInicio = Integer.parseInt(yInicialField.getText());
-            int aumento = Integer.parseInt(aumentoComboBox.getSelectedItem().toString().substring(1)); // Obtener el valor de aumento (x1, x2, etc.)
-            drawFiguraOriginal(xInicio, yInicio, aumento);
+            int zInicio = Integer.parseInt(ZInicialField.getText());
+            drawFiguraOriginal(xInicio, yInicio, zInicio);
         });
+
 
         rotarButton.addActionListener(e -> realizarRotacion());
     }
 
-    public void drawFiguraOriginal(double xInicio, double yInicio, double aumento) {
+    public void drawFiguraOriginal(double xInicio, double yInicio, double zInicio) {
         clearPlanoAndData();
-
         try {
-            Punto puntoInicio = new Punto(xInicio, yInicio);
+            // Define los puntos iniciales
+            Punto punto1 = new Punto(xInicio, yInicio, zInicio);        // P1
+            Punto punto2 = new Punto(xInicio + 4, yInicio, zInicio + 1); // P2
+            Punto punto3 = new Punto(xInicio + 4, yInicio, zInicio - 1); // P3
+            Punto punto4 = new Punto(xInicio, yInicio, zInicio - 2);    // P4
+            Punto punto5 = new Punto(xInicio, yInicio + 1, zInicio - 2); // P5
+            Punto punto6 = new Punto(xInicio + 3, yInicio, zInicio - 2); // P6
+            Punto punto7 = new Punto(xInicio + 3, yInicio, zInicio);    // P7
+            Punto punto8 = new Punto(xInicio - 1, yInicio, zInicio - 1); // P8
 
+            // Utiliza las referencias de los puntos ya creados para evitar duplicados
             Punto[] puntosArray = {
-                    new Punto(xInicio, yInicio),
-                    new Punto(xInicio, yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio)
+                    punto1, // P1
+                    punto2, // P2
+                    punto3, // P3
+                    punto4, // P4
+                    punto5, // P5
+                    punto6, // P6
+                    punto7, // P7
+                    punto8, // P8
+
+                    // Segunda parte (referencia a puntos existentes)
+                    punto1, // P1
+                    punto4, // P4
+                    punto5, // P5
+                    punto8, // P8
+                    punto7, // P7
+                    punto2, // P2
+                    punto3, // P3
+                    punto6  // P6
             };
 
             puntosList = Arrays.asList(puntosArray);
 
-            for (int i = 0; i < puntosList.size(); i++) {
+            // Asignar nombres a los puntos
+            for (int i = 0; i < 8; i++) {
                 puntosList.get(i).setNombrePunto("P" + (i + 1));
             }
 
-            Punto puntoAnterior = puntoInicio;
-            planoCartesiano.addPunto(puntoInicio);
+
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 8; i < puntosList.size(); i++) {
+                puntosList.get(i).setNombrePunto("P" + referencias[i - 8]);
+            }
+
+            // Dibuja la figura
+            Punto puntoAnterior = punto1;  // Punto de inicio
+            planoCartesiano.addPunto(punto1);  // Agrega el primer punto
 
             for (int i = 0; i < puntosList.size(); i++) {
                 Punto punto = puntosList.get(i);
@@ -211,12 +238,17 @@ public class PolilineasRotacion extends JFrame {
                 puntoAnterior = punto;
             }
 
+            // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
+
             planoCartesiano.repaint();
+            updateLabels("0");
+
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
     }
+
     private void realizarRotacion() {
         try {
             double angulo = Math.toRadians(Double.parseDouble(anguloField.getText()));
@@ -314,6 +346,16 @@ public class PolilineasRotacion extends JFrame {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el ángulo.");
         }
     }
+
+    private void updateLabels(String r) {
+        // Actualizar la etiqueta de la tabla escalada
+        Component parent = rotatedTable.getParent().getParent().getParent();
+        if (parent instanceof JPanel) {
+            ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Rotados " +
+                    "(θ: "+r+"°)");
+        }
+    }
+
     private void clearPlanoAndData() {
         planoCartesiano.clear();
         originalTableModel.setRowCount(0);
@@ -326,7 +368,8 @@ public class PolilineasRotacion extends JFrame {
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
     }
@@ -337,7 +380,8 @@ public class PolilineasRotacion extends JFrame {
             rotatedTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     String.format("%.2f", punto.getX()),
-                    String.format("%.2f", punto.getY())
+                    String.format("%.2f", punto.getY()),
+                    String.format("%.2f", punto.getZ())
             });
         }
     }
