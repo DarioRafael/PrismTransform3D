@@ -280,6 +280,7 @@ public class PlanoCartesianoTraslacion extends JPanel {
 
     private void drawPoints(Graphics2D g2) {
         List<Punto> puntos = Punto.getPuntos();
+        int contador = 0;  // Contador para cambiar la ubicación
 
         for (Punto punto : puntos) {
             // Calcular coordenadas con consideración de Z
@@ -297,7 +298,10 @@ public class PlanoCartesianoTraslacion extends JPanel {
                 }
             } else {
                 g2.setColor(COLOR_PUNTO_ORIGINAL);
+                contador++;
+                System.out.println(contador);
             }
+
 
             // Dibujar el punto con desplazamiento X y Z
             g2.fillOval(x + zOffset - 3, y - 3, 6, 6);
@@ -305,7 +309,52 @@ public class PlanoCartesianoTraslacion extends JPanel {
             // Dibujar nombre del punto si existe
             String nombrePunto = punto.getNombrePunto();
             if (nombrePunto != null) {
-                g2.drawString(nombrePunto, x + zOffset + 2, y - 2);
+                switch (nombrePunto) {
+                    case "P1":
+                    case "P1'":
+                    case "P1''":
+                        g2.drawString(nombrePunto, x + zOffset - 20, y - 5);
+                        break;
+                    case "P2":
+                    case "P2'":
+                    case "P2''":
+                        g2.drawString(nombrePunto, x + zOffset + 12, y);
+                        break;
+                    case "P3":
+                    case "P3'":
+                    case "P3''":
+                        g2.drawString(nombrePunto, x + zOffset + 5, y );
+                        break;
+                    case "P4":
+                    case "P4'":
+                    case "P4''":
+                        g2.drawString(nombrePunto, x + zOffset + 5, y - 5);
+                        break;
+                    case "P5":
+                    case "P5'":
+                    case "P5''":
+                        g2.drawString(nombrePunto, x + zOffset, y - 10);
+                        break;
+                    case "P6":
+                    case "P6'":
+                    case "P6''":
+                        g2.drawString(nombrePunto, x + zOffset + 5, y );
+                        break;
+                    case "P7":
+                    case "P7'":
+                    case "P7''":
+                        g2.drawString(nombrePunto, x + zOffset - 10, y - 10);
+                        break;
+                    case "P8":
+                    case "P8'":
+                    case "P8''":
+                        g2.drawString(nombrePunto, x + zOffset - 15, y - 5);
+                        break;
+                    default:
+                        g2.drawString(nombrePunto, x + zOffset + 2, y - 2);
+                        break;
+                }
+
             }
         }
     }
@@ -333,29 +382,65 @@ public class PlanoCartesianoTraslacion extends JPanel {
             y1 -= z1Height;
             y2 -= z2Height;
 
-            // Determinar el color basado en si es una línea escalada o no
-            if (inicio.getNombrePunto() != null && inicio.getNombrePunto().contains("'")) {
-                if (inicio.getNombrePunto().contains("''")) {
-                    g2.setColor(COLOR_LINEA_TRASLADADO2); // Color para segunda traslación
+            // Definir los colores para las diferentes secciones
+            // Definir los colores para las diferentes secciones
+            Color[] sectionColors = {
+                    new Color(255, 0, 0, 180),    // Rojo semi-transparente para primera sección
+                    new Color(0, 0, 255, 180),    // Azul semi-transparente para segunda sección
+
+                    new Color(0, 255, 0, 180),    // Verde semi-transparente para tercera sección
+                    new Color(255, 255, 0, 180),  // Amarillo semi-transparente para cuarta sección
+
+                    new Color(255, 0, 255, 180),  // Magenta semi-transparente para quinta sección
+                    new Color(0, 255, 255, 180)   // Cian semi-transparente para sexta sección
+            };
+
+            // Determinar el color basado en la secuencia de puntos
+            if (inicio.getNombrePunto() != null) {
+                // Secciones sin comillas y con comillas vacías
+                String[] firstSectionEmpty = {"P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P7",
+                                              "P1'", "P2'", "P3'", "P4'", "P5'", "P6'", "P7'", "P8'", "P7'"};
+                String[] secondSectionEmpty = {"P8","P1", "P4", "P5", "P8", "P7", "P2", "P3", "P6",
+
+                                                "P8'", "P1'", "P4'", "P5'", "P8'", "P7'", "P2'", "P3'", "P6'"};
+
+                // Verificar en qué sección se encuentra la línea actual
+                boolean isFirstSection = false;
+                boolean isSecondSection = false;
+
+                // Verificar primera sección
+                for (int i = 0; i < firstSectionEmpty.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(firstSectionEmpty[i]) &&
+                            fin.getNombrePunto().equals(firstSectionEmpty[i+1])) {
+                        isFirstSection = true;
+                        break;
+                    }
+                }
+
+                // Verificar segunda sección
+                for (int i = 0; i < secondSectionEmpty.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(secondSectionEmpty[i]) &&
+                            fin.getNombrePunto().equals(secondSectionEmpty[i+1])) {
+                        isSecondSection = true;
+                        break;
+                    }
+                }
+
+                // Asignar color según la sección
+                if (isFirstSection) {
+                    g2.setColor(sectionColors[0]);
+                } else if (isSecondSection) {
+                    g2.setColor(sectionColors[1]);
                 } else {
-                    g2.setColor(COLOR_LINEA_TRASLADADO);
+                    // Color por defecto para otras líneas
+                    g2.setColor(COLOR_LINEA_ORIGINAL);
                 }
             } else {
                 g2.setColor(COLOR_LINEA_ORIGINAL);
-                // Líneas después de la línea 8 en verde
-                if (Linea.getLineas().indexOf(linea) > 14) {
-                    g2.setColor(Color.GREEN);
-                }
             }
 
-
-
-            // Dibujar línea con desplazamientos de Z
+            // Dibujar la línea
             g2.drawLine(x1 + z1Offset, y1, x2 + z2Offset, y2);
-
-            if (linea.isEsParteDeFiguraAnonima()) {
-                // ... (código existente sin cambios)
-            }
         }
     }
 
