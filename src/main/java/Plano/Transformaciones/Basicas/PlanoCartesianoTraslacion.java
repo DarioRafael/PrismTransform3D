@@ -390,7 +390,7 @@ public class PlanoCartesianoTraslacion extends JPanel {
 
 
                     new Color(255, 0, 255, 180),
-                    new Color(0, 255, 255, 180)
+                    new Color(255, 165, 0, 180)
             };
 
             // Determinar el color basado en la secuencia de puntos
@@ -398,15 +398,21 @@ public class PlanoCartesianoTraslacion extends JPanel {
                 // Secciones sin comillas y con comillas vacías
                 String[] firstSectionWithoutQuotes = {"P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P7"};
                 String[] firstSectionWithQuotes = {"P1'", "P2'", "P3'", "P4'", "P5'", "P6'", "P7'", "P8'", "P7'"};
+                String[] firstSectionWithDoubleQuotes = {"P1''", "P2''", "P3''", "P4''", "P5''", "P6''", "P7''", "P8''", "P7''"};
 
                 String[] secondSectionWithoutQuotes = {"P8", "P1", "P4", "P5", "P8", "P7", "P2", "P3", "P6"};
                 String[] secondSectionWithQuotes = {"P8'", "P1'", "P4'", "P5'", "P8'", "P7'", "P2'", "P3'", "P6'"};
+                String[] secondSectionWithDoubleQuotes = {"P8''", "P1''", "P4''", "P5''", "P8''", "P7''", "P2''", "P3''", "P6''"};
 
                 // Verificar en qué sección se encuentra la línea actual
+
                 boolean isFirstSectionWithoutQuotes = false;
                 boolean isFirstSectionWithQuotes = false;
+                boolean isFirstSectionWithDoubleQuotes = false;
+
                 boolean isSecondSectionWithoutQuotes = false;
                 boolean isSecondSectionWithQuotes = false;
+                boolean isSecondSectionWithDoubleQuotes = false;
 
                 // Verificar primera sección sin comillas
                 for (int i = 0; i < firstSectionWithoutQuotes.length - 1; i++) {
@@ -426,6 +432,16 @@ public class PlanoCartesianoTraslacion extends JPanel {
                     }
                 }
 
+                // Verificar primera sección con dobles comillas
+                for (int i = 0; i < firstSectionWithDoubleQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(firstSectionWithDoubleQuotes[i]) &&
+                            fin.getNombrePunto().equals(firstSectionWithDoubleQuotes[i+1])) {
+                        isFirstSectionWithDoubleQuotes = true;
+                        break;
+                    }
+                }
+
+
                 // Verificar segunda sección sin comillas
                 for (int i = 0; i < secondSectionWithoutQuotes.length - 1; i++) {
                     if (inicio.getNombrePunto().equals(secondSectionWithoutQuotes[i]) &&
@@ -444,15 +460,28 @@ public class PlanoCartesianoTraslacion extends JPanel {
                     }
                 }
 
+                // Verificar segunda sección con dobles comillas
+                for (int i = 0; i < secondSectionWithDoubleQuotes.length - 1; i++) {
+                    if (inicio.getNombrePunto().equals(secondSectionWithDoubleQuotes[i]) &&
+                            fin.getNombrePunto().equals(secondSectionWithDoubleQuotes[i+1])) {
+                        isSecondSectionWithDoubleQuotes = true;
+                        break;
+                    }
+                }
+
                 // Asignar color según la sección
                 if (isFirstSectionWithoutQuotes) {
                     g2.setColor(sectionColors[0]);
                 } else if (isFirstSectionWithQuotes) {
                     g2.setColor(sectionColors[2]);
+                } else if (isFirstSectionWithDoubleQuotes) {
+                    g2.setColor(sectionColors[4]);
                 } else if (isSecondSectionWithoutQuotes) {
                     g2.setColor(sectionColors[1]);
                 } else if (isSecondSectionWithQuotes) {
                     g2.setColor(sectionColors[3]);
+                } else if (isSecondSectionWithDoubleQuotes) {
+                    g2.setColor(sectionColors[5]);
                 } else {
                     // Color por defecto para otras líneas
                     g2.setColor(COLOR_LINEA_ORIGINAL);

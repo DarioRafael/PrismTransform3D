@@ -25,16 +25,9 @@ public class PolilineasTraslacionSuc extends JFrame {
     private DefaultTableModel translatedTableModel1;
     private DefaultTableModel translatedTableModel2;
     private JButton backButton, formulaButton;
-    private JTextField xInicialField;
-    private JTextField yInicialField;
-    private JTextField tx1Field;
-    private JTextField ty1Field;
-    private JTextField tx2Field;
-    private JTextField ty2Field;
-    private JLabel tx1Label;
-    private JLabel ty1Label;
-    private JLabel tx2Label;
-    private JLabel ty2Label;
+    private JTextField xInicialField, yInicialField,ZInicialField;
+    private JTextField tx1Field, ty1Field, tz1Field, tx2Field, ty2Field, tz2Field;
+
     public JComboBox<String> aumentoComboBox;
     private JButton regenerarFigura;
     private JButton trasladar1Button;
@@ -47,11 +40,12 @@ public class PolilineasTraslacionSuc extends JFrame {
     public int ty1 = 0;
     public int tx2 = 0;
     public int ty2 = 0;
+    public int tz2 = 0;
     private JLabel translatedTable1Label;
     private JLabel translatedTable2Label;
 
     public PolilineasTraslacionSuc() {
-        setTitle("Transformaciones Geométricas 2D Compuestas: Traslacion Sucesiva");
+        setTitle("Transformaciones Geométricas 3D Compuestas: Traslacion Sucesiva");
         setSize(1850, 960);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -68,12 +62,17 @@ public class PolilineasTraslacionSuc extends JFrame {
         planoCartesiano = new PlanoCartesianoTraslacion();
         planoCartesiano.setPreferredSize(new Dimension(600, 400));
 
-        xInicialField = new JTextField("1", 5);
-        yInicialField = new JTextField("1", 5);
-        tx1Field = new JTextField("1", 5);
-        ty1Field = new JTextField("2", 5);
-        tx2Field = new JTextField("-2", 5);
-        ty2Field = new JTextField("-4", 5);
+        xInicialField = new JTextField("2", 5);
+        yInicialField = new JTextField("0", 5);
+        ZInicialField = new JTextField("1", 5);
+
+        tx1Field = new JTextField("-2", 5);
+        ty1Field = new JTextField("-1", 5);
+        tz1Field = new JTextField("1", 5);
+
+        tx2Field = new JTextField("-3", 5);
+        ty2Field = new JTextField("4", 5);
+        tz2Field = new JTextField("0", 5);
 
         backButton = new JButton("Menu");
         formulaButton = new JButton("Formula");
@@ -87,31 +86,25 @@ public class PolilineasTraslacionSuc extends JFrame {
         aumentoComboBox = new JComboBox<>(aumentoOptions);
         aumentoComboBox.setSelectedIndex(0);
 
-        String[] columnNames = {"Punto", "X", "Y"};
+        String[] columnNames = {"Punto", "X", "Y", "Z"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
+        String[] columnNamesEdi2 = {"P''", "X''", "Y''", "Z''"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
-        translatedTableModel1 = new DefaultTableModel(new String[]{"P'", "X'", "Y'"}, 0);
-        translatedTableModel2 = new DefaultTableModel(new String[]{"P''", "X''", "Y''"}, 0);
+        translatedTableModel1 = new DefaultTableModel(columnNamesEdi, 0);
+        translatedTableModel2 = new DefaultTableModel(columnNamesEdi2, 0);
 
         originalTable = new JTable(originalTableModel);
         translatedTable1 = new JTable(translatedTableModel1);
         translatedTable2 = new JTable(translatedTableModel2);
 
-        tx1Label = new JLabel("Tx1: 0", SwingConstants.CENTER);
-        ty1Label = new JLabel("Ty1: 0", SwingConstants.CENTER);
-        tx2Label = new JLabel("Tx2: 0", SwingConstants.CENTER);
-        ty2Label = new JLabel("Ty2: 0", SwingConstants.CENTER);
 
-        tx1Label.setFont(new Font("Arial", Font.BOLD, 12));
-        ty1Label.setFont(new Font("Arial", Font.BOLD, 12));
-        tx2Label.setFont(new Font("Arial", Font.BOLD, 12));
-        ty2Label.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
     private void configureLayout() {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 2D Compuestas:", SwingConstants.CENTER);
+        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
         JLabel titleLabel2 = new JLabel("Traslación Sucesiva", SwingConstants.CENTER);
@@ -147,7 +140,7 @@ public class PolilineasTraslacionSuc extends JFrame {
         originalTablePanel.add(originalScrollPane, BorderLayout.CENTER);
 
         JPanel translatedTable1Panel = new JPanel(new BorderLayout());
-        translatedTable1Label = new JLabel("Primera Traslación (Tx1: 0, Ty1: 0)", SwingConstants.CENTER);
+        translatedTable1Label = new JLabel("Primera Traslación (Tx1: 0, Ty1: 0, Tz1: 0)", SwingConstants.CENTER);
         translatedTable1Panel.add(translatedTable1Label, BorderLayout.NORTH);
 
         JScrollPane translatedScrollPane1 = new JScrollPane(translatedTable1);
@@ -155,7 +148,7 @@ public class PolilineasTraslacionSuc extends JFrame {
         translatedTable1Panel.add(translatedScrollPane1, BorderLayout.CENTER);
 
         JPanel translatedTable2Panel = new JPanel(new BorderLayout());
-        translatedTable2Label = new JLabel("Segunda Traslación (Tx2: 0, Ty2: 0)", SwingConstants.CENTER);
+        translatedTable2Label = new JLabel("Segunda Traslación (Tx2: 0, Ty2: 0, Tz2: 0)", SwingConstants.CENTER);
         translatedTable2Panel.add(translatedTable2Label, BorderLayout.NORTH);
         JScrollPane translatedScrollPane2 = new JScrollPane(translatedTable2);
         translatedScrollPane2.setPreferredSize(new Dimension(300, 150));
@@ -176,8 +169,8 @@ public class PolilineasTraslacionSuc extends JFrame {
         controlPanel.add(xInicialField);
         controlPanel.add(new JLabel("Y inicial:"));
         controlPanel.add(yInicialField);
-        controlPanel.add(new JLabel("Aumento:"));
-        controlPanel.add(aumentoComboBox);
+        controlPanel.add(new JLabel("Z inicial:"));
+        controlPanel.add(ZInicialField);
         controlPanel.add(new JLabel(""));
         controlPanel.add(regenerarFigura);
 
@@ -190,20 +183,21 @@ public class PolilineasTraslacionSuc extends JFrame {
         controlPanel.add(tx1Field);
         controlPanel.add(new JLabel("Ty1:"));
         controlPanel.add(ty1Field);
+        controlPanel.add(new JLabel("Tz1:"));
+        controlPanel.add(tz1Field);
         controlPanel.add(new JLabel(""));
         controlPanel.add(trasladar1Button);
-        controlPanel.add(tx1Label);
-        controlPanel.add(ty1Label);
 
         // Segunda traslación
         controlPanel.add(new JLabel("Tx2:"));
         controlPanel.add(tx2Field);
         controlPanel.add(new JLabel("Ty2:"));
         controlPanel.add(ty2Field);
+        controlPanel.add(new JLabel("Tz2:"));
+        controlPanel.add(tz2Field);
         controlPanel.add(new JLabel(""));
         controlPanel.add(trasladar2Button);
-        controlPanel.add(tx2Label);
-        controlPanel.add(ty2Label);
+
 
         rightPanel.add(controlPanel, BorderLayout.NORTH);
 
@@ -223,8 +217,8 @@ public class PolilineasTraslacionSuc extends JFrame {
         regenerarFigura.addActionListener(e -> {
             int xInicio = Integer.parseInt(xInicialField.getText());
             int yInicio = Integer.parseInt(yInicialField.getText());
-            int aumento = Integer.parseInt(aumentoComboBox.getSelectedItem().toString().substring(1));
-            drawFiguraOriginal(xInicio, yInicio, aumento);
+            int zInicio = Integer.parseInt(ZInicialField.getText());
+            drawFiguraOriginal(xInicio, yInicio, zInicio);
             trasladar2Button.setEnabled(false);
         });
 
@@ -237,174 +231,276 @@ public class PolilineasTraslacionSuc extends JFrame {
     }
 
     private void realizarPrimeraTraslacion() {
+
+        if (puntosList == null || puntosList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Primero debe generar la figura original");
+            return;
+        }
+
+        planoCartesiano.clear();
+        int xInicio = Integer.parseInt(xInicialField.getText());
+        int yInicio = Integer.parseInt(yInicialField.getText());
+        int zInicio = Integer.parseInt(ZInicialField.getText());
+        drawFiguraOriginal(xInicio, yInicio, zInicio);
+
         try {
-            tx1 = Integer.parseInt(tx1Field.getText());
-            ty1 = Integer.parseInt(ty1Field.getText());
+            int tx = Integer.parseInt(tx1Field.getText());
+            int ty = Integer.parseInt(ty1Field.getText());
+            int tz = Integer.parseInt(tz1Field.getText());
 
-            if (puntosList == null || puntosList.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Primero debe generar la figura original");
-                return;
-            }
 
-            // Limpiar el plano pero mantener los datos originales
-            planoCartesiano.clear();
+            // Crear y dibujar los puntos trasladados
+            Punto[] puntosTrasladadosArray = new Punto[puntosList.size()];
 
-            // Redibujar la figura original
-            dibujarFigura(puntosList, Color.BLACK);
-
-            // Crear y dibujar los puntos de la primera traslación
-            puntosTrasladadosList1 = new ArrayList<>();
-            for (int i = 0; i < puntosList.size(); i++) {
+            // Crear puntos trasladados con las nuevas coordenadas
+            for (int i = 0; i < 8; i++) {
                 Punto puntoOriginal = puntosList.get(i);
-                Punto puntoTransladado = new Punto(
-                        puntoOriginal.getX() + tx1,
-                        puntoOriginal.getY() + ty1
+                Punto puntoTrasladado = new Punto(
+                        puntoOriginal.getX() + tx,  // Mover en X
+                        puntoOriginal.getY() + ty,  // Mover en Y
+                        puntoOriginal.getZ() + tz   // Mover en Z
                 );
-                puntoTransladado.setNombrePunto("P" + (i + 1) + "'");
-                puntosTrasladadosList1.add(puntoTransladado);
+
+                // Asignar nombres a los puntos originales
+                puntoTrasladado.setNombrePunto("P" + (i + 1) + "'");
+                puntosTrasladadosArray[i] = puntoTrasladado;
             }
 
-            clearTableAll(2);
+            // Asignar nombres a los puntos repetidos basándose en su referencia
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6}; // Secuencia específica
+            for (int i = 8; i < puntosList.size(); i++) {
+                Punto puntoOriginal = puntosList.get(i);
+                Punto puntoTrasladado = new Punto(
+                        puntoOriginal.getX() + tx,
+                        puntoOriginal.getY() + ty,
+                        puntoOriginal.getZ() + tz
+                );
+                puntoTrasladado.setNombrePunto("P" + referencias[i - 8] + "'");
+                puntosTrasladadosArray[i] = puntoTrasladado;
+            }
+
+            // Convertir a lista
+            puntosTrasladadosList1 = Arrays.asList(puntosTrasladadosArray);
+
             // Dibujar la figura trasladada
-            dibujarFigura(puntosTrasladadosList1, Color.BLUE);
+            Punto puntoInicio = puntosTrasladadosArray[0];
+            planoCartesiano.addPunto(puntoInicio);
 
-            // Actualizar tablas y etiquetas
+            Punto puntoAnterior = puntoInicio;
+            for (int i = 1; i < puntosTrasladadosArray.length; i++) {
+                Punto punto = puntosTrasladadosArray[i];
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i));
+                puntoAnterior = punto;
+            }
+
+            // Actualiza la tabla de puntos trasladados
             updateTranslatedTable1(puntosTrasladadosList1);
-            tx1Label.setText("Tx1: " + tx1);
-            ty1Label.setText("Ty1: " + ty1);
-
             planoCartesiano.repaint();
+
+            updateLabels(tx1Field.getText(), ty1Field.getText(), tz1Field.getText());
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx1 y Ty1");
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
         }
     }
 
     private void realizarSegundaTraslacion() {
+
+        if (puntosTrasladadosList1 == null || puntosTrasladadosList1.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Primero debe realizar la primera traslación");
+            return;
+        }
+
+        limpiar();
+
+
         try {
-            tx2 = Integer.parseInt(tx2Field.getText());
-            ty2 = Integer.parseInt(ty2Field.getText());
+            int tx = Integer.parseInt(tx2Field.getText());
+            int ty = Integer.parseInt(ty2Field.getText());
+            int tz = Integer.parseInt(tz2Field.getText());
 
-            if (puntosTrasladadosList1 == null || puntosTrasladadosList1.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Primero debe realizar la primera traslación");
-                return;
-            }
+            // Crear y dibujar los puntos trasladados
+            Punto[] puntosTrasladadosArray = new Punto[puntosTrasladadosList1.size()];
 
-            // Limpiar el plano
-            planoCartesiano.clear();
-
-            // Redibujar la figura original y la primera traslación
-            dibujarFigura(puntosList, Color.BLACK);
-            dibujarFigura(puntosTrasladadosList1, Color.BLUE);
-
-            // Crear y dibujar los puntos de la segunda traslación
-            puntosTrasladadosList2 = new ArrayList<>();
+            // Crear puntos trasladados con las nuevas coordenadas
             for (int i = 0; i < puntosTrasladadosList1.size(); i++) {
-                Punto puntoTrasladadoPrevio = puntosTrasladadosList1.get(i);
-                Punto puntoTransladado = new Punto(
-                        puntoTrasladadoPrevio.getX() + tx2,
-                        puntoTrasladadoPrevio.getY() + ty2
+                Punto puntoOriginal = puntosTrasladadosList1.get(i);
+                Punto puntoTrasladado = new Punto(
+                        puntoOriginal.getX() + tx,  // Mover en X
+                        puntoOriginal.getY() + ty,  // Mover en Y
+                        puntoOriginal.getZ() + tz   // Mover en Z
                 );
-                puntoTransladado.setNombrePunto("P" + (i + 1) + "''");
-                puntosTrasladadosList2.add(puntoTransladado);
+
+                // Asignar nombres a los puntos
+                int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+                if (i < 8) {
+                    puntoTrasladado.setNombrePunto("P" + (i + 1) + "''");
+                } else {
+                    puntoTrasladado.setNombrePunto("P" + referencias[i - 8] + "''");
+                }
+                puntosTrasladadosArray[i] = puntoTrasladado;
             }
 
-            // Dibujar la segunda figura trasladada
-            dibujarFigura(puntosTrasladadosList2, Color.RED);
+            // Convertir a lista
+            puntosTrasladadosList2 = Arrays.asList(puntosTrasladadosArray);
 
-            // Actualizar tablas y etiquetas
+            // Primero, volver a dibujar la primera traslación
+            Punto puntoInicio1 = puntosTrasladadosList1.get(0);
+            planoCartesiano.addPunto(puntoInicio1);
+
+            Punto puntoAnterior1 = puntoInicio1;
+            for (int i = 1; i < puntosTrasladadosList1.size(); i++) {
+                Punto punto = puntosTrasladadosList1.get(i);
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior1, punto, true, i));
+                puntoAnterior1 = punto;
+            }
+
+            // Luego, dibujar la segunda traslación
+            Punto puntoInicio = puntosTrasladadosArray[0];
+            planoCartesiano.addPunto(puntoInicio);
+
+            Punto puntoAnterior = puntoInicio;
+            for (int i = 1; i < puntosTrasladadosArray.length; i++) {
+                Punto punto = puntosTrasladadosArray[i];
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i));
+                puntoAnterior = punto;
+            }
+
+            // Actualiza la tabla de puntos trasladados
             updateTranslatedTable2(puntosTrasladadosList2);
-            tx2Label.setText("Tx2: " + tx2);
-            ty2Label.setText("Ty2: " + ty2);
-
             planoCartesiano.repaint();
+
+            // Actualizar las etiquetas con los valores de traslación
+            translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", tx, ty, tz));
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx2 y Ty2");
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx2, Ty2 y Tz2");
         }
     }
-
-    private void dibujarFigura(List<Punto> puntos, Color color) {
-        Punto puntoAnterior = puntos.get(0);
-        planoCartesiano.addPunto(puntoAnterior);
-
-        for (int i = 1; i < puntos.size(); i++) {
-            Punto punto = puntos.get(i);
-            planoCartesiano.addPunto(punto);
-            Linea linea = new Linea(puntoAnterior, punto, true, i);
-            planoCartesiano.addLinea(linea);
-            puntoAnterior = punto;
-        }
-    }
-    private void updateTranslatedTable1(List<Punto> puntos) {
-        translatedTableModel1.setRowCount(0);
-        for (Punto punto : puntos) {
-            translatedTableModel1.addRow(new Object[]{
-                    punto.getNombrePunto(),
-                    punto.getX(),
-                    punto.getY()
-            });
-        }
-        translatedTable1Label.setText(String.format("Primera Traslación (Tx1: %d, Ty1: %d)", tx1, ty1));
-    }
-
+    // Modify the updateTranslatedTable2 method to include Z coordinate
     private void updateTranslatedTable2(List<Punto> puntos) {
         translatedTableModel2.setRowCount(0);
         for (Punto punto : puntos) {
             translatedTableModel2.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
-        translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d)", tx2, ty2));
+        translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", tx2, ty2, tz2));
     }
 
-    public void drawFiguraOriginal(int xInicio, int yInicio, int aumento) {
+
+    private void updateTranslatedTable1(List<Punto> puntos) {
+        translatedTableModel1.setRowCount(0);
+        for (Punto punto : puntos) {
+            translatedTableModel1.addRow(new Object[]{
+                    punto.getNombrePunto(),
+                    punto.getX(),
+                    punto.getY(),
+                    punto.getZ()
+            });
+        }
+        translatedTable1Label.setText(String.format("Primera Traslación (Tx1: %d, Ty1: %d)", tx1, ty1));
+    }
+
+    private void limpiar() {
+        int xInicio = Integer.parseInt(xInicialField.getText());
+        int yInicio = Integer.parseInt(yInicialField.getText());
+        int zInicio = Integer.parseInt(ZInicialField.getText());
+        drawFiguraOriginal(xInicio, yInicio, zInicio);
+
+        if (puntosList != null && !puntosList.isEmpty()) {
+            realizarPrimeraTraslacion();
+        }
+    }
+
+
+    public void drawFiguraOriginal(int xInicio, int yInicio, int zInicio) {
         clearPlanoAndData();
-
         try {
-            Punto puntoInicio = new Punto(xInicio, yInicio);
+            // Define los puntos iniciales
+            Punto punto1 = new Punto(xInicio, yInicio, zInicio);        // P1
+            Punto punto2 = new Punto(xInicio + 4, yInicio, zInicio + 1); // P2
+            Punto punto3 = new Punto(xInicio + 4, yInicio, zInicio - 1); // P3
+            Punto punto4 = new Punto(xInicio, yInicio, zInicio - 2);    // P4
+            Punto punto5 = new Punto(xInicio, yInicio + 1, zInicio - 2); // P5
+            Punto punto6 = new Punto(xInicio + 3, yInicio, zInicio - 2); // P6
+            Punto punto7 = new Punto(xInicio + 3, yInicio, zInicio);    // P7
+            Punto punto8 = new Punto(xInicio - 1, yInicio, zInicio - 1); // P8
 
-            // Define los puntos de la figura
+            // Utiliza las referencias de los puntos ya creados para evitar duplicados
             Punto[] puntosArray = {
-                    new Punto(xInicio, yInicio),
-                    new Punto(xInicio, yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio)
+                    punto1, // P1
+                    punto2, // P2
+                    punto3, // P3
+                    punto4, // P4
+                    punto5, // P5
+                    punto6, // P6
+                    punto7, // P7
+                    punto8, // P8
+
+                    // Segunda parte (referencia a puntos existentes)
+                    punto1, // P1
+                    punto4, // P4
+                    punto5, // P5
+                    punto8, // P8
+                    punto7, // P7
+                    punto2, // P2
+                    punto3, // P3
+                    punto6  // P6
             };
 
             puntosList = Arrays.asList(puntosArray);
 
             // Asignar nombres a los puntos
-            for (int i = 0; i < puntosList.size(); i++) {
+            for (int i = 0; i < 8; i++) {
                 puntosList.get(i).setNombrePunto("P" + (i + 1));
             }
 
-            clearTableAll(1);
-            // Dibuja la figura original en negro
-            dibujarFigura(puntosList, Color.BLACK);
+
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 8; i < puntosList.size(); i++) {
+                puntosList.get(i).setNombrePunto("P" + referencias[i - 8]);
+            }
+
+            // Dibuja la figura
+            Punto puntoAnterior = punto1;  // Punto de inicio
+            planoCartesiano.addPunto(punto1);  // Agrega el primer punto
+
+            for (int i = 0; i < puntosList.size(); i++) {
+                Punto punto = puntosList.get(i);
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
+                puntoAnterior = punto;
+            }
 
             // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
 
-            // Limpiar las tablas de traslación
-            translatedTableModel1.setRowCount(0);
-            translatedTableModel2.setRowCount(0);
-
-            // Resetear las etiquetas
-            tx1Label.setText("Tx1: 0");
-            ty1Label.setText("Ty1: 0");
-            tx2Label.setText("Tx2: 0");
-            ty2Label.setText("Ty2: 0");
-
             planoCartesiano.repaint();
+            updateLabels("0", "0", "0");
+
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
     }
+
+    private void updateLabels(String tx, String ty, String tz) {
+        // Actualizar la etiqueta de la tabla escalada
+        Component parent = translatedTable1.getParent().getParent().getParent();
+        if (parent instanceof JPanel) {
+            ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados " +
+                    "(Tx: "+tx+
+                    ", Ty: "+ty+
+                    ", Tz: "+tz+")");
+        }
+    }
+
 
     private void clearPlanoAndData() {
         planoCartesiano.clear();
@@ -421,7 +517,8 @@ public class PolilineasTraslacionSuc extends JFrame {
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
     }
