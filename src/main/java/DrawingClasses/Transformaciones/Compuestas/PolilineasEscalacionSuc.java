@@ -3,7 +3,7 @@ package DrawingClasses.Transformaciones.Compuestas;
 import PaginaPrincipalFolder.Transformaciones.Componentes.TransformacionesCompuestas;
 import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.FormulaEscalacionSuc;
 import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.FormulaTraslacionSuc;
-import Plano.Transformaciones.Compuestas.PlanoCartesianoEscalacionSuc;
+import Plano.Transformaciones.Basicas.PlanoCartesianoEscalacion;
 import formasADibujar.Linea;
 import formasADibujar.Punto;
 
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PolilineasEscalacionSuc extends JFrame {
-    private PlanoCartesianoEscalacionSuc planoCartesiano;
+    private PlanoCartesianoEscalacion planoCartesiano;
     private JTable originalTable;
     private JTable scaledTable1;
     private JTable scaledTable2;
@@ -23,16 +23,9 @@ public class PolilineasEscalacionSuc extends JFrame {
     private DefaultTableModel scaledTableModel1;
     private DefaultTableModel scaledTableModel2;
     private JButton backButton, formulaButton;
-    private JTextField xInicialField;
-    private JTextField yInicialField;
-    private JTextField sx1Field;
-    private JTextField sy1Field;
-    private JTextField sx2Field;
-    private JTextField sy2Field;
-    private JLabel sx1Label;
-    private JLabel sy1Label;
-    private JLabel sx2Label;
-    private JLabel sy2Label;
+    private JTextField xInicialField, yInicialField, ZInicialField;
+    private JTextField sx1Field, sy1Field, sx2Field, sy2Field, sz1Field, sz2Field;
+
     public JComboBox<String> aumentoComboBox;
     private JButton regenerarFigura;
     private JButton escalarButton1;
@@ -42,10 +35,10 @@ public class PolilineasEscalacionSuc extends JFrame {
     private List<Punto> puntosEscalados2List;
     private JLabel scaletedTable1Label;
     private JLabel scaletedTable2Label;
-    private int sx1, sx2, sy1, sy2;
+    private int sx1, sx2, sy1, sy2, sz1, sz2;
 
     public PolilineasEscalacionSuc() {
-        setTitle("Transformaciones Geométricas 2D Compuestas: Escalación Sucesiva");
+        setTitle("Transformaciones Geométricas 3D Compuestas: Escalación Sucesiva");
         setSize(1800, 960);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -57,15 +50,22 @@ public class PolilineasEscalacionSuc extends JFrame {
     }
 
     private void createComponents() {
-        planoCartesiano = new PlanoCartesianoEscalacionSuc();
+        planoCartesiano = new PlanoCartesianoEscalacion();
         planoCartesiano.setPreferredSize(new Dimension(600, 400));
 
-        xInicialField = new JTextField("1", 5);
-        yInicialField = new JTextField("1", 5);
-        sx1Field = new JTextField("1", 5);
+
+        xInicialField = new JTextField("2", 5);
+        yInicialField = new JTextField("0", 5);
+        ZInicialField = new JTextField("1", 5);
+
+
+        sx1Field = new JTextField("2", 5);
         sy1Field = new JTextField("2", 5);
+        sz1Field = new JTextField("2", 5);
+
         sx2Field = new JTextField("1", 5);
-        sy2Field = new JTextField("-1", 5);
+        sy2Field = new JTextField("1", 5);
+        sz2Field = new JTextField("2", 5);
 
         backButton = new JButton("Menu");
         formulaButton = new JButton("Formula");
@@ -74,13 +74,10 @@ public class PolilineasEscalacionSuc extends JFrame {
         escalarButton1 = new JButton("Escalar");
         escalarButton2 = new JButton("Escalar");
 
-        String[] aumentoOptions = {"x1", "x2", "x4", "x8", "x16"};
-        aumentoComboBox = new JComboBox<>(aumentoOptions);
-        aumentoComboBox.setSelectedIndex(0);
 
-        String[] columnNames = {"P", "X", "Y"};
-        String[] columnNames1 = {"P'", "X'", "Y'"};
-        String[] columnNames2 = {"P''", "X''", "Y''"};
+        String[] columnNames = {"Punto", "X", "Y", "Z"};
+        String[] columnNames1 = {"P'", "X'", "Y'", "Z'"};
+        String[] columnNames2 = {"P''", "X''", "Y''", "Z''"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         scaledTableModel1 = new DefaultTableModel(columnNames1, 0);
         scaledTableModel2 = new DefaultTableModel(columnNames2, 0);
@@ -88,23 +85,14 @@ public class PolilineasEscalacionSuc extends JFrame {
         scaledTable1 = new JTable(scaledTableModel1);
         scaledTable2 = new JTable(scaledTableModel2);
 
-        sx1Label = new JLabel("Sx1: 1", SwingConstants.CENTER);
-        sy1Label = new JLabel("Sy1: 1", SwingConstants.CENTER);
-        sx2Label = new JLabel("Sx2: 1", SwingConstants.CENTER);
-        sy2Label = new JLabel("Sy2: 1", SwingConstants.CENTER);
 
-        Font boldFont = new Font("Arial", Font.BOLD, 12);
-        sx1Label.setFont(boldFont);
-        sy1Label.setFont(boldFont);
-        sx2Label.setFont(boldFont);
-        sy2Label.setFont(boldFont);
     }
 
     private void configureLayout() {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 2D Compuestas:", SwingConstants.CENTER);
+        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
         JLabel titleLabel2 = new JLabel("Escalación Sucesiva", SwingConstants.CENTER);
@@ -142,7 +130,7 @@ public class PolilineasEscalacionSuc extends JFrame {
         originalTablePanel.add(originalScrollPane, BorderLayout.CENTER);
 
         JPanel scaledTable1Panel = new JPanel(new BorderLayout());
-        scaletedTable1Label = new JLabel("Primera Escalación (Sx1: 1, Sy1: 1)", SwingConstants.CENTER);
+        scaletedTable1Label = new JLabel("Primera Escalación (Sx1: 1, Sy1: 1, Sz1: 1)", SwingConstants.CENTER);
         scaledTable1Panel.add(scaletedTable1Label, BorderLayout.NORTH);
 
         JScrollPane scaledScrollPane1 = new JScrollPane(scaledTable1);
@@ -150,7 +138,7 @@ public class PolilineasEscalacionSuc extends JFrame {
         scaledTable1Panel.add(scaledScrollPane1, BorderLayout.CENTER);
 
         JPanel scaledTable2Panel = new JPanel(new BorderLayout());
-        scaletedTable2Label = new JLabel("Segunda Escalación (Sx2: 1, Sy2: 1)", SwingConstants.CENTER);
+        scaletedTable2Label = new JLabel("Segunda Escalación (Sx2: 1, Sy2: 1, Sz2: 1)", SwingConstants.CENTER);
         scaledTable2Panel.add(scaletedTable2Label, BorderLayout.NORTH);
 
 
@@ -173,8 +161,8 @@ public class PolilineasEscalacionSuc extends JFrame {
         controlPanel.add(xInicialField);
         controlPanel.add(new JLabel("Y inicial:"));
         controlPanel.add(yInicialField);
-        controlPanel.add(new JLabel("Aumento:"));
-        controlPanel.add(aumentoComboBox);
+        controlPanel.add(new JLabel("Z inicial:"));
+        controlPanel.add(ZInicialField);
         controlPanel.add(new JLabel(""));
         controlPanel.add(regenerarFigura);
 
@@ -187,20 +175,22 @@ public class PolilineasEscalacionSuc extends JFrame {
         controlPanel.add(sx1Field);
         controlPanel.add(new JLabel("Sy1:"));
         controlPanel.add(sy1Field);
+        controlPanel.add(new JLabel("Sz1:"));
+        controlPanel.add(sz1Field);
         controlPanel.add(new JLabel(""));
         controlPanel.add(escalarButton1);
-        controlPanel.add(sx1Label);
-        controlPanel.add(sy1Label);
+
 
         // Segunda escalación
         controlPanel.add(new JLabel("Sx2:"));
         controlPanel.add(sx2Field);
         controlPanel.add(new JLabel("Sy2:"));
         controlPanel.add(sy2Field);
+        controlPanel.add(new JLabel("Sz2:"));
+        controlPanel.add(sz2Field);
         controlPanel.add(new JLabel(""));
         controlPanel.add(escalarButton2);
-        controlPanel.add(sx2Label);
-        controlPanel.add(sy2Label);
+
 
         rightPanel.add(controlPanel, BorderLayout.NORTH);
         add(rightScrollPane, BorderLayout.EAST);
@@ -219,48 +209,78 @@ public class PolilineasEscalacionSuc extends JFrame {
         regenerarFigura.addActionListener(e -> {
             int xInicio = Integer.parseInt(xInicialField.getText());
             int yInicio = Integer.parseInt(yInicialField.getText());
-            int aumento = Integer.parseInt(aumentoComboBox.getSelectedItem().toString().substring(1));
-            drawFiguraOriginal(xInicio, yInicio, aumento);
+            int zInicio = Integer.parseInt(ZInicialField.getText());
+            drawFiguraOriginal(xInicio, yInicio, zInicio);
         });
 
         escalarButton1.addActionListener(e -> realizarPrimeraEscalacion());
         escalarButton2.addActionListener(e -> realizarSegundaEscalacion());
     }
 
-    public void drawFiguraOriginal(int xInicio, int yInicio, int aumento) {
+    public void drawFiguraOriginal(int xInicio, int yInicio, int zInicio) {
         clearPlanoAndData();
-
         try {
+            // Define los puntos iniciales
+            Punto punto1 = new Punto(xInicio, yInicio, zInicio);        // P1
+            Punto punto2 = new Punto(xInicio + 4, yInicio, zInicio + 1); // P2
+            Punto punto3 = new Punto(xInicio + 4, yInicio, zInicio - 1); // P3
+            Punto punto4 = new Punto(xInicio, yInicio, zInicio - 2);    // P4
+            Punto punto5 = new Punto(xInicio, yInicio + 1, zInicio - 2); // P5
+            Punto punto6 = new Punto(xInicio + 3, yInicio, zInicio - 2); // P6
+            Punto punto7 = new Punto(xInicio + 3, yInicio, zInicio);    // P7
+            Punto punto8 = new Punto(xInicio - 1, yInicio, zInicio - 1); // P8
+
+            // Utiliza las referencias de los puntos ya creados para evitar duplicados
             Punto[] puntosArray = {
-                    new Punto(xInicio, yInicio),
-                    new Punto(xInicio, yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio)
+                    punto1, // P1
+                    punto2, // P2
+                    punto3, // P3
+                    punto4, // P4
+                    punto5, // P5
+                    punto6, // P6
+                    punto7, // P7
+                    punto8, // P8
+
+                    // Segunda parte (referencia a puntos existentes)
+                    punto1, // P1
+                    punto4, // P4
+                    punto5, // P5
+                    punto8, // P8
+                    punto7, // P7
+                    punto2, // P2
+                    punto3, // P3
+                    punto6  // P6
             };
 
             puntosList = Arrays.asList(puntosArray);
 
-            for (int i = 0; i < puntosList.size(); i++) {
+            // Asignar nombres a los puntos
+            for (int i = 0; i < 8; i++) {
                 puntosList.get(i).setNombrePunto("P" + (i + 1));
             }
 
-            Punto puntoAnterior = puntosList.get(0);
-            planoCartesiano.addPunto(puntoAnterior);
 
-            for (int i = 1; i < puntosList.size(); i++) {
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 8; i < puntosList.size(); i++) {
+                puntosList.get(i).setNombrePunto("P" + referencias[i - 8]);
+            }
+
+            // Dibuja la figura
+            Punto puntoAnterior = punto1;  // Punto de inicio
+            planoCartesiano.addPunto(punto1);  // Agrega el primer punto
+
+            for (int i = 0; i < puntosList.size(); i++) {
                 Punto punto = puntosList.get(i);
                 planoCartesiano.addPunto(punto);
-                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i));
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
                 puntoAnterior = punto;
             }
 
-            clearTableAll(1);
+            // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
+
             planoCartesiano.repaint();
+            updateLabels("0", "0", "0");
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
@@ -269,29 +289,73 @@ public class PolilineasEscalacionSuc extends JFrame {
 
     private void realizarPrimeraEscalacion() {
         scaledTableModel2.setRowCount(0);
+
+        planoCartesiano.clear();
+        int xInicio = Integer.parseInt(xInicialField.getText());
+        int yInicio = Integer.parseInt(yInicialField.getText());
+        int zInicio = Integer.parseInt(ZInicialField.getText());
+        drawFiguraOriginal(xInicio, yInicio, zInicio);
+
+
+
         try {
             sx1 = Integer.parseInt(sx1Field.getText());
             sy1 = Integer.parseInt(sy1Field.getText());
+            sz1 = Integer.parseInt(sz1Field.getText());
 
             if (puntosList == null || puntosList.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Primero debe generar la figura original");
                 return;
             }
 
-            puntosEscalados1List = new ArrayList<>();
-            for (Punto puntoOriginal : puntosList) {
+            // Crear un array de puntos escalados
+            Punto[] puntosEscaladosArray = new Punto[puntosList.size()];
+            for (int i = 0; i < 8; i++) {
+                Punto puntoOriginal = puntosList.get(i);
                 int nuevoX = puntoOriginal.getX() * sx1;
                 int nuevoY = puntoOriginal.getY() * sy1;
-                Punto puntoEscalado = new Punto(nuevoX, nuevoY);
+                int nuevoZ = puntoOriginal.getZ() * sz1;
+                Punto puntoEscalado = new Punto(nuevoX, nuevoY, nuevoZ);
                 puntoEscalado.setNombrePunto(puntoOriginal.getNombrePunto() + "'");
-                puntosEscalados1List.add(puntoEscalado);
+                puntosEscaladosArray[i] = puntoEscalado;
             }
 
-            clearTableAll(2);
-            dibujarFiguras();
+            // Agregar los puntos de referencia (segunda parte)
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 8; i < puntosList.size(); i++) {
+                Punto puntoOriginal = puntosList.get(i);
+                int nuevoX = puntoOriginal.getX() * sx1;
+                int nuevoY = puntoOriginal.getY() * sy1;
+                int nuevoZ = puntoOriginal.getZ() * sz1;
+                Punto puntoEscalado = new Punto(nuevoX, nuevoY, nuevoZ);
+                puntoEscalado.setNombrePunto("P" + referencias[i - 8] + "'");
+                puntosEscaladosArray[i] = puntoEscalado;
+            }
+
+            // Convertir a lista
+            puntosEscalados1List = Arrays.asList(puntosEscaladosArray);
+
+
+
+            // Dibujar la figura escalada
+            Punto puntoAnterior = puntosEscalados1List.get(0);  // Punto de inicio
+            planoCartesiano.addPunto(puntoAnterior);  // Agrega el primer punto
+
+            for (int i = 0; i < puntosEscalados1List.size(); i++) {
+                Punto punto = puntosEscalados1List.get(i);
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
+                puntoAnterior = punto;
+            }
+
+            // Limpiar y actualizar la tabla
+            clearTableAll(1);
             updateScaledTable1(puntosEscalados1List);
-            sx1Label.setText("Sx1: " + sx1);
-            sy1Label.setText("Sy1: " + sy1);
+
+            // Redibujar el plano
+            planoCartesiano.repaint();
+
+
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
@@ -299,64 +363,93 @@ public class PolilineasEscalacionSuc extends JFrame {
     }
 
     private void realizarSegundaEscalacion() {
+        scaledTableModel2.setRowCount(0);
+        limpiar();
         try {
             sx2 = Integer.parseInt(sx2Field.getText());
             sy2 = Integer.parseInt(sy2Field.getText());
+            sz2 = Integer.parseInt(sz2Field.getText()); // Agrego sz2 para ser consistente con la primera escalación
 
             if (puntosEscalados1List == null || puntosEscalados1List.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Primero debe realizar la primera escalación");
                 return;
             }
 
-            puntosEscalados2List = new ArrayList<>();
-            for (Punto puntoEscalado1 : puntosEscalados1List) {
+            // Crear un array de puntos escalados
+            Punto[] puntosEscalados2Array = new Punto[puntosEscalados1List.size()];
+            for (int i = 0; i < 8; i++) {
+                Punto puntoEscalado1 = puntosEscalados1List.get(i);
                 int nuevoX = puntoEscalado1.getX() * sx2;
                 int nuevoY = puntoEscalado1.getY() * sy2;
-                Punto puntoEscalado2 = new Punto(nuevoX, nuevoY);
+                int nuevoZ = puntoEscalado1.getZ() * sz2; // Escalar también la coordenada Z
+                Punto puntoEscalado2 = new Punto(nuevoX, nuevoY, nuevoZ);
                 puntoEscalado2.setNombrePunto(puntoEscalado1.getNombrePunto().replace("'", "") + "''");
-                puntosEscalados2List.add(puntoEscalado2);
+                puntosEscalados2Array[i] = puntoEscalado2;
             }
 
-            dibujarFiguras();
+            // Agregar los puntos de referencia (segunda parte)
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 8; i < puntosEscalados1List.size(); i++) {
+                Punto puntoEscalado1 = puntosEscalados1List.get(i);
+                int nuevoX = puntoEscalado1.getX() * sx2;
+                int nuevoY = puntoEscalado1.getY() * sy2;
+                int nuevoZ = puntoEscalado1.getZ() * sz2; // Escalar también la coordenada Z
+                Punto puntoEscalado2 = new Punto(nuevoX, nuevoY, nuevoZ);
+                puntoEscalado2.setNombrePunto("P" + referencias[i - 8] + "''");
+                puntosEscalados2Array[i] = puntoEscalado2;
+            }
+
+            // Convertir a lista
+            puntosEscalados2List = Arrays.asList(puntosEscalados2Array);
+
+            // Dibujar la figura escalada
+            Punto puntoAnterior = puntosEscalados2List.get(0);  // Punto de inicio
+            planoCartesiano.addPunto(puntoAnterior);  // Agrega el primer punto
+
+            for (int i = 0; i < puntosEscalados2List.size(); i++) {
+                Punto punto = puntosEscalados2List.get(i);
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
+                puntoAnterior = punto;
+            }
+
+            // Limpiar y actualizar la tabla
+            clearTableAll(2);
             updateScaledTable2(puntosEscalados2List);
-            sx2Label.setText("Sx2: " + sx2);
-            sy2Label.setText("Sy2: " + sy2);
+
+            // Redibujar el plano
+            planoCartesiano.repaint();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
     }
 
-    private void dibujarFiguras() {
-        planoCartesiano.clear();
+    private void limpiar() {
+        int xInicio = Integer.parseInt(xInicialField.getText());
+        int yInicio = Integer.parseInt(yInicialField.getText());
+        int zInicio = Integer.parseInt(ZInicialField.getText());
+        drawFiguraOriginal(xInicio, yInicio, zInicio);
 
-        // Dibujar figura original
-        dibujarFigura(puntosList, true);
-
-        // Dibujar primera escalación si existe
-        if (puntosEscalados1List != null && !puntosEscalados1List.isEmpty()) {
-            dibujarFigura(puntosEscalados1List, false);
-        }
-
-        // Dibujar segunda escalación si existe
-        if (puntosEscalados2List != null && !puntosEscalados2List.isEmpty()) {
-            dibujarFigura(puntosEscalados2List, false);
-        }
-
-        planoCartesiano.repaint();
-    }
-
-    private void dibujarFigura(List<Punto> puntos, boolean esOriginal) {
-        Punto puntoAnterior = puntos.get(0);
-        planoCartesiano.addPunto(puntoAnterior);
-
-        for (int i = 1; i < puntos.size(); i++) {
-            Punto punto = puntos.get(i);
-            planoCartesiano.addPunto(punto);
-            planoCartesiano.addLinea(new Linea(puntoAnterior, punto, esOriginal, i));
-            puntoAnterior = punto;
+        if (puntosList != null && !puntosList.isEmpty()) {
+            realizarPrimeraEscalacion();
         }
     }
+
+
+
+    private void updateLabels(String tx, String ty, String tz) {
+        // Actualizar la etiqueta de la tabla escalada
+        Component parent = scaledTable1.getParent().getParent().getParent();
+        if (parent instanceof JPanel) {
+            ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados " +
+                    "(Sx: "+tx+
+                    ", Sy: "+ty+
+                    ", Sz: "+tz+")");
+        }
+    }
+
+
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
@@ -364,7 +457,8 @@ public class PolilineasEscalacionSuc extends JFrame {
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
     }
@@ -375,10 +469,11 @@ public class PolilineasEscalacionSuc extends JFrame {
             scaledTableModel1.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
-        scaletedTable1Label.setText(String.format("Primera Escalación (Sx1: %d, Sy1: %d)", sx1, sy1));
+        scaletedTable1Label.setText(String.format("Primera Escalación (Sx1: %d, Sy1: %d, Sz1: %d)", sx1, sy1,sz1));
 
     }
 
@@ -388,18 +483,19 @@ public class PolilineasEscalacionSuc extends JFrame {
             scaledTableModel2.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ()
             });
         }
-        scaletedTable2Label.setText(String.format("Segunda Escalación (Sx2: %d, Sy2: %d)", sx2, sy2));
+        scaletedTable2Label.setText(String.format("Segunda Escalación (Sx2: %d, Sy2: %d, Sz2: %d)", sx2, sy2,sz2));
     }
 
     private void clearTableAll(int index) {
         if(index == 1){
-            scaletedTable1Label.setText("Primera Escalación (Sx1: 1, Sy1: 1)");
-            scaletedTable2Label.setText("Segunda Escalación (Sx2: 1, Sy2: 1)");
+            scaletedTable1Label.setText("Primera Escalación (Sx1: 1, Sy1: 1, Sz1: 1)");
+            scaletedTable2Label.setText("Segunda Escalación (Sx2: 1, Sy2: 1, Sz2: 1)");
         } else if (index == 2){
-            scaletedTable2Label.setText("Segunda Escalación (Sx2: 1, Sy2: 1)");
+            scaletedTable2Label.setText("Segunda Escalación (Sx2: 1, Sy2: 1, Sz2: 1)");
         }
     }
 
@@ -411,10 +507,6 @@ public class PolilineasEscalacionSuc extends JFrame {
         puntosList = null;
         puntosEscalados1List = null;
         puntosEscalados2List = null;
-        sx1Label.setText("Sx1: 1");
-        sy1Label.setText("Sy1: 1");
-        sx2Label.setText("Sx2: 1");
-        sy2Label.setText("Sy2: 1");
         planoCartesiano.repaint();
 
     }

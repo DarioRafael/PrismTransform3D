@@ -66,8 +66,7 @@ public class TransformacionesCompuestas extends JFrame {
             PolilineasTraslacionSuc frame = new PolilineasTraslacionSuc();
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
-            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), 1);
-            frame.aumentoComboBox.setSelectedIndex(0);
+            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
         });
 
         escalacionesBtn.addActionListener(e -> {
@@ -75,8 +74,8 @@ public class TransformacionesCompuestas extends JFrame {
             PolilineasEscalacionSuc frame = new PolilineasEscalacionSuc();
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
-            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), 1);
-            frame.aumentoComboBox.setSelectedIndex(0);
+            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
+
         });
 
         rotacionesBtn.addActionListener(e -> {

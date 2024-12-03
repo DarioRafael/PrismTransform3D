@@ -127,10 +127,10 @@ public class PortadaTransformaciones extends JFrame {
 
         // Imagen mucho más pequeña
         try {
-            ImageIcon figuraIcon = new ImageIcon(getClass().getResource("/images/figuraPolilineas.png"));
+            ImageIcon figuraIcon = new ImageIcon(getClass().getResource("/images/Figura3D.png"));
             Image figuraImg = figuraIcon.getImage();
             // Tamaño fijo pequeño para la imagen
-            int newWidth = 400; // Ancho fijo de 200px
+            int newWidth = 200; // Ancho fijo de 200px
             int newHeight = (newWidth * figuraIcon.getIconHeight()) / figuraIcon.getIconWidth();
 
             Image scaledImage = figuraImg.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);

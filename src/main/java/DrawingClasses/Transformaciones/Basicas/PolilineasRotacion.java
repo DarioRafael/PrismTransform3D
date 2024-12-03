@@ -58,8 +58,8 @@ public class PolilineasRotacion extends JFrame {
         rotarButton = new JButton("Rotar");
 
 
-        String[] aumentoOptions = {"Rotacion eje x", "Rotacion eje y", "Rotacion eje z"};
-        rotacionesComboBox = new JComboBox<>(aumentoOptions);
+        String[] rotacionComboLabels = {"Rotacion eje x", "Rotacion eje y", "Rotacion eje z"};
+        rotacionesComboBox = new JComboBox<>(rotacionComboLabels);
         rotacionesComboBox.setSelectedIndex(0); // Valor por defecto: x1
 
         String[] columnNames = {"Punto", "X", "Y", "Z"};
@@ -252,7 +252,7 @@ public class PolilineasRotacion extends JFrame {
     private void realizarRotacion() {
         try {
             double angulo = Math.toRadians(Double.parseDouble(anguloField.getText()));
-            anguloText = (int) angulo;
+            String ejeRotacion = (String) rotacionesComboBox.getSelectedItem();
 
             if (puntosList == null || puntosList.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Primero debe generar la figura original");
@@ -274,49 +274,58 @@ public class PolilineasRotacion extends JFrame {
 
             puntosRotadosList = new ArrayList<>();
 
-            // Calcular punto de referencia (primer punto)
-            Punto puntoReferencia = puntosList.get(0);
-            double xRef = puntoReferencia.getX();
-            double yRef = puntoReferencia.getY();
-
-            // Ajustar coordenadas según el cuadrante
-            double xAjustada = xRef;
-            double yAjustada = yRef;
-
-            // Primer cuadrante (x > 0, y > 0) -> Segundo cuadrante (-x, y)
-            if (xRef > 0 && yRef > 0) {
-                xAjustada = -Math.abs(xRef);
-                yAjustada = Math.abs(yRef);
-            }
-            // Segundo cuadrante (x < 0, y > 0) -> Tercer cuadrante (-x, -y)
-            else if (xRef < 0 && yRef > 0) {
-                xAjustada = -Math.abs(xRef);
-                yAjustada = -Math.abs(yRef);
-            }
-            // Tercer cuadrante (x < 0, y < 0) -> Cuarto cuadrante (x, -y)
-            else if (xRef < 0 && yRef < 0) {
-                xAjustada = Math.abs(xRef);
-                yAjustada = -Math.abs(yRef);
-            }
-            // Cuarto cuadrante (x > 0, y < 0) -> Primer cuadrante (x, y)
-            else if (xRef > 0 && yRef < 0) {
-                xAjustada = Math.abs(xRef);
-                yAjustada = Math.abs(yRef);
-            }
-
-            // Crear puntos rotados con coordenadas double
+            // Rotación según el eje seleccionado
             for (int i = 0; i < puntosList.size(); i++) {
                 Punto puntoOriginal = puntosList.get(i);
+                Punto puntoRotado;
 
-                double x = puntoOriginal.getX() - xRef;
-                double y = puntoOriginal.getY() - yRef;
+                switch (ejeRotacion) {
+                    case "Rotacion eje x":
+                        double yX = puntoOriginal.getY();
+                        double zX = puntoOriginal.getZ();
+                        puntoRotado = new Punto(
+                                puntoOriginal.getX(),
+                                (yX * Math.cos(angulo)) - (zX * Math.sin(angulo)),
+                                (yX * Math.sin(angulo)) + (zX * Math.cos(angulo))
+                        );
+                        break;
 
-                double newX = xAjustada + (x * Math.cos(angulo) - y * Math.sin(angulo));
-                double newY = yAjustada + (x * Math.sin(angulo) + y * Math.cos(angulo));
+                    case "Rotacion eje y":
+                        double xY = puntoOriginal.getX();
+                        double zY = puntoOriginal.getZ();
+                        puntoRotado = new Punto(
+                                xY * Math.cos(angulo) + zY * Math.sin(angulo),
+                                puntoOriginal.getY(),
+                                -xY * Math.sin(angulo) + zY * Math.cos(angulo)
+                        );
+                        break;
 
-                Punto puntoRotado = new Punto(newX, newY);
-                puntoRotado.setNombrePunto("P" + (i + 1) + "'");
+                    case "Rotacion eje z":
+                        double xZ = puntoOriginal.getX();
+                        double yZ = puntoOriginal.getY();
+                        puntoRotado = new Punto(
+                                Math.abs(xZ * Math.cos(angulo) - yZ * Math.sin(angulo)),
+                                Math.abs(xZ * Math.sin(angulo) + yZ * Math.cos(angulo)),
+                                puntoOriginal.getZ()
+                        );
+                        break;
+
+                    default:
+                        puntoRotado = puntoOriginal;
+                        break;
+                }
+
                 puntosRotadosList.add(puntoRotado);
+            }
+
+            // Asignar nombres a los puntos rotados usando el mismo patrón de referencias
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 0; i < puntosRotadosList.size(); i++) {
+                if (i < 8) {
+                    puntosRotadosList.get(i).setNombrePunto("P" + (i + 1) + "'");
+                } else {
+                    puntosRotadosList.get(i).setNombrePunto("P" + referencias[i - 8] + "'");
+                }
             }
 
             // Dibujar figura rotada
@@ -333,14 +342,13 @@ public class PolilineasRotacion extends JFrame {
 
             updateRotatedTable(puntosRotadosList);
             planoCartesiano.repaint();
-            anguloLabel.setText("θ: " + anguloField.getText() + " °");
 
-            // Actualizar la etiqueta de la tabla escalada
+            // Update label with angle and axis
             Component parent = rotatedTable.getParent().getParent().getParent();
             if (parent instanceof JPanel) {
-                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Rotados: " + "Ángulo de rotación: " + anguloField.getText() + "°");
+                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Rotados: " +
+                        "Ángulo de rotación (" + ejeRotacion + "): " + anguloField.getText() + "°");
             }
-
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el ángulo.");
