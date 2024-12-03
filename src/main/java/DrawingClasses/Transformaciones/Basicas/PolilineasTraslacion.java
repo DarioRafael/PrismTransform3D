@@ -59,8 +59,8 @@ public class PolilineasTraslacion extends JFrame {
         trasladarButton = new JButton("Trasladar");
 
 
-        String[] columnNames = {"Punto", "X", "Y", "Z"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Código"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'", "Código"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         translatedTableModel = new DefaultTableModel(columnNamesEdi, 0);
 
@@ -358,15 +358,19 @@ public class PolilineasTraslacion extends JFrame {
             });
         }
     }
-
+//        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true,true, true, false, true, false, true, false, true};
     private void updateTranslatedTable(List<Punto> puntos) {
         translatedTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {true, false, true, false, false, true, false, true};
+
         for (Punto punto : puntos) {
             translatedTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    puntosConCodigo[i] ? 1 : 0  // Asigna 1 o 0 según el arreglo
+
             });
         }
     }
