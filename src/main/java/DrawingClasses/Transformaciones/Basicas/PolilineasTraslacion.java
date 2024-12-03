@@ -122,7 +122,7 @@ public class PolilineasTraslacion extends JFrame {
         JPanel translatedTablePanel = new JPanel(new BorderLayout());
         translatedTablePanel.setBorder(BorderFactory.createEmptyBorder());
 
-        translatedTableLabel = new JLabel("Puntos Trasladados (Tx: 0, Ty: 0)", SwingConstants.CENTER);
+        translatedTableLabel = new JLabel("Puntos Trasladados (Tx: 0, Ty: 0, Tz: 0)", SwingConstants.CENTER);
         translatedTablePanel.add(translatedTableLabel, BorderLayout.NORTH);
 
         JScrollPane translatedScrollPane = new JScrollPane(translatedTable);
@@ -181,7 +181,6 @@ public class PolilineasTraslacion extends JFrame {
         });
 
 
-
         regenerarFigura.addActionListener(e -> {
             int xInicio = Integer.parseInt(xInicialField.getText());
             int yInicio = Integer.parseInt(yInicialField.getText());
@@ -194,45 +193,49 @@ public class PolilineasTraslacion extends JFrame {
 
     public void drawFiguraOriginal(int xInicio, int yInicio, int zInicio) {
         clearPlanoAndData();
-
         try {
             Punto puntoInicio = new Punto(xInicio, yInicio, zInicio);
 
             // Define los puntos de la figura
             Punto[] puntosArray = {
-                    new Punto(xInicio, yInicio, zInicio),
-                    new Punto(xInicio+4, yInicio, zInicio+1),
-                    new Punto(xInicio+4, yInicio, zInicio-1),
-                    new Punto(xInicio, yInicio, zInicio-2),
-                    new Punto(xInicio, yInicio+1, zInicio-2),
-                    new Punto(xInicio+3, yInicio, zInicio-2),
-                    new Punto(xInicio+3, yInicio, zInicio),
-                    new Punto(xInicio-1, yInicio, zInicio-1),
+                    new Punto(xInicio, yInicio, zInicio),        // P1
+                    new Punto(xInicio + 4, yInicio, zInicio + 1), // P2
+                    new Punto(xInicio + 4, yInicio, zInicio - 1), // P3
+                    new Punto(xInicio, yInicio, zInicio - 2),    // P4
+                    new Punto(xInicio, yInicio + 1, zInicio - 2), // P5
+                    new Punto(xInicio + 3, yInicio, zInicio - 2), // P6
+                    new Punto(xInicio + 3, yInicio, zInicio),    // P7
+                    new Punto(xInicio - 1, yInicio, zInicio - 1), // P8
 
-                    //CODIGO
-                    new Punto(xInicio, yInicio, zInicio),
-                    new Punto(xInicio, yInicio, zInicio-2),
-                    new Punto(xInicio, yInicio+1, zInicio-2),
-                    new Punto(xInicio-1, yInicio, zInicio-1),
-                    new Punto(xInicio+3, yInicio, zInicio),
-                    new Punto(xInicio+4, yInicio, zInicio+1),
-                    new Punto(xInicio+4, yInicio, zInicio-1),
-                    new Punto(xInicio+3, yInicio, zInicio-2),
-
+                    // Segunda parte (referencia a puntos existentes)
+                    new Punto(xInicio, yInicio, zInicio),        // P1
+                    new Punto(xInicio, yInicio, zInicio - 2),    // P4
+                    new Punto(xInicio, yInicio + 1, zInicio - 2), // P5
+                    new Punto(xInicio - 1, yInicio, zInicio - 1), // P8
+                    new Punto(xInicio + 3, yInicio, zInicio),    // P7
+                    new Punto(xInicio + 4, yInicio, zInicio + 1), // P2
+                    new Punto(xInicio + 4, yInicio, zInicio - 1), // P3
+                    new Punto(xInicio + 3, yInicio, zInicio - 2), // P6
             };
 
             puntosList = Arrays.asList(puntosArray);
 
-            // Asignar nombres a los puntos
+            // Asignar nombres a los puntos originales
             for (int i = 0; i < 8; i++) {
                 puntosList.get(i).setNombrePunto("P" + (i + 1));
+            }
+
+            // Asignar nombres a los puntos repetidos basándose en su referencia
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6}; // Secuencia específica
+            for (int i = 8; i < puntosList.size(); i++) {
+                puntosList.get(i).setNombrePunto("P" + referencias[i - 8]);
             }
 
             // Dibuja la figura
             Punto puntoAnterior = puntoInicio;
             planoCartesiano.addPunto(puntoInicio);
 
-            for (int i = 0; i < 16; i++) {
+            for (int i = 0; i < puntosList.size(); i++) {
                 Punto punto = puntosList.get(i);
                 planoCartesiano.addPunto(punto);
                 planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
@@ -243,10 +246,12 @@ public class PolilineasTraslacion extends JFrame {
             updateOriginalTable(puntosList);
 
             planoCartesiano.repaint();
+            updateLabels("0", "0", "0");
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
     }
+
 
     private void realizarTraslacion() {
         planoCartesiano.clear();
@@ -265,25 +270,29 @@ public class PolilineasTraslacion extends JFrame {
                 return;
             }
 
-
             // Crear y dibujar los puntos trasladados
             Punto[] puntosTrasladadosArray = new Punto[puntosList.size()];
 
             // Crear puntos trasladados con las nuevas coordenadas
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6}; // Secuencia específica para puntos repetidos
             for (int i = 0; i < puntosList.size(); i++) {
                 Punto puntoOriginal = puntosList.get(i);
-                Punto puntoTransladado = new Punto(
+                Punto puntoTrasladado = new Punto(
                         puntoOriginal.getX() + tx,  // Mover en X
                         puntoOriginal.getY() + ty,  // Mover en Y
                         puntoOriginal.getZ() + tz   // Mover en Z
                 );
 
-                // Solo poner nombres para los primeros 8 puntos
+                // Asignar nombres basados en los originales
                 if (i < 8) {
-                    puntoTransladado.setNombrePunto(puntoOriginal.getNombrePunto() + "'");
+                    // Nombres para los primeros 8 puntos
+                    puntoTrasladado.setNombrePunto(puntoOriginal.getNombrePunto() + "'");
+                } else {
+                    // Nombres para los puntos repetidos
+                    puntoTrasladado.setNombrePunto("P" + referencias[i - 8] + "'");
                 }
 
-                puntosTrasladadosArray[i] = puntoTransladado;
+                puntosTrasladadosArray[i] = puntoTrasladado;
             }
 
             // Convertir a lista
@@ -303,13 +312,27 @@ public class PolilineasTraslacion extends JFrame {
 
             // Actualiza la tabla de puntos trasladados
             updateTranslatedTable(puntosTrasladadosList);
-
             planoCartesiano.repaint();
 
-        } catch (NumberFormatException ex) {
+            updateLabels(txField.getText(), tyField.getText(), tzField.getText());
+
+        } catch (
+                NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
         }
     }
+
+    private void updateLabels(String tx, String ty, String tz) {
+        // Actualizar la etiqueta de la tabla escalada
+        Component parent = translatedTable.getParent().getParent().getParent();
+        if (parent instanceof JPanel) {
+            ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados " +
+                    "(Tx: "+tx+
+                    ", Ty: "+ty+
+                    ", Tz: "+tz+")");
+        }
+    }
+
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);

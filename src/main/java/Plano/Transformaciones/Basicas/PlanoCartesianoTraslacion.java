@@ -294,11 +294,9 @@ public class PlanoCartesianoTraslacion extends JPanel {
                     g2.setColor(COLOR_PUNTO_TRASLADADO2);
                 } else {
                     g2.setColor(COLOR_PUNTO_TRASLADADO);
-                    System.out.println("Punto trasladado");
                 }
             } else {
                 g2.setColor(COLOR_PUNTO_ORIGINAL);
-                System.out.println("Punto original");
             }
 
             // Dibujar el punto con desplazamiento X y Z

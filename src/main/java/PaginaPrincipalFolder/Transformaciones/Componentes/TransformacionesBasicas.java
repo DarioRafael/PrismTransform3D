@@ -49,8 +49,9 @@ public class TransformacionesBasicas extends JFrame {
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
             frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
-            frame.txField.setText("1");
-            frame.tyField.setText("2");
+            frame.txField.setText("-2");
+            frame.tyField.setText("-1");
+            frame.tzField.setText("1");
         });
 
         escalacionButton.addActionListener(e -> {
