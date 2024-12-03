@@ -35,8 +35,8 @@ public class PlanoCartesianoTraslacion extends JPanel {
     private static final Color COLOR_LINEA_TRASLADADO2 = Color.magenta;
 
     public PlanoCartesianoTraslacion() {
-        offsetX = -GRID_SIZE * 4; // Desplazar hacia la derecha
-        offsetY = GRID_SIZE * 4; // Desplazar hacia arriba
+        //offsetX = -GRID_SIZE * 4; // Desplazar hacia la derecha
+        //offsetY = -GRID_SIZE * 2; // Desplazar hacia arriba
         offsetZ = 0; // Inicializar desplazamiento en Z
         zoomFactor = 0.7; // Ajustar el zoom inicial a 0.8x
         setupMouseListeners();
