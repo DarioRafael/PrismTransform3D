@@ -304,8 +304,8 @@ public class PolilineasRotacion extends JFrame {
                         double xZ = puntoOriginal.getX();
                         double yZ = puntoOriginal.getY();
                         puntoRotado = new Punto(
-                                Math.abs(xZ * Math.cos(angulo) - yZ * Math.sin(angulo)),
-                                Math.abs(xZ * Math.sin(angulo) + yZ * Math.cos(angulo)),
+                                xZ * Math.cos(angulo) - yZ * Math.sin(angulo),
+                                xZ * Math.sin(angulo) + yZ * Math.cos(angulo),
                                 puntoOriginal.getZ()
                         );
                         break;

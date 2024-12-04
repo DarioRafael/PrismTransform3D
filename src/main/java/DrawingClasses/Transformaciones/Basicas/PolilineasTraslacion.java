@@ -369,7 +369,6 @@ public class PolilineasTraslacion extends JFrame {
                     punto.getX(),
                     punto.getY(),
                     punto.getZ(),
-                    puntosConCodigo[i] ? 1 : 0  // Asigna 1 o 0 según el arreglo
 
             });
         }
