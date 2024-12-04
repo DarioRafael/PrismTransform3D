@@ -27,7 +27,7 @@ public class PolilineasTraslacion extends JFrame {
     private JButton trasladarButton;
     private List<Punto> puntosList;
     private List<Punto> puntosTrasladadosList;
-    private JLabel translatedTableLabel;
+    private JLabel translatedTableLabel,titleLabel3;
 
     public PolilineasTraslacion() {
         setTitle("Transformaciones Geométricas 3D Básica: Traslación");
@@ -77,18 +77,24 @@ public class PolilineasTraslacion extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Traslación", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // Create a panel to hold the Menu and Formulas buttons
+        titleLabel3 = new JLabel("Traslación 3D (Tx: 0, Ty: 0, Tz: 0)", SwingConstants.CENTER);
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Create a panel to hold titleLabel2 and titleLabel3
+        JPanel titlePanel = new JPanel(new GridLayout(2, 1));
+        titlePanel.add(titleLabel2);
+        titlePanel.add(titleLabel3);
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(backButton);
         buttonPanel.add(formulaButton);
 
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
         topPanel.add(titleLabel1, BorderLayout.NORTH);
-        topPanel.add(titleLabel2, BorderLayout.CENTER);
-
+        topPanel.add(titlePanel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
         add(planoCartesiano, BorderLayout.CENTER);
 
@@ -252,7 +258,7 @@ public class PolilineasTraslacion extends JFrame {
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
-
+            titleLabel3.setText("Traslación 3D (Tx: 0, Ty: 0, Tz: 0)");
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
@@ -328,12 +334,19 @@ public class PolilineasTraslacion extends JFrame {
             planoCartesiano.repaint();
 
             updateLabels(txField.getText(), tyField.getText(), tzField.getText());
+            updateTitleLabel3();
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
         }
     }
 
+    private void updateTitleLabel3() {
+        String tx = txField.getText();
+        String ty = tyField.getText();
+        String tz = tzField.getText();
+        titleLabel3.setText("Traslación 3D (Tx: " + tx + ", Ty: " + ty + ", Tz: " + tz + ")");
+    }
     private void updateLabels(String tx, String ty, String tz) {
         // Actualizar la etiqueta de la tabla escalada
         Component parent = translatedTable.getParent().getParent().getParent();

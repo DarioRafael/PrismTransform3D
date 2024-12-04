@@ -36,6 +36,7 @@ public class PolilineasEscalacionSuc extends JFrame {
     private JLabel scaletedTable1Label;
     private JLabel scaletedTable2Label;
     private int sx1, sx2, sy1, sy2, sz1, sz2;
+    private JLabel titleLabel3, titleLabel4;
 
     public PolilineasEscalacionSuc() {
         setTitle("Transformaciones Geométricas 3D Compuestas: Escalación Sucesiva");
@@ -95,8 +96,20 @@ public class PolilineasEscalacionSuc extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Escalación Sucesiva", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
+
+        titleLabel3 = new JLabel("Escalación Sucesiva 3D: ", SwingConstants.CENTER);
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+
+        titleLabel4 = new JLabel("S1(Sx1: 0, Sy1: 0, Sz1: 0) ||| S2(Sx2: 0, Sy2: 0, Sz2: 0)", SwingConstants.CENTER);
+        titleLabel4.setFont(new Font("Arial", Font.BOLD, 16));
+
+
+        JPanel titlePanel = new JPanel(new GridLayout(3, 1));
+        titlePanel.add(titleLabel2);
+        titlePanel.add(titleLabel3);
+        titlePanel.add(titleLabel4);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(backButton);
@@ -104,7 +117,7 @@ public class PolilineasEscalacionSuc extends JFrame {
 
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
         topPanel.add(titleLabel1, BorderLayout.NORTH);
-        topPanel.add(titleLabel2, BorderLayout.CENTER);
+        topPanel.add(titlePanel, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
         add(planoCartesiano, BorderLayout.CENTER);
@@ -278,6 +291,7 @@ public class PolilineasEscalacionSuc extends JFrame {
 
             // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
+            titleLabel4.setText("S1(Sx1: " + 0 + ", Sy1: " + 0 + ", Sz1: " + 0 + ") ||| S2(Sx2: " + 0 + ", Sy2: " + 0 + ", Sz2: " + 0 + ")");
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
@@ -351,7 +365,7 @@ public class PolilineasEscalacionSuc extends JFrame {
             // Limpiar y actualizar la tabla
             clearTableAll(1);
             updateScaledTable1(puntosEscalados1List);
-
+            updateTitleLabelPrimera();
             // Redibujar el plano
             planoCartesiano.repaint();
 
@@ -416,7 +430,7 @@ public class PolilineasEscalacionSuc extends JFrame {
             // Limpiar y actualizar la tabla
             clearTableAll(2);
             updateScaledTable2(puntosEscalados2List);
-
+            updateTitleLabelSegunda();
             // Redibujar el plano
             planoCartesiano.repaint();
 
@@ -436,7 +450,21 @@ public class PolilineasEscalacionSuc extends JFrame {
         }
     }
 
-
+    private void updateTitleLabelPrimera() {
+        String sx1 = sx1Field.getText();
+        String sy1 = sy1Field.getText();
+        String sz1 = sz1Field.getText();
+        titleLabel4.setText("S1(Sx1: " + sx1 + ", Sy1: " + sy1 + ", Sz1: " + sz1 + ") ||| S2(Sx2: " + 0 + ", Sy2: " + 0 + ", Sz2: " + 0 + ")");
+    }
+    private void updateTitleLabelSegunda() {
+        String sx1 = sx1Field.getText();
+        String sy1 = sy1Field.getText();
+        String sz1 = sz1Field.getText();
+        String sx2 = sx2Field.getText();
+        String sy2 = sy2Field.getText();
+        String sz2 = sz2Field.getText();
+        titleLabel4.setText("S1(Sx1: " + sx1 + ", Sy1: " + sy1 + ", Sz1: " + sz1 + ") ||| S2(Sx2: " + sx2 + ", Sy2: " + sy2 + ", Sz2: " + sz2 + ")");
+    }
 
     private void updateLabels(String tx, String ty, String tz) {
         // Actualizar la etiqueta de la tabla escalada

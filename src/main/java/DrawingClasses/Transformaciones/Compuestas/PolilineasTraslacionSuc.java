@@ -43,6 +43,7 @@ public class PolilineasTraslacionSuc extends JFrame {
     public int tz2 = 0;
     private JLabel translatedTable1Label;
     private JLabel translatedTable2Label;
+    private JLabel titleLabel3, titleLabel4;
 
     public PolilineasTraslacionSuc() {
         setTitle("Transformaciones Geométricas 3D Compuestas: Traslacion Sucesiva");
@@ -107,8 +108,20 @@ public class PolilineasTraslacionSuc extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Traslación Sucesiva", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
+
+        titleLabel3 = new JLabel("Traslación Sucesiva 3D: ", SwingConstants.CENTER);
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+
+        titleLabel4 = new JLabel("T1(Tx1: 0, Ty1: 0, Tz1: 0) ||| T2(Tx2: 0, Ty2: 0, Tz2: 0)", SwingConstants.CENTER);
+        titleLabel4.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JPanel titlePanel = new JPanel(new GridLayout(3, 1));
+        titlePanel.add(titleLabel2);
+        titlePanel.add(titleLabel3);
+        titlePanel.add(titleLabel4);
+
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(backButton);
@@ -116,7 +129,7 @@ public class PolilineasTraslacionSuc extends JFrame {
 
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
         topPanel.add(titleLabel1, BorderLayout.NORTH);
-        topPanel.add(titleLabel2, BorderLayout.CENTER);
+        topPanel.add(titlePanel, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
         add(planoCartesiano, BorderLayout.CENTER);
@@ -300,7 +313,7 @@ public class PolilineasTraslacionSuc extends JFrame {
 
             updateLabels(tx1Field.getText(), ty1Field.getText(), tz1Field.getText());
             translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", 0, 0, 0));
-
+            updateTitleLabelPrimera();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
         }
@@ -376,7 +389,7 @@ public class PolilineasTraslacionSuc extends JFrame {
 
             // Actualizar las etiquetas con los valores de traslación
             translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", tx, ty, tz));
-
+            updateTitleLabelSegunda();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx2, Ty2 y Tz2");
         }
@@ -395,6 +408,21 @@ public class PolilineasTraslacionSuc extends JFrame {
         }
     }
 
+    private void updateTitleLabelPrimera() {
+        String tx1 = tx1Field.getText();
+        String ty1 = ty1Field.getText();
+        String tz1 = tz1Field.getText();
+        titleLabel4.setText("T1(Tx1: " + tx1 + ", Ty1: " + ty1 + ", Tz1: " + tz1 + ") ||| T2(Tx2: " + 0 + ", Ty2: " + 0 + ", Tz2: " + 0 + ")");
+    }
+    private void updateTitleLabelSegunda() {
+        String tx1 = tx1Field.getText();
+        String ty1 = ty1Field.getText();
+        String tz1 = tz1Field.getText();
+        String tx2 = tx2Field.getText();
+        String ty2 = ty2Field.getText();
+        String tz2 = tz2Field.getText();
+        titleLabel4.setText("T1(Tx1: " + tx1 + ", Ty1: " + ty1 + ", Tz1: " + tz1 + ") ||| T2(Tx2: " + tx2 + ", Ty2: " + ty2 + ", Tz2: " + tz2 + ")");
+    }
 
     public void drawFiguraOriginal(int xInicio, int yInicio, int zInicio) {
         clearPlanoAndData();
@@ -460,6 +488,7 @@ public class PolilineasTraslacionSuc extends JFrame {
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
+            titleLabel4.setText("T1(Tx1: " + 0 + ", Ty1: " + 0 + ", Tz1: " + 0 + ") ||| T2(Tx2: " + 0 + ", Ty2: " + 0 + ", Tz2: " + 0 + ")");
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");

@@ -23,7 +23,7 @@ public class PolilineasEscalacion extends JFrame {
     private JButton backButton, formulaButton;
     private JTextField xInicialField, yInicialField, ZInicialField;
     public JTextField sxField, syField, szField;
-    private JLabel sxLabel;
+    private JLabel sxLabel,titleLabel3;
     private JLabel syLabel;
     public JComboBox<String> aumentoComboBox;
     private JButton regenerarFigura;
@@ -80,8 +80,15 @@ public class PolilineasEscalacion extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Escalación", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
+
+        titleLabel3 = new JLabel("Escalación 3D (Sx: 0, Sy: 0, Sz: 0)", SwingConstants.CENTER);
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JPanel titlePanel = new JPanel(new GridLayout(2, 1));
+        titlePanel.add(titleLabel2);
+        titlePanel.add(titleLabel3);
 
         // Create a panel to hold the Menu and Formulas buttons
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -90,7 +97,7 @@ public class PolilineasEscalacion extends JFrame {
 
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
         topPanel.add(titleLabel1, BorderLayout.NORTH);
-        topPanel.add(titleLabel2, BorderLayout.CENTER);
+        topPanel.add(titlePanel, BorderLayout.CENTER);
 
 
         add(topPanel, BorderLayout.NORTH);
@@ -245,7 +252,7 @@ public class PolilineasEscalacion extends JFrame {
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
-
+            titleLabel3.setText("Escalación 3D (Sx: 0, Sy: 0, Sz: 0)");
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
@@ -320,12 +327,18 @@ public class PolilineasEscalacion extends JFrame {
             planoCartesiano.repaint();
 
             updateLabels(sxField.getText(), syField.getText(), szField.getText());
-
+            updateTitleLabel3();
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos para Tx, Ty y Tz");
         }
     }
-
+    // Define a method to update the text of titleLabel3
+    private void updateTitleLabel3() {
+        String sx = sxField.getText();
+        String sy = syField.getText();
+        String sz = szField.getText();
+        titleLabel3.setText("Escalación 3D (Sx: " + sx + ", Sy: " + sy + ", Sz: " + sz + ")");
+    }
 
     private void updateLabels(String sx, String sy, String sz) {
         // Actualizar la etiqueta de la tabla escalada

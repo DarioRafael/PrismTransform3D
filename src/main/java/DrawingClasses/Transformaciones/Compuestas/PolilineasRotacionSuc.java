@@ -36,8 +36,10 @@ public class PolilineasRotacionSuc extends JFrame {
     private boolean primeraRotacionCompletada = false;
     private JLabel rotationTable1Label;
     private JLabel rotationTable2Label;
+    private JLabel titleLabel3, titleLabel4;
     double primerAngulo;
     double segundoAngulo;
+    private String  ejeRotadoLabel = "x",ejeRotadoLabel2 = "x";
 
     public PolilineasRotacionSuc() {
         setTitle("Transformaciones Geométricas 2D Compuestas: Rotaciones Sucesivas");
@@ -71,7 +73,7 @@ public class PolilineasRotacionSuc extends JFrame {
         segundaRotacionButton = new JButton("Rotar");
         segundaRotacionButton.setEnabled(false);
 
-        String[] rotacionComboLabels = {"Rotacion eje x", "Rotacion eje y", "Rotacion eje z"};
+        String[] rotacionComboLabels = {"sobre el eje x", "sobre el eje y", "sobre el eje z"};
         rotacionesComboBox = new JComboBox<>(rotacionComboLabels);
         rotacionesComboBox.setSelectedIndex(0);
 
@@ -107,8 +109,19 @@ public class PolilineasRotacionSuc extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Rotación Sucesiva", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
+
+        titleLabel3 = new JLabel("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotadoLabel+"(" + 0 + "°) ", SwingConstants.CENTER);
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+
+        titleLabel4 = new JLabel("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotadoLabel2+"(" + 0 + "°) ", SwingConstants.CENTER);
+        titleLabel4.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JPanel titlePanel = new JPanel(new GridLayout(3, 1));
+        titlePanel.add(titleLabel2);
+        titlePanel.add(titleLabel3);
+        titlePanel.add(titleLabel4);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(backButton);
@@ -116,7 +129,7 @@ public class PolilineasRotacionSuc extends JFrame {
 
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
         topPanel.add(titleLabel1, BorderLayout.NORTH);
-        topPanel.add(titleLabel2, BorderLayout.CENTER);
+        topPanel.add(titlePanel, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -253,7 +266,8 @@ public class PolilineasRotacionSuc extends JFrame {
                 Punto puntoRotado;
 
                 switch (ejeRotacion) {
-                    case "Rotacion eje x":
+                    case "sobre el eje x":
+                        ejeRotadoLabel = "x";
                         double yX = puntoOriginal.getY();
                         double zX = puntoOriginal.getZ();
                         puntoRotado = new Punto(
@@ -263,7 +277,8 @@ public class PolilineasRotacionSuc extends JFrame {
                         );
                         break;
 
-                    case "Rotacion eje y":
+                    case "sobre el eje y":
+                        ejeRotadoLabel= "y";
                         double xY = puntoOriginal.getX();
                         double zY = puntoOriginal.getZ();
                         puntoRotado = new Punto(
@@ -273,7 +288,8 @@ public class PolilineasRotacionSuc extends JFrame {
                         );
                         break;
 
-                    case "Rotacion eje z":
+                    case "sobre el eje z":
+                        ejeRotadoLabel = "z";
                         double xZ = puntoOriginal.getX();
                         double yZ = puntoOriginal.getY();
                         puntoRotado = new Punto(
@@ -314,6 +330,7 @@ public class PolilineasRotacionSuc extends JFrame {
             }
 
             updateRotatedTable(primeraRotacionList);
+            updateTitleLabePrimera();
             planoCartesiano.repaint();
 
             // Update label with angle and axis
@@ -362,7 +379,8 @@ public class PolilineasRotacionSuc extends JFrame {
                 Punto puntoRotado;
 
                 switch (ejeRotacion) {
-                    case "Rotacion eje x":
+                    case "sobre el eje x":
+                        ejeRotadoLabel2 = "x";
                         double yX = puntoOriginal.getY();
                         double zX = puntoOriginal.getZ();
                         puntoRotado = new Punto(
@@ -372,7 +390,8 @@ public class PolilineasRotacionSuc extends JFrame {
                         );
                         break;
 
-                    case "Rotacion eje y":
+                    case "soobre el eje y":
+                        ejeRotadoLabel2 = "y";
                         double xY = puntoOriginal.getX();
                         double zY = puntoOriginal.getZ();
                         puntoRotado = new Punto(
@@ -382,7 +401,8 @@ public class PolilineasRotacionSuc extends JFrame {
                         );
                         break;
 
-                    case "Rotacion eje z":
+                    case "sobre el eje z":
+                        ejeRotadoLabel2 = "z";
                         double xZ = puntoOriginal.getX();
                         double yZ = puntoOriginal.getY();
                         puntoRotado = new Punto(
@@ -423,6 +443,7 @@ public class PolilineasRotacionSuc extends JFrame {
             }
 
             updateRotatedTable2(segundaRotacionList);
+            updateTitleLabelSegunda();
             planoCartesiano.repaint();
 
             // Update label with angle and axis
@@ -501,7 +522,8 @@ public class PolilineasRotacionSuc extends JFrame {
 
             // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
-
+            titleLabel3.setText("Rotación 3D " + (String) rotacionesComboBox.getSelectedItem() + ": R" + ejeRotadoLabel + "(" + 0 + "°) ");
+            titleLabel4.setText("Rotación 3D " + (String) rotacionesComboBox2.getSelectedItem() + ": R" + ejeRotadoLabel2 + "(" + 0 + "°) ");
             planoCartesiano.repaint();
 
         } catch (NumberFormatException ex) {
@@ -509,7 +531,23 @@ public class PolilineasRotacionSuc extends JFrame {
         }
     }
 
+    private void updateTitleLabePrimera() {
+        String angulo = primerAnguloField.getText();
+        String ejeRotacion = (String) rotacionesComboBox.getSelectedItem();
+        titleLabel3.setText("Rotación 3D " + ejeRotacion + ": R" + ejeRotadoLabel + "(" + angulo + "°) ");
+        titleLabel4.setText("Rotación 3D " + (String) rotacionesComboBox2.getSelectedItem() + ": R" + ejeRotadoLabel2 + "(" + 0 + "°) ");
 
+    }
+
+    private void updateTitleLabelSegunda() {
+        String angulo = primerAnguloField.getText();
+        String ejeRotacion = (String) rotacionesComboBox.getSelectedItem();
+        String angulo2 = segundoAnguloField.getText();
+        String ejeRotacion2 = (String) rotacionesComboBox2.getSelectedItem();
+
+        titleLabel3.setText("Rotación 3D " + ejeRotacion + ": R" + ejeRotadoLabel + "(" + angulo + "°) ");
+        titleLabel4.setText("Rotación 3D " + ejeRotacion2 + ": R" + ejeRotadoLabel2 + "(" + angulo2 + "°) ");
+    }
 
     private void clearPlanoAndData() {
         planoCartesiano.clear();

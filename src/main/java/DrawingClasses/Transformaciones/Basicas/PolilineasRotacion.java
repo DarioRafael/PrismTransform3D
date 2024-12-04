@@ -22,13 +22,14 @@ public class PolilineasRotacion extends JFrame {
     private JButton backButton, formulaButton;
     private JTextField xInicialField, yInicialField, ZInicialField;
     public JTextField anguloField;
-    private JLabel anguloLabel;
+    private JLabel anguloLabel,titleLabel3;
     private JButton regenerarFigura;
     private JButton rotarButton;
     private List<Punto> puntosList;
     private List<Punto> puntosRotadosList;
     public JComboBox<String> rotacionesComboBox;
     public int anguloText = 0;
+    public String ejeRotacionLabel = "x";
 
     public PolilineasRotacion() {
         setTitle("Transformaciones Geométricas 3D Básica: Rotacion");
@@ -58,7 +59,7 @@ public class PolilineasRotacion extends JFrame {
         rotarButton = new JButton("Rotar");
 
 
-        String[] rotacionComboLabels = {"Rotacion eje x", "Rotacion eje y", "Rotacion eje z"};
+        String[] rotacionComboLabels = {"sobre el eje x", "sobre el eje y", "sobre el eje z"};
         rotacionesComboBox = new JComboBox<>(rotacionComboLabels);
         rotacionesComboBox.setSelectedIndex(0); // Valor por defecto: x1
 
@@ -80,17 +81,24 @@ public class PolilineasRotacion extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Rotación", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // Create a panel to hold the Menu and Formulas buttons
+        titleLabel3 = new JLabel("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotacionLabel+"(" + 0 + "°) ", SwingConstants.CENTER);
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+
+        JPanel titlePanel = new JPanel(new GridLayout(2, 1));
+        titlePanel.add(titleLabel2);
+        titlePanel.add(titleLabel3);
+
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel.add(backButton);
         buttonPanel.add(formulaButton);
 
         topPanel.add(buttonPanel, BorderLayout.SOUTH);
         topPanel.add(titleLabel1, BorderLayout.NORTH);
-        topPanel.add(titleLabel2, BorderLayout.CENTER);
+        topPanel.add(titlePanel, BorderLayout.CENTER);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -243,6 +251,7 @@ public class PolilineasRotacion extends JFrame {
 
             planoCartesiano.repaint();
             updateLabels("0");
+            titleLabel3.setText("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotacionLabel+"(" + 0 + "°) ");
 
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
@@ -280,7 +289,8 @@ public class PolilineasRotacion extends JFrame {
                 Punto puntoRotado;
 
                 switch (ejeRotacion) {
-                    case "Rotacion eje x":
+                    case "sobre el eje x":
+                        ejeRotacionLabel = "x";
                         double yX = puntoOriginal.getY();
                         double zX = puntoOriginal.getZ();
                         puntoRotado = new Punto(
@@ -290,7 +300,8 @@ public class PolilineasRotacion extends JFrame {
                         );
                         break;
 
-                    case "Rotacion eje y":
+                    case "sobre el eje y":
+                        ejeRotacionLabel = "y";
                         double xY = puntoOriginal.getX();
                         double zY = puntoOriginal.getZ();
                         puntoRotado = new Punto(
@@ -300,7 +311,8 @@ public class PolilineasRotacion extends JFrame {
                         );
                         break;
 
-                    case "Rotacion eje z":
+                    case "sobre el eje z":
+                        ejeRotacionLabel = "z";
                         double xZ = puntoOriginal.getX();
                         double yZ = puntoOriginal.getY();
                         puntoRotado = new Punto(
@@ -341,6 +353,7 @@ public class PolilineasRotacion extends JFrame {
             }
 
             updateRotatedTable(puntosRotadosList);
+            updateTitleLabel3();
             planoCartesiano.repaint();
 
             // Update label with angle and axis
@@ -353,6 +366,12 @@ public class PolilineasRotacion extends JFrame {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el ángulo.");
         }
+    }
+    // Define a method to update the text of titleLabel3
+    private void updateTitleLabel3() {
+        String angulo = anguloField.getText();
+        String ejeRotacion = (String) rotacionesComboBox.getSelectedItem();
+        titleLabel3.setText("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotacionLabel+"(" + angulo + "°) ");
     }
 
     private void updateLabels(String r) {
