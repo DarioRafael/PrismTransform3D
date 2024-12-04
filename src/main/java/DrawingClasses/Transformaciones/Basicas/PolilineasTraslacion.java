@@ -59,8 +59,8 @@ public class PolilineasTraslacion extends JFrame {
         trasladarButton = new JButton("Trasladar");
 
 
-        String[] columnNames = {"Punto", "X", "Y", "Z", "Código"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'", "Código"};
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Cod"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'", "Cod"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         translatedTableModel = new DefaultTableModel(columnNamesEdi, 0);
 
@@ -94,7 +94,7 @@ public class PolilineasTraslacion extends JFrame {
 
         // Right Panel with tables and controls
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(250, getHeight()));
+        rightPanel.setPreferredSize(new Dimension(0, getHeight()));
 
         JScrollPane rightScrollPane = new JScrollPane(rightPanel);
         rightScrollPane.setPreferredSize(new Dimension(250, getHeight()));
@@ -259,7 +259,6 @@ public class PolilineasTraslacion extends JFrame {
     }
 
 
-
     private void realizarTraslacion() {
 
         if (puntosList == null || puntosList.isEmpty()) {
@@ -340,37 +339,47 @@ public class PolilineasTraslacion extends JFrame {
         Component parent = translatedTable.getParent().getParent().getParent();
         if (parent instanceof JPanel) {
             ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Trasladados " +
-                    "(Tx: "+tx+
-                    ", Ty: "+ty+
-                    ", Tz: "+tz+")");
+                    "(Tx: " + tx +
+                    ", Ty: " + ty +
+                    ", Tz: " + tz + ")");
         }
     }
 
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
     }
-//        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true,true, true, false, true, false, true, false, true};
+
+    //        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true,true, true, false, true, false, true, false, true};
     private void updateTranslatedTable(List<Punto> puntos) {
         translatedTableModel.setRowCount(0);
-        boolean[] puntosConCodigo = {true, false, true, false, false, true, false, true};
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
 
+        int i = 0;
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
             translatedTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
                     punto.getZ(),
-
+                    cod
             });
+            i++;
         }
     }
 

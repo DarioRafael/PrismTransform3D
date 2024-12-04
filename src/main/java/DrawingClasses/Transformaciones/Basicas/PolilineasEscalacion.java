@@ -64,8 +64,8 @@ public class PolilineasEscalacion extends JFrame {
         escalarButton = new JButton("Escalar");
 
 
-        String[] columnNames = {"Punto", "X", "Y", "Z"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Cod"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'", "Cod"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         scaledTableModel = new DefaultTableModel(columnNamesEdi, 0);
 
@@ -97,7 +97,7 @@ public class PolilineasEscalacion extends JFrame {
         add(planoCartesiano, BorderLayout.CENTER);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido
+        rightPanel.setPreferredSize(new Dimension(0, getHeight())); // Ajusta el tamaño preferido
 
         JScrollPane rightScrollPane = new JScrollPane(rightPanel);
         rightScrollPane.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido del JScrollPane
@@ -332,30 +332,40 @@ public class PolilineasEscalacion extends JFrame {
         Component parent = scaledTable.getParent().getParent().getParent();
         if (parent instanceof JPanel) {
             ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Escalados " +
-                    "(Sx: "+sx+
-                    ", Sy: "+sy+
-                    ", Sz: "+sz+")");
+                    "(Sx: " + sx +
+                    ", Sy: " + sy +
+                    ", Sz: " + sz + ")");
         }
     }
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
         for (Punto punto : puntos) {
-            originalTableModel.addRow(new Object[]{punto.getNombrePunto(), punto.getX(), punto.getY(), punto.getZ()});
+            int cod = puntosConCodigo[i] ? 1 : 0;
+            originalTableModel.addRow(new Object[]{punto.getNombrePunto(), punto.getX(), punto.getY(), punto.getZ(),
+                    cod});
+            i++;
         }
     }
 
     private void updateScaledTable(List<Punto> puntosEscalados) {
         scaledTableModel.setRowCount(0);
-        int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6}; // Orden específico
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
 
-        for (int i = 0; i < puntosEscalados.size(); i++) {
-            Punto puntoEscalado = puntosEscalados.get(i);
-            if (i < 8) {
-                scaledTableModel.addRow(new Object[]{"P" + referencias[i] + "'", puntoEscalado.getX(), puntoEscalado.getY(), puntoEscalado.getZ()});
-            } else {
-                scaledTableModel.addRow(new Object[]{"P" + referencias[i - 8] + "'", puntoEscalado.getX(), puntoEscalado.getY(), puntoEscalado.getZ()});
-            }
+        int i = 0;
+        for (Punto punto : puntosEscalados) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+            scaledTableModel.addRow(new Object[]{
+                    punto.getNombrePunto(),
+                    punto.getX(),
+                    punto.getY(),
+                    punto.getZ(),
+                    cod
+            });
+            i++;
         }
     }
 

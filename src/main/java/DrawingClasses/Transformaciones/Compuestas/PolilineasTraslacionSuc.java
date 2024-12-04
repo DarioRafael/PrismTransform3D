@@ -86,9 +86,9 @@ public class PolilineasTraslacionSuc extends JFrame {
         aumentoComboBox = new JComboBox<>(aumentoOptions);
         aumentoComboBox.setSelectedIndex(0);
 
-        String[] columnNames = {"Punto", "X", "Y", "Z"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
-        String[] columnNamesEdi2 = {"P''", "X''", "Y''", "Z''"};
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Cod"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'", "Cod"};
+        String[] columnNamesEdi2 = {"P''", "X''", "Y''", "Z''","Cod"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         translatedTableModel1 = new DefaultTableModel(columnNamesEdi, 0);
         translatedTableModel2 = new DefaultTableModel(columnNamesEdi2, 0);
@@ -123,10 +123,10 @@ public class PolilineasTraslacionSuc extends JFrame {
 
         // Panel derecho con tablas y controles
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido
+        rightPanel.setPreferredSize(new Dimension(0, getHeight())); // Ajusta el tamaño preferido
 
         JScrollPane rightScrollPane = new JScrollPane(rightPanel);
-        rightScrollPane.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido del JScrollPane
+        rightScrollPane.setPreferredSize(new Dimension(270, getHeight())); // Ajusta el tamaño preferido del JScrollPane
 
 
         // Panel para las tres tablas
@@ -382,32 +382,7 @@ public class PolilineasTraslacionSuc extends JFrame {
         }
     }
     // Modify the updateTranslatedTable2 method to include Z coordinate
-    private void updateTranslatedTable2(List<Punto> puntos) {
-        translatedTableModel2.setRowCount(0);
-        for (Punto punto : puntos) {
-            translatedTableModel2.addRow(new Object[]{
-                    punto.getNombrePunto(),
-                    punto.getX(),
-                    punto.getY(),
-                    punto.getZ()
-            });
-        }
-        translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", tx2, ty2, tz2));
-    }
 
-
-    private void updateTranslatedTable1(List<Punto> puntos) {
-        translatedTableModel1.setRowCount(0);
-        for (Punto punto : puntos) {
-            translatedTableModel1.addRow(new Object[]{
-                    punto.getNombrePunto(),
-                    punto.getX(),
-                    punto.getY(),
-                    punto.getZ()
-            });
-        }
-        translatedTable1Label.setText(String.format("Primera Traslación (Tx1: %d, Ty1: %d)", tx1, ty1));
-    }
 
     private void limpiar() {
         int xInicio = Integer.parseInt(xInicialField.getText());
@@ -514,14 +489,58 @@ public class PolilineasTraslacionSuc extends JFrame {
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
+    }
+    private void updateTranslatedTable2(List<Punto> puntos) {
+        translatedTableModel2.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
+        for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+            translatedTableModel2.addRow(new Object[]{
+                    punto.getNombrePunto(),
+                    punto.getX(),
+                    punto.getY(),
+                    punto.getZ(),
+                    cod
+            });
+            i++;
+        }
+        translatedTable2Label.setText(String.format("Segunda Traslación (Tx2: %d, Ty2: %d, Tz2: %d)", tx2, ty2, tz2));
+    }
+
+
+    private void updateTranslatedTable1(List<Punto> puntos) {
+        translatedTableModel1.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
+        for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+            translatedTableModel1.addRow(new Object[]{
+                    punto.getNombrePunto(),
+                    punto.getX(),
+                    punto.getY(),
+                    punto.getZ(),
+                    cod
+            });
+            i++;
+        }
+        translatedTable1Label.setText(String.format("Primera Traslación (Tx1: %d, Ty1: %d)", tx1, ty1));
     }
 
     private void clearTableAll(int index) {

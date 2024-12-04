@@ -75,9 +75,9 @@ public class PolilineasEscalacionSuc extends JFrame {
         escalarButton2 = new JButton("Escalar");
 
 
-        String[] columnNames = {"Punto", "X", "Y", "Z"};
-        String[] columnNames1 = {"P'", "X'", "Y'", "Z'"};
-        String[] columnNames2 = {"P''", "X''", "Y''", "Z''"};
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Cod"};
+        String[] columnNames1 = {"P'", "X'", "Y'", "Z'", "Cod"};
+        String[] columnNames2 = {"P''", "X''", "Y''", "Z''","Cod"};
         originalTableModel = new DefaultTableModel(columnNames, 0);
         scaledTableModel1 = new DefaultTableModel(columnNames1, 0);
         scaledTableModel2 = new DefaultTableModel(columnNames2, 0);
@@ -111,11 +111,11 @@ public class PolilineasEscalacionSuc extends JFrame {
 
         // Panel derecho con tablas y controles
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido
+        rightPanel.setPreferredSize(new Dimension(0, getHeight())); // Ajusta el tamaño preferido
 
 
         JScrollPane rightScrollPane = new JScrollPane(rightPanel);
-        rightScrollPane.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido del JScrollPane
+        rightScrollPane.setPreferredSize(new Dimension(270, getHeight())); // Ajusta el tamaño preferido del JScrollPane
 
 
 
@@ -453,25 +453,39 @@ public class PolilineasEscalacionSuc extends JFrame {
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+        int i = 0;
+
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
     }
 
     private void updateScaledTable1(List<Punto> puntos) {
         scaledTableModel1.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+        int i = 0;
+
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+
             scaledTableModel1.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
         scaletedTable1Label.setText(String.format("Primera Escalación (Sx1: %d, Sy1: %d, Sz1: %d)", sx1, sy1,sz1));
 
@@ -479,13 +493,20 @@ public class PolilineasEscalacionSuc extends JFrame {
 
     private void updateScaledTable2(List<Punto> puntos) {
         scaledTableModel2.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+        int i = 0;
+
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+
             scaledTableModel2.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
         scaletedTable2Label.setText(String.format("Segunda Escalación (Sx2: %d, Sy2: %d, Sz2: %d)", sx2, sy2,sz2));
     }

@@ -62,8 +62,8 @@ public class PolilineasRotacion extends JFrame {
         rotacionesComboBox = new JComboBox<>(rotacionComboLabels);
         rotacionesComboBox.setSelectedIndex(0); // Valor por defecto: x1
 
-        String[] columnNames = {"Punto", "X", "Y", "Z"};
-        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'"};
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Cod"};
+        String[] columnNamesEdi = {"P'", "X'", "Y'", "Z'", "Cod"};
 
         originalTableModel = new DefaultTableModel(columnNames, 0);
         rotatedTableModel = new DefaultTableModel(columnNamesEdi, 0);
@@ -97,7 +97,7 @@ public class PolilineasRotacion extends JFrame {
         add(planoCartesiano, BorderLayout.CENTER);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(270, getHeight())); // Ajusta el tamaño preferido
+        rightPanel.setPreferredSize(new Dimension(0, getHeight())); // Ajusta el tamaño preferido
 
         JScrollPane rightScrollPane = new JScrollPane(rightPanel);
         rightScrollPane.setPreferredSize(new Dimension(270, getHeight())); // Ajusta el tamaño preferido del JScrollPane
@@ -372,25 +372,37 @@ public class PolilineasRotacion extends JFrame {
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
                     punto.getY(),
-                    punto.getZ()
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
     }
 
     private void updateRotatedTable(List<Punto> puntos) {
         rotatedTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+
+        int i = 0;
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
             rotatedTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     String.format("%.2f", punto.getX()),
                     String.format("%.2f", punto.getY()),
-                    String.format("%.2f", punto.getZ())
+                    String.format("%.2f", punto.getZ()),
+                    cod
             });
+            i++;
         }
     }
 
