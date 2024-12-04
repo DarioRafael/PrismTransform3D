@@ -83,8 +83,7 @@ public class TransformacionesCompuestas extends JFrame {
             PolilineasRotacionSuc frame = new PolilineasRotacionSuc();
             frame.setSize(ajustesVentana.getWindowSize());
             frame.setLocationRelativeTo(null);
-            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), 1);
-            frame.aumentoComboBox.setSelectedIndex(0);
+            frame.drawFiguraOriginal(ajustesVariables.getX(), ajustesVariables.getY(), ajustesVariables.getZ());
         });
 
         // Agregar los botones al panel

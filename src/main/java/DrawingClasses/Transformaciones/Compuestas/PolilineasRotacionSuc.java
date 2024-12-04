@@ -2,7 +2,6 @@ package DrawingClasses.Transformaciones.Compuestas;
 
 import PaginaPrincipalFolder.Transformaciones.Componentes.TransformacionesCompuestas;
 import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.FormulaRotacionSuc;
-import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.FormulaTraslacionSuc;
 import Plano.Transformaciones.Basicas.PlanoCartesianoRotacion;
 import formasADibujar.Rotacion.Linea;
 import formasADibujar.Rotacion.Punto;
@@ -20,21 +19,18 @@ public class PolilineasRotacionSuc extends JFrame {
     private JTable firstRotationTable;
     private JTable secondRotationTable;
     private DefaultTableModel originalTableModel;
-    private DefaultTableModel firstRotationTableModel;
-    private DefaultTableModel secondRotationTableModel;
+    private DefaultTableModel rotatedTableModel;
+    private DefaultTableModel rotatedTableModel2;
     private JButton backButton, formulaButton;
-    private JTextField xInicialField;
-    private JTextField yInicialField;
+    private JTextField xInicialField, yInicialField, ZInicialField;
     private JTextField primerAnguloField;
     private JTextField segundoAnguloField;
-    private JLabel primerAnguloLabel;
-    private JLabel segundoAnguloLabel;
     private JButton regenerarFigura;
     private JButton rotarButton;
     private List<Punto> puntosList;
     private List<Punto> primeraRotacionList;
     private List<Punto> segundaRotacionList;
-    public JComboBox<String> aumentoComboBox;
+    public JComboBox<String> rotacionesComboBox, rotacionesComboBox2;
     private JButton primerRotacionButton;
     private JButton segundaRotacionButton;
     private boolean primeraRotacionCompletada = false;
@@ -59,8 +55,11 @@ public class PolilineasRotacionSuc extends JFrame {
         planoCartesiano = new PlanoCartesianoRotacion();
         planoCartesiano.setPreferredSize(new Dimension(600, 400));
 
-        xInicialField = new JTextField("1", 5);
-        yInicialField = new JTextField("1", 5);
+        xInicialField = new JTextField("2", 5);
+        yInicialField = new JTextField("0", 5);
+        ZInicialField = new JTextField("1", 5);
+
+
         primerAnguloField = new JTextField("90", 5);
         segundoAnguloField = new JTextField("90", 5);
 
@@ -72,21 +71,24 @@ public class PolilineasRotacionSuc extends JFrame {
         segundaRotacionButton = new JButton("Rotar");
         segundaRotacionButton.setEnabled(false);
 
-        String[] aumentoOptions = {"x1", "x2", "x4", "x8", "x16"};
-        aumentoComboBox = new JComboBox<>(aumentoOptions);
-        aumentoComboBox.setSelectedIndex(0);
+        String[] rotacionComboLabels = {"Rotacion eje x", "Rotacion eje y", "Rotacion eje z"};
+        rotacionesComboBox = new JComboBox<>(rotacionComboLabels);
+        rotacionesComboBox.setSelectedIndex(0);
 
-        String[] columnNames = {"Punto", "X", "Y"};
-        String[] columnNamesFirst = {"P'", "X'", "Y'"};
-        String[] columnNamesSecond = {"P''", "X''", "Y''"};
+        rotacionesComboBox2 = new JComboBox<>(rotacionComboLabels);
+        rotacionesComboBox2.setSelectedIndex(2);
+
+        String[] columnNames = {"Punto", "X", "Y", "Z", "Cod"};
+        String[] columnNamesFirst = {"P'", "X'", "Y'", "Z'", "Cod"};
+        String[] columnNamesSecond = {"P''", "X''", "Y''", "Z''","Cod"};
 
         originalTableModel = new DefaultTableModel(columnNames, 0);
-        firstRotationTableModel = new DefaultTableModel(columnNamesFirst, 0);
-        secondRotationTableModel = new DefaultTableModel(columnNamesSecond, 0);
+        rotatedTableModel = new DefaultTableModel(columnNamesFirst, 0);
+        rotatedTableModel2 = new DefaultTableModel(columnNamesSecond, 0);
 
         originalTable = new JTable(originalTableModel);
-        firstRotationTable = new JTable(firstRotationTableModel);
-        secondRotationTable = new JTable(secondRotationTableModel);
+        firstRotationTable = new JTable(rotatedTableModel);
+        secondRotationTable = new JTable(rotatedTableModel2);
 
         originalTable.setRowHeight(20);
         firstRotationTable.setRowHeight(20);
@@ -96,17 +98,13 @@ public class PolilineasRotacionSuc extends JFrame {
         firstRotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         secondRotationTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        primerAnguloLabel = new JLabel("θ1: 0°", SwingConstants.CENTER);
-        segundoAnguloLabel = new JLabel("θ2: 0°", SwingConstants.CENTER);
-        primerAnguloLabel.setFont(new Font("Arial", Font.BOLD, 12));
-        segundoAnguloLabel.setFont(new Font("Arial", Font.BOLD, 12));
     }
 
     private void configureLayout() {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new BorderLayout());
-        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 2D Compuestas:", SwingConstants.CENTER);
+        JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
         JLabel titleLabel2 = new JLabel("Rotación Sucesiva", SwingConstants.CENTER);
@@ -125,10 +123,10 @@ public class PolilineasRotacionSuc extends JFrame {
         add(planoCartesiano, BorderLayout.CENTER);
 
         JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido
+        rightPanel.setPreferredSize(new Dimension(0, getHeight())); // Ajusta el tamaño preferido
 
         JScrollPane rightScrollPane = new JScrollPane(rightPanel);
-        rightScrollPane.setPreferredSize(new Dimension(250, getHeight())); // Ajusta el tamaño preferido del JScrollPane
+        rightScrollPane.setPreferredSize(new Dimension(270, getHeight())); // Ajusta el tamaño preferido del JScrollPane
 
 
         JPanel tablesPanel = new JPanel(new GridLayout(3, 1, 5, 5));
@@ -173,22 +171,23 @@ public class PolilineasRotacionSuc extends JFrame {
         controlPanel.add(xInicialField);
         controlPanel.add(new JLabel("Y inicial:"));
         controlPanel.add(yInicialField);
-        controlPanel.add(new JLabel("Aumento:"));
-        controlPanel.add(aumentoComboBox);
+        controlPanel.add(new JLabel("Z inicial:"));
+        controlPanel.add(ZInicialField);
         controlPanel.add(new JLabel(""));
         controlPanel.add(regenerarFigura);
         controlPanel.add(new JSeparator());
         controlPanel.add(new JSeparator());
         controlPanel.add(new JLabel("R1(θ1):"));
         controlPanel.add(primerAnguloField);
-        controlPanel.add(new JLabel(""));
+        controlPanel.add(rotacionesComboBox);
         controlPanel.add(primerRotacionButton);
+        controlPanel.add(new JSeparator());
+        controlPanel.add(new JSeparator());
         controlPanel.add(new JLabel("R2(θ2):"));
         controlPanel.add(segundoAnguloField);
-        controlPanel.add(new JLabel(""));
+        controlPanel.add(rotacionesComboBox2);
         controlPanel.add(segundaRotacionButton);
-        controlPanel.add(primerAnguloLabel);
-        controlPanel.add(segundoAnguloLabel);
+
 
         rightPanel.add(controlPanel, BorderLayout.NORTH);
         add(rightScrollPane, BorderLayout.EAST);
@@ -213,8 +212,9 @@ public class PolilineasRotacionSuc extends JFrame {
             clearPlanoAndData();
             int xInicio = Integer.parseInt(xInicialField.getText());
             int yInicio = Integer.parseInt(yInicialField.getText());
-            int aumento = Integer.parseInt(aumentoComboBox.getSelectedItem().toString().substring(1));
-            drawFiguraOriginal(xInicio, yInicio, aumento);
+            int ZInicio = Integer.parseInt(ZInicialField.getText());
+
+            drawFiguraOriginal(xInicio, yInicio, ZInicio);
         });
 
 
@@ -222,183 +222,359 @@ public class PolilineasRotacionSuc extends JFrame {
 
 
     private void realizarPrimeraRotacion() {
+        rotatedTableModel2.setRowCount(0);
         try {
+            double angulo = Math.toRadians(Double.parseDouble(primerAnguloField.getText()));
+            String ejeRotacion = (String) rotacionesComboBox.getSelectedItem();
+
             if (puntosList == null || puntosList.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Primero debe generar la figura original");
                 return;
             }
 
-            primerAngulo = Math.toRadians(Double.parseDouble(primerAnguloField.getText()));
-
-            // Primera rotación - mover al segundo cuadrante
-            primeraRotacionList = realizarRotacion(puntosList, primerAngulo, "'", 2);
-
             planoCartesiano.clear();
-            clearTableAll(2);
-            dibujarFigura(puntosList, false, 1);
-            dibujarFigura(primeraRotacionList, true, 2);
-            updateRotatedTable(primeraRotacionList, firstRotationTableModel);
 
-            primerAnguloLabel.setText("θ1 " + primerAnguloField.getText() + "°");
-            primeraRotacionCompletada = true;
+            // Redibujar la figura original
+            Punto puntoAnteriorOriginal = puntosList.get(0);
+            planoCartesiano.addPunto(puntoAnteriorOriginal);
+
+            for (int i = 1; i < puntosList.size(); i++) {
+                Punto puntoOriginal = puntosList.get(i);
+                planoCartesiano.addPunto(puntoOriginal);
+                planoCartesiano.addLinea(new Linea(puntoAnteriorOriginal, puntoOriginal, true, i));
+                puntoAnteriorOriginal = puntoOriginal;
+            }
+
+            primeraRotacionList = new ArrayList<>();
+
+            // Rotación según el eje seleccionado
+            for (int i = 0; i < puntosList.size(); i++) {
+                Punto puntoOriginal = puntosList.get(i);
+                Punto puntoRotado;
+
+                switch (ejeRotacion) {
+                    case "Rotacion eje x":
+                        double yX = puntoOriginal.getY();
+                        double zX = puntoOriginal.getZ();
+                        puntoRotado = new Punto(
+                                puntoOriginal.getX(),
+                                (yX * Math.cos(angulo)) - (zX * Math.sin(angulo)),
+                                (yX * Math.sin(angulo)) + (zX * Math.cos(angulo))
+                        );
+                        break;
+
+                    case "Rotacion eje y":
+                        double xY = puntoOriginal.getX();
+                        double zY = puntoOriginal.getZ();
+                        puntoRotado = new Punto(
+                                xY * Math.cos(angulo) + zY * Math.sin(angulo),
+                                puntoOriginal.getY(),
+                                -xY * Math.sin(angulo) + zY * Math.cos(angulo)
+                        );
+                        break;
+
+                    case "Rotacion eje z":
+                        double xZ = puntoOriginal.getX();
+                        double yZ = puntoOriginal.getY();
+                        puntoRotado = new Punto(
+                                xZ * Math.cos(angulo) - yZ * Math.sin(angulo),
+                                xZ * Math.sin(angulo) + yZ * Math.cos(angulo),
+                                puntoOriginal.getZ()
+                        );
+                        break;
+
+                    default:
+                        puntoRotado = puntoOriginal;
+                        break;
+                }
+
+                primeraRotacionList.add(puntoRotado);
+            }
+
+            // Asignar nombres a los puntos rotados usando el mismo patrón de referencias
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 0; i < primeraRotacionList.size(); i++) {
+                if (i < 8) {
+                    primeraRotacionList.get(i).setNombrePunto("P" + (i + 1) + "'");
+                } else {
+                    primeraRotacionList.get(i).setNombrePunto("P" + referencias[i - 8] + "'");
+                }
+            }
+
+            // Dibujar figura rotada
+            Punto puntoAnterior = primeraRotacionList.get(0);
+            planoCartesiano.addPunto(puntoAnterior);
+
+            for (int i = 1; i < primeraRotacionList.size(); i++) {
+                Punto punto = primeraRotacionList.get(i);
+                planoCartesiano.addPunto(punto);
+                Linea linea = new Linea(puntoAnterior, punto, true, i);
+                planoCartesiano.addLinea(linea);
+                puntoAnterior = punto;
+            }
+
+            updateRotatedTable(primeraRotacionList);
+            planoCartesiano.repaint();
+
+            // Update label with angle and axis
+            Component parent = firstRotationTable.getParent().getParent().getParent();
+            if (parent instanceof JPanel) {
+                ((JLabel) ((JPanel) parent).getComponent(0)).setText
+                        ("Primera rotación: θ (" + primerAnguloField.getText() + "°)");
+            }
+
             segundaRotacionButton.setEnabled(true);
 
-            planoCartesiano.repaint();
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el primer ángulo.");
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el ángulo.");
         }
     }
+
 
     private void realizarSegundaRotacion() {
         try {
-            if (!primeraRotacionCompletada) {
-                JOptionPane.showMessageDialog(this, "Primero debe realizar la primera rotación");
+            double angulo = Math.toRadians(Double.parseDouble(segundoAnguloField.getText()));
+            String ejeRotacion = (String) rotacionesComboBox2.getSelectedItem();
+
+            if (primeraRotacionList == null || primeraRotacionList.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Primero debe generar la primera rotación");
                 return;
             }
 
-            segundoAngulo = Math.toRadians(Double.parseDouble(segundoAnguloField.getText()));
-
-            // Segunda rotación - mover al tercer cuadrante
-            segundaRotacionList = realizarRotacion(primeraRotacionList, segundoAngulo, "''", 3);
-
             planoCartesiano.clear();
-            dibujarFigura(puntosList, false, 1);
-            dibujarFigura(primeraRotacionList, true, 2);
-            dibujarFigura(segundaRotacionList, true, 3);
-            updateRotatedTable2(segundaRotacionList, secondRotationTableModel);
+            limpiar();
+            // Redibujar la figura de la primera rotación
+            Punto puntoAnteriorOriginal = primeraRotacionList.get(0);
+            planoCartesiano.addPunto(puntoAnteriorOriginal);
 
-            segundoAnguloLabel.setText("θ2: " + segundoAnguloField.getText() + "°");
+            for (int i = 1; i < primeraRotacionList.size(); i++) {
+                Punto puntoOriginal = primeraRotacionList.get(i);
+                planoCartesiano.addPunto(puntoOriginal);
+                planoCartesiano.addLinea(new Linea(puntoAnteriorOriginal, puntoOriginal, true, i));
+                puntoAnteriorOriginal = puntoOriginal;
+            }
 
+            segundaRotacionList = new ArrayList<>();
+
+            // Rotación según el eje seleccionado
+            for (int i = 0; i < primeraRotacionList.size(); i++) {
+                Punto puntoOriginal = primeraRotacionList.get(i);
+                Punto puntoRotado;
+
+                switch (ejeRotacion) {
+                    case "Rotacion eje x":
+                        double yX = puntoOriginal.getY();
+                        double zX = puntoOriginal.getZ();
+                        puntoRotado = new Punto(
+                                puntoOriginal.getX(),
+                                (yX * Math.cos(angulo)) - (zX * Math.sin(angulo)),
+                                (yX * Math.sin(angulo)) + (zX * Math.cos(angulo))
+                        );
+                        break;
+
+                    case "Rotacion eje y":
+                        double xY = puntoOriginal.getX();
+                        double zY = puntoOriginal.getZ();
+                        puntoRotado = new Punto(
+                                xY * Math.cos(angulo) + zY * Math.sin(angulo),
+                                puntoOriginal.getY(),
+                                -xY * Math.sin(angulo) + zY * Math.cos(angulo)
+                        );
+                        break;
+
+                    case "Rotacion eje z":
+                        double xZ = puntoOriginal.getX();
+                        double yZ = puntoOriginal.getY();
+                        puntoRotado = new Punto(
+                                xZ * Math.cos(angulo) - yZ * Math.sin(angulo),
+                                xZ * Math.sin(angulo) + yZ * Math.cos(angulo),
+                                puntoOriginal.getZ()
+                        );
+                        break;
+
+                    default:
+                        puntoRotado = puntoOriginal;
+                        break;
+                }
+
+                segundaRotacionList.add(puntoRotado);
+            }
+
+            // Asignar nombres a los puntos rotados usando el mismo patrón de referencias
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 0; i < segundaRotacionList.size(); i++) {
+                if (i < 8) {
+                    segundaRotacionList.get(i).setNombrePunto("P" + (i + 1) + "''");
+                } else {
+                    segundaRotacionList.get(i).setNombrePunto("P" + referencias[i - 8] + "''");
+                }
+            }
+
+            // Dibujar figura rotada
+            Punto puntoAnterior = segundaRotacionList.get(0);
+            planoCartesiano.addPunto(puntoAnterior);
+
+            for (int i = 1; i < segundaRotacionList.size(); i++) {
+                Punto punto = segundaRotacionList.get(i);
+                planoCartesiano.addPunto(punto);
+                Linea linea = new Linea(puntoAnterior, punto, true, i);
+                planoCartesiano.addLinea(linea);
+                puntoAnterior = punto;
+            }
+
+            updateRotatedTable2(segundaRotacionList);
             planoCartesiano.repaint();
+
+            // Update label with angle and axis
+            Component parent = secondRotationTable.getParent().getParent().getParent();
+            if (parent instanceof JPanel) {
+                ((JLabel) ((JPanel) parent).getComponent(0)).setText
+                        ("Segunda rotación: θ (" + segundoAnguloField.getText() + "°)");
+            }
+
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el segundo ángulo.");
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un valor numérico válido para el ángulo.");
         }
     }
 
-    private List<Punto> realizarRotacion(List<Punto> puntosOriginales, double angulo, String sufijo, int cuadrante) {
-        List<Punto> puntosRotados = new ArrayList<>();
-        Punto puntoReferencia = puntosOriginales.get(0);
-        double xRef = puntoReferencia.getX();
-        double yRef = puntoReferencia.getY();
 
-        // Ajustar coordenadas según el cuadrante
-        double xAjustada = xRef;
-        double yAjustada = yRef;
 
-        switch (cuadrante) {
-            case 2: // Segundo cuadrante (-x, y)
-                xAjustada = -Math.abs(xRef);
-                yAjustada = Math.abs(yRef);
-                break;
-            case 3: // Tercer cuadrante (-x, -y)
-                xAjustada = -Math.abs(xRef);
-                yAjustada = -Math.abs(yRef);
-                break;
-        }
 
-        // Realizar rotación para cada punto
-        for (int i = 0; i < puntosOriginales.size(); i++) {
-            Punto puntoOriginal = puntosOriginales.get(i);
-            double x = puntoOriginal.getX() - xRef;
-            double y = puntoOriginal.getY() - yRef;
-
-            double newX = xAjustada + (x * Math.cos(angulo) - y * Math.sin(angulo));
-            double newY = yAjustada + (x * Math.sin(angulo) + y * Math.cos(angulo));
-
-            Punto puntoRotado = new Punto(newX, newY);
-            puntoRotado.setNombrePunto("P" + (i + 1) + sufijo);
-            puntosRotados.add(puntoRotado);
-        }
-
-        return puntosRotados;
-    }
-
-    private void dibujarFigura(List<Punto> puntos, boolean esRotada, int colorIndex) {
-        Punto puntoAnterior = puntos.get(0);
-        planoCartesiano.addPunto(puntoAnterior);
-
-        for (int i = 1; i < puntos.size(); i++) {
-            Punto punto = puntos.get(i);
-            planoCartesiano.addPunto(punto);
-            planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, colorIndex));
-            puntoAnterior = punto;
-        }
-    }
-
-    // Los métodos drawFiguraOriginal, clearPlanoAndData, updateOriginalTable y updateRotatedTable
-    // permanecen igual que en el código original
-
-    private void updateRotatedTable(List<Punto> puntos, DefaultTableModel tableModel) {
-        tableModel.setRowCount(0);
-        for (Punto punto : puntos) {
-            tableModel.addRow(new Object[]{
-                    punto.getNombrePunto(),
-                    String.format("%.2f", punto.getX()),
-                    String.format("%.2f", punto.getY())
-            });
-        }
-        rotationTable1Label.setText(String.format("Primera rotación: %s°", primerAnguloField.getText()));    }
-
-    private void updateRotatedTable2(List<Punto> puntos, DefaultTableModel tableModel) {
-        tableModel.setRowCount(0);
-        for (Punto punto : puntos) {
-            tableModel.addRow(new Object[]{
-                    punto.getNombrePunto(),
-                    String.format("%.2f", punto.getX()),
-                    String.format("%.2f", punto.getY())
-            });
-        }
-        rotationTable2Label.setText(String.format("Segunda rotación: %s°", segundoAnguloField.getText()));
-    }
-
-    public void drawFiguraOriginal(double xInicio, double yInicio, double aumento) {
-        clearPlanoAndData();
+    public void drawFiguraOriginal(double xInicio, double yInicio, double zInicio) {
 
         try {
-            Punto puntoInicio = new Punto(xInicio, yInicio);
+            // Define los puntos iniciales
+            Punto punto1 = new Punto(xInicio, yInicio, zInicio);        // P1
+            Punto punto2 = new Punto(xInicio + 4, yInicio, zInicio + 1); // P2
+            Punto punto3 = new Punto(xInicio + 4, yInicio, zInicio - 1); // P3
+            Punto punto4 = new Punto(xInicio, yInicio, zInicio - 2);    // P4
+            Punto punto5 = new Punto(xInicio, yInicio + 1, zInicio - 2); // P5
+            Punto punto6 = new Punto(xInicio + 3, yInicio, zInicio - 2); // P6
+            Punto punto7 = new Punto(xInicio + 3, yInicio, zInicio);    // P7
+            Punto punto8 = new Punto(xInicio - 1, yInicio, zInicio - 1); // P8
 
+            // Utiliza las referencias de los puntos ya creados para evitar duplicados
             Punto[] puntosArray = {
-                    new Punto(xInicio, yInicio),
-                    new Punto(xInicio, yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (2 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (1 * aumento)),
-                    new Punto(xInicio + (4 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio + (2 * aumento)),
-                    new Punto(xInicio + (6 * aumento), yInicio)
+                    punto1, // P1
+                    punto2, // P2
+                    punto3, // P3
+                    punto4, // P4
+                    punto5, // P5
+                    punto6, // P6
+                    punto7, // P7
+                    punto8, // P8
+
+                    // Segunda parte (referencia a puntos existentes)
+                    punto1, // P1
+                    punto4, // P4
+                    punto5, // P5
+                    punto8, // P8
+                    punto7, // P7
+                    punto2, // P2
+                    punto3, // P3
+                    punto6  // P6
             };
 
             puntosList = Arrays.asList(puntosArray);
 
-            for (int i = 0; i < puntosList.size(); i++) {
+            // Asignar nombres a los puntos
+            for (int i = 0; i < 8; i++) {
                 puntosList.get(i).setNombrePunto("P" + (i + 1));
             }
 
-            clearTableAll(1);
-            dibujarFigura(puntosList, false, 1);
+
+            int[] referencias = {1, 4, 5, 8, 7, 2, 3, 6};
+            for (int i = 8; i < puntosList.size(); i++) {
+                puntosList.get(i).setNombrePunto("P" + referencias[i - 8]);
+            }
+
+            // Dibuja la figura
+            Punto puntoAnterior = punto1;  // Punto de inicio
+            planoCartesiano.addPunto(punto1);  // Agrega el primer punto
+
+            for (int i = 0; i < puntosList.size(); i++) {
+                Punto punto = puntosList.get(i);
+                planoCartesiano.addPunto(punto);
+                planoCartesiano.addLinea(new Linea(puntoAnterior, punto, true, i + 1));
+                puntoAnterior = punto;
+            }
+
+            // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
+
             planoCartesiano.repaint();
+
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
     }
 
+
+
     private void clearPlanoAndData() {
         planoCartesiano.clear();
         originalTableModel.setRowCount(0);
-        firstRotationTableModel.setRowCount(0);
-        secondRotationTableModel.setRowCount(0);
+        rotatedTableModel.setRowCount(0);
+        rotatedTableModel2.setRowCount(0);
     }
 
     private void updateOriginalTable(List<Punto> puntos) {
         originalTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+        int i = 0;
+
         for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
             originalTableModel.addRow(new Object[]{
                     punto.getNombrePunto(),
                     punto.getX(),
-                    punto.getY()
+                    punto.getY(),
+                    punto.getZ(),
+                    cod
             });
+            i++;
         }
+    }
+
+    private void updateRotatedTable(List<Punto> puntos) {
+        rotatedTableModel.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+        int i = 0;
+        for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+            rotatedTableModel.addRow(new Object[]{
+                    punto.getNombrePunto(),
+                    String.format("%.2f", punto.getX()),
+                    String.format("%.2f", punto.getY()),
+                    String.format("%.2f", punto.getZ()),
+                    cod
+            });
+            i++;
+        }
+        rotationTable1Label.setText(String.format("Primera rotación: %s°", primerAnguloField.getText()));    }
+
+    private void updateRotatedTable2(List<Punto> puntos) {
+        rotatedTableModel2.setRowCount(0);
+        boolean[] puntosConCodigo = {false, true, true, true, true, true, true, true, true, true, false, true, false, true, false, true};
+        int i = 0;
+        for (Punto punto : puntos) {
+            int cod = puntosConCodigo[i] ? 1 : 0;
+            rotatedTableModel2.addRow(new Object[]{
+                    punto.getNombrePunto(),
+                    String.format("%.2f", punto.getX()),
+                    String.format("%.2f", punto.getY()),
+                    String.format("%.2f", punto.getZ()),
+                    cod
+            });
+            i++;
+        }
+        rotationTable2Label.setText(String.format("Segunda rotación: %s°", segundoAnguloField.getText()));
+    }
+    private void limpiar() {
+        int xInicio = Integer.parseInt(xInicialField.getText());
+        int yInicio = Integer.parseInt(yInicialField.getText());
+        int zInicio = Integer.parseInt(ZInicialField.getText());
+        drawFiguraOriginal(xInicio, yInicio, zInicio);
     }
 
     private void clearTableAll(int index) {
