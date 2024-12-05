@@ -111,10 +111,11 @@ public class PolilineasTraslacionSuc extends JFrame {
         JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
-        titleLabel3 = new JLabel("Traslación Sucesiva 3D: ", SwingConstants.CENTER);
+        //            titleLabel3.setText("Traslación 3D: T(Tx: 0, Ty: 0, Tz: 0)");
+        titleLabel3 = new JLabel("Traslación 3D: T1(Tx1: 0, Ty1: 0, Tz1: 0)", SwingConstants.CENTER);
         titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
 
-        titleLabel4 = new JLabel("T1(Tx1: 0, Ty1: 0, Tz1: 0) ||| T2(Tx2: 0, Ty2: 0, Tz2: 0)", SwingConstants.CENTER);
+        titleLabel4 = new JLabel("Traslación 3D: T2(Tx2: 0, Ty2: 2, Tz2: 0)", SwingConstants.CENTER);
         titleLabel4.setFont(new Font("Arial", Font.BOLD, 16));
 
         JPanel titlePanel = new JPanel(new GridLayout(3, 1));
@@ -412,7 +413,8 @@ public class PolilineasTraslacionSuc extends JFrame {
         String tx1 = tx1Field.getText();
         String ty1 = ty1Field.getText();
         String tz1 = tz1Field.getText();
-        titleLabel4.setText("T1(Tx1: " + tx1 + ", Ty1: " + ty1 + ", Tz1: " + tz1 + ") ||| T2(Tx2: " + 0 + ", Ty2: " + 0 + ", Tz2: " + 0 + ")");
+        titleLabel3.setText("Traslación 3D: T1(Tx1: "+tx1+", Ty1: "+ty1+", Tz1: "+tz1+")");
+        titleLabel4.setText("Traslación 3D: T2(Tx2: 0, Ty2: 0, Tz2: 0)");
     }
     private void updateTitleLabelSegunda() {
         String tx1 = tx1Field.getText();
@@ -421,7 +423,8 @@ public class PolilineasTraslacionSuc extends JFrame {
         String tx2 = tx2Field.getText();
         String ty2 = ty2Field.getText();
         String tz2 = tz2Field.getText();
-        titleLabel4.setText("T1(Tx1: " + tx1 + ", Ty1: " + ty1 + ", Tz1: " + tz1 + ") ||| T2(Tx2: " + tx2 + ", Ty2: " + ty2 + ", Tz2: " + tz2 + ")");
+        titleLabel3.setText("Traslación 3D: T1(Tx1: "+tx1+", Ty1: "+ty1+", Tz1: "+tz1+")");
+        titleLabel4.setText("Traslación 3D: T2(Tx2: "+tx2+", Ty2: "+ty2+", Tz2: "+tz2+")");
     }
 
     public void drawFiguraOriginal(int xInicio, int yInicio, int zInicio) {
@@ -488,8 +491,8 @@ public class PolilineasTraslacionSuc extends JFrame {
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
-            titleLabel4.setText("T1(Tx1: " + 0 + ", Ty1: " + 0 + ", Tz1: " + 0 + ") ||| T2(Tx2: " + 0 + ", Ty2: " + 0 + ", Tz2: " + 0 + ")");
-
+            titleLabel3.setText("Traslación 3D: T1(Tx1: "+0+", Ty1: "+0+", Tz1: "+0+")");
+            titleLabel4.setText("Traslación 3D: T2(Tx2: "+0+", Ty2: "+0+", Tz2: "+0+")");
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }

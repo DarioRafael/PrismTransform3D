@@ -99,10 +99,10 @@ public class PolilineasEscalacionSuc extends JFrame {
         JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
-        titleLabel3 = new JLabel("Escalación Sucesiva 3D: ", SwingConstants.CENTER);
+        titleLabel3 = new JLabel("Escalación Sucesiva 3D: S1(Sx1: 0, Sy1: 0, Sz1: 0)", SwingConstants.CENTER);
         titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
 
-        titleLabel4 = new JLabel("S1(Sx1: 0, Sy1: 0, Sz1: 0) ||| S2(Sx2: 0, Sy2: 0, Sz2: 0)", SwingConstants.CENTER);
+        titleLabel4 = new JLabel("Escalación Sucesiva 3D: S2(Sx2: 0, Sy2: 0, Sz2: 0)", SwingConstants.CENTER);
         titleLabel4.setFont(new Font("Arial", Font.BOLD, 16));
 
 
@@ -291,7 +291,8 @@ public class PolilineasEscalacionSuc extends JFrame {
 
             // Actualiza la tabla de puntos originales
             updateOriginalTable(puntosList);
-            titleLabel4.setText("S1(Sx1: " + 0 + ", Sy1: " + 0 + ", Sz1: " + 0 + ") ||| S2(Sx2: " + 0 + ", Sy2: " + 0 + ", Sz2: " + 0 + ")");
+            titleLabel3.setText("Escalación Sucesiva 3D: S1(Sx1: 0, Sy1: 0, Sz1: 0)");
+            titleLabel4.setText("Escalación Sucesiva 3D: S2(Sx2: 0, Sy2: 0, Sz2: 0)");
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
@@ -454,7 +455,7 @@ public class PolilineasEscalacionSuc extends JFrame {
         String sx1 = sx1Field.getText();
         String sy1 = sy1Field.getText();
         String sz1 = sz1Field.getText();
-        titleLabel4.setText("S1(Sx1: " + sx1 + ", Sy1: " + sy1 + ", Sz1: " + sz1 + ") ||| S2(Sx2: " + 0 + ", Sy2: " + 0 + ", Sz2: " + 0 + ")");
+        titleLabel3.setText("Escalación Sucesiva 3D: S1(Sx1: "+sx1+", Sy1: "+sy1+", Sz1: "+sz1+")");
     }
     private void updateTitleLabelSegunda() {
         String sx1 = sx1Field.getText();
@@ -463,7 +464,8 @@ public class PolilineasEscalacionSuc extends JFrame {
         String sx2 = sx2Field.getText();
         String sy2 = sy2Field.getText();
         String sz2 = sz2Field.getText();
-        titleLabel4.setText("S1(Sx1: " + sx1 + ", Sy1: " + sy1 + ", Sz1: " + sz1 + ") ||| S2(Sx2: " + sx2 + ", Sy2: " + sy2 + ", Sz2: " + sz2 + ")");
+        titleLabel3.setText("Escalación Sucesiva 3D: S1(Sx1: "+sx1+", Sy1: "+sy1+", Sz1: "+sz1+")");
+        titleLabel4.setText("Escalación Sucesiva 3D: S2(Sx2: "+sx2+", Sy2: "+sy2+", Sz2: "+sz2+")");
     }
 
     private void updateLabels(String tx, String ty, String tz) {

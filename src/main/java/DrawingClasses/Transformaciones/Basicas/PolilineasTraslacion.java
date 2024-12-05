@@ -80,7 +80,7 @@ public class PolilineasTraslacion extends JFrame {
         JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
-        titleLabel3 = new JLabel("Traslación 3D (Tx: 0, Ty: 0, Tz: 0)", SwingConstants.CENTER);
+        titleLabel3 = new JLabel("Traslación 3D: T(Tx: 0, Ty: 0, Tz: 0)", SwingConstants.CENTER);
         titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
 
         // Create a panel to hold titleLabel2 and titleLabel3
@@ -258,7 +258,7 @@ public class PolilineasTraslacion extends JFrame {
 
             planoCartesiano.repaint();
             updateLabels("0", "0", "0");
-            titleLabel3.setText("Traslación 3D (Tx: 0, Ty: 0, Tz: 0)");
+            titleLabel3.setText("Traslación 3D: T(Tx: 0, Ty: 0, Tz: 0)");
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Por favor, ingrese valores numéricos válidos.");
         }
@@ -345,7 +345,7 @@ public class PolilineasTraslacion extends JFrame {
         String tx = txField.getText();
         String ty = tyField.getText();
         String tz = tzField.getText();
-        titleLabel3.setText("Traslación 3D (Tx: " + tx + ", Ty: " + ty + ", Tz: " + tz + ")");
+        titleLabel3.setText("Traslación 3D: T(Tx: " + tx + ", Ty: " + ty + ", Tz: " + tz + ")");
     }
     private void updateLabels(String tx, String ty, String tz) {
         // Actualizar la etiqueta de la tabla escalada
