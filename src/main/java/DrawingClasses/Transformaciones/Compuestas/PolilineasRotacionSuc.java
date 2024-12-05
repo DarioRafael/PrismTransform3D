@@ -390,7 +390,7 @@ public class PolilineasRotacionSuc extends JFrame {
                         );
                         break;
 
-                    case "soobre el eje y":
+                    case "sobre el eje y":
                         ejeRotadoLabel2 = "y";
                         double xY = puntoOriginal.getX();
                         double zY = puntoOriginal.getZ();
