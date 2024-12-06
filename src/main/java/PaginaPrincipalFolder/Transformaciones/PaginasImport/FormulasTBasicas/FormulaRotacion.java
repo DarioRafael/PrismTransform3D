@@ -63,7 +63,7 @@ public class FormulaRotacion extends JFrame {
                 + "X(0) + Y(Sen θ) + Z(Cos θ) + 1(0) =  Y * Sen θ + Z * Cos θ<br>"
                 + "X(0) + Y(0) + Z(0) + 1(1) = 1"
                 + "</div>"
-                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [(X), (Y * Cos θ - Z * Sen θ), (Y * Sen θ + Z * Cos θ), 1]</div></div></html>");
+                + "<div style='margin-top: 10px; font-size: 11px; color: red;'>[X' Y' Z' 1] = [(X), (Y * Cos θ - Z * Sen θ), (Y * Sen θ + Z * Cos θ), 1]</div></div></html>");
         matrizGeneral.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Procedimiento Particular (Eje Y)
@@ -85,7 +85,7 @@ public class FormulaRotacion extends JFrame {
                 + "X(-Sen θ) + Y(0) + Z(Cos θ) + 1(0) = -X * Sen θ + Z * Cos θ<br>"
                 + "X(0) + Y(0) + Z(0) + 1(1) = 1"
                 + "</div>"
-                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [(X * Cos θ + Z * Sen θ), (Y), (-X * Sen θ + Z * Cos θ), 1]</div></div></html>");
+                + "<div style='margin-top: 10px; font-size: 11px; color: red;'>[X' Y' Z' 1] = [(X * Cos θ + Z * Sen θ), (Y), (-X * Sen θ + Z * Cos θ), 1]</div></div></html>");
         matrizParticular.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Procedimiento Particular (Eje Z)
@@ -107,7 +107,7 @@ public class FormulaRotacion extends JFrame {
                 + "X(0) + Y(0) + Z(1) + 1(0) = Z<br>"
                 + "X(0) + Y(0) + Z(0) + 1(1) = 1"
                 + "</div>"
-                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [(X * Cos θ - Y * Sen θ), (X * Sen θ + Y * Cos θ), (Z), 1]</div></div></html>");
+                + "<div style='margin-top: 10px; font-size: 11px; color: red;'>[X' Y' Z' 1] = [(X * Cos θ - Y * Sen θ), (X * Sen θ + Y * Cos θ), (Z), 1]</div></div></html>");
         matrizParticularZ.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Botón Aceptar

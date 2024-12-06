@@ -57,7 +57,7 @@ public class FormulaTraslacionSuc extends JFrame {
                 + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
                 + "<tr><td>[</td><td>Tx1</td><td>Ty1</td><td>Tz1</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [X+Tx1 Y+Ty1 Z+Tz1 1]</div></div></html>");
+                + "<div style='margin-top: 10px; font-size: 12px; color: red;'>[X' Y' Z' 1] = [X+Tx1 Y+Ty1 Z+Tz1 1]</div></div></html>");
         matrizGeneral.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Procedimiento Particular
@@ -72,7 +72,7 @@ public class FormulaTraslacionSuc extends JFrame {
                 + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
                 + "<tr><td>[</td><td>Tx1</td><td>Ty1</td><td>Tz1</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X₁' Y₁' Z₁' 1] = [X₁+Tx1 Y₁+Ty1 Z₁+Tz1 1]</div></div></html>");
+                + "<div style='margin-top: 10px; font-size: 12px; color: red;'>[X₁' Y₁' Z₁' 1] = [X₁+Tx1 Y₁+Ty1 Z₁+Tz1 1]</div></div></html>");
         matrizParticular.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Sección de operaciones

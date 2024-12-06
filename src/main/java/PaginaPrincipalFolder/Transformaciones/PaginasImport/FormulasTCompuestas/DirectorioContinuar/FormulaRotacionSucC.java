@@ -13,7 +13,7 @@ public class FormulaRotacionSucC extends JFrame {
     AjustesVentanaFormula ajustesVentana = new AjustesVentanaFormula();
 
     public FormulaRotacionSucC() {
-        setTitle("FÓRMULAS ROTACIÓN SUCESIVA");
+        setTitle("FÓRMULAS DE LA ROTACIÓN 3D SUCESIVA");
         setSize(ajustesVentana.getWindowSize());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +35,7 @@ public class FormulaRotacionSucC extends JFrame {
         centeredPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Título principal
-        JLabel titleLabel = new JLabel("FÓRMULAS ROTACIÓN SUCESIVA");
+        JLabel titleLabel = new JLabel("FÓRMULAS DE LA ROTACIÓN 3D SUCESIVA");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(new Color(33, 33, 33));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -45,50 +45,73 @@ public class FormulaRotacionSucC extends JFrame {
         separator.setMaximumSize(new Dimension(400, 1));
         separator.setForeground(new Color(200, 200, 200));
 
-        // Procedimiento General
-        JLabel procGeneralLabel = createSectionLabel("Procedimiento General");
-        JLabel pxyGeneralLabel = createContentLabel("P'(X', Y'):");
+        // Procedimiento General (Eje X)
+        JLabel procGeneralLabel = createSectionLabel("Rotación 3D sobre el eje X: Rx(θ2)");
+        JLabel pxyGeneralLabel = createContentLabel("La X permanece constante:");
 
-        JLabel matrizGeneral = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 14px;'>"
-                + "[X'' Y'' 1] = [X' Y' 1] · "
+        JLabel matrizGeneral = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 12px;'>"
+                + "P(X', Y', Z'): <br>"
+                + "[X'' Y'' Z'' 1] = [X' Y' Z' 1] · "
                 + "<table align='center' style='margin-top: 10px;'>"
-                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;-Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;-Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X'' Y'' 1] = [(X' * Cos θ₂ - Y' * Sen θ₂), (X' * Sen θ₂ + Y' * Cos θ₂), 1]</div></div></html>");
+                + "<div style='margin-top: 10px;'>Operaciones:</div>"
+                + "<div style='margin-top: 10px;'>"
+                + "X'(1) + Y'(0) + Z'(0) + 1(0) = X'<br>"
+                + "X'(0) + Y'(Cos θ₂) + Z'(-Sen θ₂) + 1(0) = Y' * Cos θ₂ - Z' * Sen θ₂<br>"
+                + "X'(0) + Y'(Sen θ₂) + Z'(Cos θ₂) + 1(0) =  Y' * Sen θ₂ + Z' * Cos θ₂<br>"
+                + "X'(0) + Y'(0) + Z'(0) + 1(1) = 1"
+                + "</div>"
+                + "<div style='margin-top: 10px; font-size: 11px; color: red;'>[X'' Y'' Z'' 1] = [(X'), (Y' * Cos θ₂ - Z' * Sen θ₂), (Y' * Sen θ₂ + Z' * Cos θ₂), 1]</div></div></html>");
         matrizGeneral.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Procedimiento Particular
-        JLabel procParticularLabel = createSectionLabel("Procedimiento Particular");
-        JLabel pxyParticularLabel = createContentLabel("P'1(X'1, Y'1):");
-
-        JLabel matrizParticular = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 14px;'>"
-                + "[X''₁ Y''₁ 1] = [X'₁ Y'₁ 1] · "
+        // Procedimiento Particular (Eje Y)
+        JLabel procParticularLabel = createSectionLabel("Rotación 3D sobre el eje Y: Ry(θ2)");
+        JLabel pxyParticularLabel = createContentLabel("La Y permanece constante:");
+        JLabel matrizParticular = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 12px;'>"
+                + "P(X', Y', Z'): <br>"
+                + "[X'' Y'' Z'' 1] = [X' Y' Z' 1] · "
                 + "<table align='center' style='margin-top: 10px;'>"
-                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;-Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;-Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X''₁ Y''₁ 1] = [(X'₁ * Cos θ₂ - Y'₁ * Sen θ₂), (X'₁ * Sen θ₂ + Y'₁ * Cos θ₂), 1]</div></div></html>");
+                + "<div style='margin-top: 10px;'>Operaciones:</div>"
+                + "<div style='margin-top: 10px;'>"
+                + "X'(Cos θ₂) + Y'(0) + Z'(Sen θ₂) + 1(0) = X' * Cos θ₂ + Z' * Sen θ₂<br>"
+                + "X'(0) + Y'(1) + Z'(0) + 1(0) = Y'<br>"
+                + "X'(-Sen θ₂) + Y'(0) + Z'(Cos θ₂) + 1(0) = -X' * Sen θ₂ + Z' * Cos θ₂<br>"
+                + "X'(0) + Y'(0) + Z'(0) + 1(1) = 1"
+                + "</div>"
+                + "<div style='margin-top: 10px; font-size: 11px; color: red;'>[X'' Y'' Z'' 1] = [(X' * Cos θ₂ + Z' * Sen θ₂), (Y'), (-X' * Sen θ₂ + Z' * Cos θ₂), 1]</div></div></html>");
         matrizParticular.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Sección de operaciones
-        JLabel operacionesLabel = createSectionLabel("Operaciones:");
-        JPanel operacionesPanel = new JPanel();
-        operacionesPanel.setLayout(new BoxLayout(operacionesPanel, BoxLayout.Y_AXIS));
-        operacionesPanel.setBackground(mainPanel.getBackground());
-        operacionesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        operacionesPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(200, 200, 200)),
-                new EmptyBorder(10, 0, 10, 0)
-        ));
+        // Procedimiento Particular (Eje Z)
+        JLabel procParticularLabelZ = createSectionLabel("Rotación 3D sobre el eje Z: Rz(θ2)");
+        JLabel pxyParticularLabelZ = createContentLabel("La Z' permanece constante:");
+        JLabel matrizParticularZ = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 12px;'>"
+                + "P(X', Y', Z'): <br>"
+                + "[X'' Y'' Z'' 1] = [X' Y' Z' 1] · "
+                + "<table align='center' style='margin-top: 10px;'>"
+                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;-Sen&nbsp;θ₂&nbsp;</td><td>&nbsp;Cos&nbsp;θ₂&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "</table>"
+                + "<div style='margin-top: 10px;'>Operaciones:</div>"
+                + "<div style='margin-top: 10px;'>"
+                + "X'(Cos θ₂) + Y'(-Sen θ₂) + Z'(0) + 1(0) = X' * Cos θ₂ - Y' * Sen θ₂<br>"
+                + "X'(Sen θ₂) + Y'(Cos θ₂) + Z'(0) + 1(0) =  X' * Sen θ₂ + Y' * Cos θ₂<br>"
+                + "X'(0) + Y'(0) + Z'(1) + 1(0) = Z'<br>"
+                + "X'(0) + Y'(0) + Z'(0) + 1(1) = 1"
+                + "</div>"
+                + "<div style='margin-top: 10px; font-size: 11px; color: red;'>[X'' Y'' Z'' 1] = [(X' * Cos θ₂ - Y' * Sen θ₂), (X' * Sen θ₂ + Y' * Cos θ₂), (Z'), 1]</div></div></html>");
+        matrizParticularZ.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel[] operaciones = {
-                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X'(Cos θ₂) + Y'(-Sen θ₂) + 1(0) = X' · Cos θ₂ - Y' · Sen θ₂</div></html>"),
-                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X'(Sen θ₂) + Y'(Cos θ₂) + 1(0) = X' · Sen θ₂ + Y' · Cos θ₂</div></html>"),
-                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X'(0) + Y'(0) + 1(1) = 1</div></html>")
-        };
         // Botón Aceptar
         JButton aceptarButton = new JButton("Aceptar");
         aceptarButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -100,7 +123,6 @@ public class FormulaRotacionSucC extends JFrame {
         aceptarButton.setFocusPainted(false);
         aceptarButton.addActionListener(e -> dispose());
 
-
         // Botón Regresar
         JButton regresarButton = new JButton("Regresar");
         regresarButton.setFont(new Font("Arial", Font.BOLD, 14));
@@ -111,7 +133,7 @@ public class FormulaRotacionSucC extends JFrame {
         regresarButton.setForeground(Color.BLUE);
         regresarButton.setFocusPainted(false);
         regresarButton.addActionListener(e -> {
-            new FormulaRotacionSuc().setVisible(true);;
+            new FormulaRotacionSuc().setVisible(true);
             dispose();
         });
 
@@ -128,20 +150,19 @@ public class FormulaRotacionSucC extends JFrame {
         centeredPanel.add(matrizGeneral);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Agregar Procedimiento Particular
+        // Agregar Procedimiento Particular para Y
         centeredPanel.add(procParticularLabel);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         centeredPanel.add(pxyParticularLabel);
         centeredPanel.add(matrizParticular);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Agregar Operaciones
-        centeredPanel.add(operacionesLabel);
-        centeredPanel.add(operacionesPanel);
-        for (JLabel op : operaciones) {
-            operacionesPanel.add(op);
-            operacionesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        }
+        // Agregar Procedimiento Particular para Z
+        centeredPanel.add(procParticularLabelZ);
+        centeredPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        centeredPanel.add(pxyParticularLabelZ);
+        centeredPanel.add(matrizParticularZ);
+        centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         centeredPanel.add(regresarButton);
