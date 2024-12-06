@@ -65,11 +65,11 @@ public class CreditosParaFG extends JFrame {
                 "un software de propósito Educativo.", textFont, 0, 5);
         addIconsPanel(creditPanel, 0, 6);
         addLabelAndText(creditPanel, "REQUERIMIENTOS DEL HARDWARE:", headerFont, 0, 7);
-        addTextArea(creditPanel, "- Procesador: Pentium II 600 MHz.\n- Disco Duro: 350 Mb\n", textFont, 0, 8);
+        addTextArea(creditPanel, "- Computadora:\n  - Procesador: Intel Pentium o superior\n  - Memoria RAM: 2 GB\n  - Disco Duro: 500 MB de espacio libre\n  - Tarjeta Gráfica: Compatible con OpenGL 2.0\n- Periféricos:\n  - Teclado\n  - Mouse\n", textFont, 0, 8);
         addLabelAndText(creditPanel, "REQUERIMIENTOS DEL SOFTWARE:", headerFont, 0, 9);
         addTextArea(creditPanel, "- Sistema Operativo: Windows XP, Vista, Windows 7, Windows 8, Windows 10, Windows 11\n- Lenguaje de Programación: Java (NetBeans)", textFont, 0, 10);
         addLabelAndText(creditPanel, "EJECUCIÓN DE LAS TRANSFORMACIONES GEOMÉTRICAS EN 3D:", headerFont, 0, 11);
-        addTextArea(creditPanel, "- Insertar la USB con el archivo.\n- Ejecutar el Programa: TG_3D.exe", textFont, 0, 12);
+        addTextArea(creditPanel, "- Insertar la USB con el archivo.\n- Abrir la carpeta TransGeo_3D.\n- Ejecutar el Programa: TG_3D.exe", textFont, 0, 12);
 
         return creditPanel;
     }
