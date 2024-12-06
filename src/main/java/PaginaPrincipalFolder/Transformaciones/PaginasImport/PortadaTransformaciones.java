@@ -225,7 +225,7 @@ public class PortadaTransformaciones extends JFrame {
 
         JLabel creditosLabel = new JLabel(
                 "<html><center>Asesor: <b>ING. José Lino Hernández Omaña</b><br>" +
-                        "Cd. Victoria, Tamaulipas - Septiembre 2024</center></html>"
+                        "Cd. Victoria, Tamaulipas - Diciembre 2024</center></html>"
         );
         creditosLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         creditosLabel.setForeground(SECONDARY_COLOR);

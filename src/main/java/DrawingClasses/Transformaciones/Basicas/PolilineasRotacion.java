@@ -124,7 +124,8 @@ public class PolilineasRotacion extends JFrame {
 
         JPanel rotatedTablePanel = new JPanel(new BorderLayout());
 
-        JLabel scaledLabel = new JLabel("Puntos Rotados (θ: 0°)", SwingConstants.CENTER);
+        JLabel scaledLabel = new JLabel("Puntos rotados: "+"R" +
+                ejeRotacionLabel+"(" +anguloField.getText() + "°)", SwingConstants.CENTER);
         scaledLabel.setFont(new Font("Arial", Font.BOLD, 12)); // Set font to Arial, bold, size 18
         rotatedTablePanel.add(scaledLabel, BorderLayout.NORTH);
 
@@ -359,8 +360,8 @@ public class PolilineasRotacion extends JFrame {
             // Update label with angle and axis
             Component parent = rotatedTable.getParent().getParent().getParent();
             if (parent instanceof JPanel) {
-                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Rotados: " +
-                        "Ángulo de rotación (" + ejeRotacion + "): " + anguloField.getText() + "°");
+                ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos rotados: "+"R" +
+                        ejeRotacionLabel+"(" +anguloField.getText() + "°)");
             }
 
         } catch (NumberFormatException ex) {
@@ -378,8 +379,8 @@ public class PolilineasRotacion extends JFrame {
         // Actualizar la etiqueta de la tabla escalada
         Component parent = rotatedTable.getParent().getParent().getParent();
         if (parent instanceof JPanel) {
-            ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos Rotados " +
-                    "(θ: "+r+"°)");
+            ((JLabel) ((JPanel) parent).getComponent(0)).setText("Puntos rotados: "+"R" +
+                    ejeRotacionLabel+"(" +r + "°)");;
         }
     }
 
