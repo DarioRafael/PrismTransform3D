@@ -11,7 +11,7 @@ public class FormulaRotacion extends JFrame {
     AjustesVentanaFormula ajustesVentana = new AjustesVentanaFormula();
 
     public FormulaRotacion() {
-        setTitle("FÓRMULAS ROTACIÓN BÁSICA");
+        setTitle("FÓRMULAS DE LA ROTACIÓN 3D BÁSICA");
         setSize(ajustesVentana.getWindowSize());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -33,7 +33,7 @@ public class FormulaRotacion extends JFrame {
         centeredPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Título principal
-        JLabel titleLabel = new JLabel("FÓRMULAS ROTACIÓN BÁSICA");
+        JLabel titleLabel = new JLabel("FÓRMULAS DE LA ROTACIÓN 3D BÁSICA");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(new Color(33, 33, 33));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -43,50 +43,72 @@ public class FormulaRotacion extends JFrame {
         separator.setMaximumSize(new Dimension(400, 1));
         separator.setForeground(new Color(200, 200, 200));
 
-        // Procedimiento General
-        JLabel procGeneralLabel = createSectionLabel("Procedimiento General");
-        JLabel pxyGeneralLabel = createContentLabel("P(X, Y):");
+        // Procedimiento General (Eje X)
+        JLabel procGeneralLabel = createSectionLabel("Rotación 3D sobre el eje X: Rx(θ)");
+        JLabel pxyGeneralLabel = createContentLabel("La X permanece constante:");
 
-        JLabel matrizGeneral = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 14px;'>"
-                + "[X' Y' 1] = [X Y 1] · "
+        JLabel matrizGeneral = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 12px;'>"
+                + "P(X, Y, Z): <br>"
+                + "[X' Y' Z' 1] = [X Y Z 1] · "
                 + "<table align='center' style='margin-top: 10px;'>"
-                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;Sen&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;-Sen&nbsp;θ&nbsp;</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;Sen&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;-Sen&nbsp;θ&nbsp;</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X' Y' 1] = [(X * Cos θ - Y * Sen θ), (X * Sen θ + Y * Cos θ), 1]</div></div></html>");
+                + "<div style='margin-top: 10px;'>Operaciones:</div>"
+                + "<div style='margin-top: 10px;'>"
+                + "X(1) + Y(0) + Z(0) + 1(0) = X<br>"
+                + "X(0) + Y(Cos θ) + Z(-Sen θ) + 1(0) = Y * Cos θ - Z * Sen θ<br>"
+                + "X(0) + Y(Sen θ) + Z(Cos θ) + 1(0) =  Y * Sen θ + Z * Cos θ<br>"
+                + "X(0) + Y(0) + Z(0) + 1(1) = 1"
+                + "</div>"
+                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [(X), (Y * Cos θ - Z * Sen θ), (Y * Sen θ + Z * Cos θ), 1]</div></div></html>");
         matrizGeneral.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Procedimiento Particular
-        JLabel procParticularLabel = createSectionLabel("Procedimiento Particular");
-        JLabel pxyParticularLabel = createContentLabel("P1(X1, Y1):");
-
-        JLabel matrizParticular = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 14px;'>"
-                + "[X₁' Y₁' 1] = [X₁ Y₁ 1] · "
+        // Procedimiento Particular (Eje Y)
+        JLabel procParticularLabel = createSectionLabel("Rotación 3D sobre el eje Y: Ry(θ)");
+        JLabel pxyParticularLabel = createContentLabel("La Y permanece constante:");
+        JLabel matrizParticular = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 12px;'>"
+                + "P(X, Y, Z): <br>"
+                + "[X' Y' Z' 1] = [X Y Z 1] · "
                 + "<table align='center' style='margin-top: 10px;'>"
-                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;Sen&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;-Sen&nbsp;θ&nbsp;</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;-Sen&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;Sen&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X₁' Y₁' 1] = [(X₁ * Cos θ - Y₁ * Sen θ), (X₁ * Sen θ + Y₁ * Cos θ), 1]</div></div></html>");
+                + "<div style='margin-top: 10px;'>Operaciones:</div>"
+                + "<div style='margin-top: 10px;'>"
+                + "X(Cos θ) + Y(0) + Z(Sen θ) + 1(0) = X * Cos θ + Z * Sen θ<br>"
+                + "X(0) + Y(1) + Z(0) + 1(0) = Y<br>"
+                + "X(-Sen θ) + Y(0) + Z(Cos θ) + 1(0) = -X * Sen θ + Z * Cos θ<br>"
+                + "X(0) + Y(0) + Z(0) + 1(1) = 1"
+                + "</div>"
+                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [(X * Cos θ + Z * Sen θ), (Y), (-X * Sen θ + Z * Cos θ), 1]</div></div></html>");
         matrizParticular.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Sección de operaciones
-        JLabel operacionesLabel = createSectionLabel("Operaciones:");
-        JPanel operacionesPanel = new JPanel();
-        operacionesPanel.setLayout(new BoxLayout(operacionesPanel, BoxLayout.Y_AXIS));
-        operacionesPanel.setBackground(mainPanel.getBackground());
-        operacionesPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        operacionesPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(200, 200, 200)),
-                new EmptyBorder(10, 0, 10, 0)
-        ));
-
-        JLabel[] operaciones = {
-                createContentLabel("X(Cos θ) + Y(-Sen θ) + 1(0) = X * Cos θ - Y * Sen θ  "),
-                createContentLabel("X(Sen θ) + Y(Cos θ) + 1(0) =  X * Sen θ + Y * Cos θ "),
-                createContentLabel("X(0) + Y(0) + 1(1) = 1")
-        };
+        // Procedimiento Particular (Eje Z)
+        JLabel procParticularLabelZ = createSectionLabel("Rotación 3D sobre el eje Z: Rz(θ)");
+        JLabel pxyParticularLabelZ = createContentLabel("La Z permanece constante:");
+        JLabel matrizParticularZ = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 12px;'>"
+                + "P(X, Y, Z): <br>"
+                + "[X' Y' Z' 1] = [X Y Z 1] · "
+                + "<table align='center' style='margin-top: 10px;'>"
+                + "<tr><td>[</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;Sen&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;-Sen&nbsp;θ&nbsp;</td><td>&nbsp;Cos&nbsp;θ&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "</table>"
+                + "<div style='margin-top: 10px;'>Operaciones:</div>"
+                + "<div style='margin-top: 10px;'>"
+                + "X(Cos θ) + Y(-Sen θ) + Z(0) + 1(0) = X * Cos θ - Y * Sen θ<br>"
+                + "X(Sen θ) + Y(Cos θ) + Z(0) + 1(0) =  X * Sen θ + Y * Cos θ<br>"
+                + "X(0) + Y(0) + Z(1) + 1(0) = Z<br>"
+                + "X(0) + Y(0) + Z(0) + 1(1) = 1"
+                + "</div>"
+                + "<div style='margin-top: 10px;'>[X' Y' Z' 1] = [(X * Cos θ - Y * Sen θ), (X * Sen θ + Y * Cos θ), (Z), 1]</div></div></html>");
+        matrizParticularZ.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Botón Aceptar
         JButton aceptarButton = new JButton("Aceptar");
@@ -112,22 +134,20 @@ public class FormulaRotacion extends JFrame {
         centeredPanel.add(matrizGeneral);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Agregar Procedimiento Particular
+        // Agregar Procedimiento Particular para Y
         centeredPanel.add(procParticularLabel);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         centeredPanel.add(pxyParticularLabel);
         centeredPanel.add(matrizParticular);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Agregar Operaciones
-        centeredPanel.add(operacionesLabel);
-        centeredPanel.add(operacionesPanel);
-        for (JLabel op : operaciones) {
-            operacionesPanel.add(op);
-            operacionesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        }
-
+        // Agregar Procedimiento Particular para Z
+        centeredPanel.add(procParticularLabelZ);
+        centeredPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        centeredPanel.add(pxyParticularLabelZ);
+        centeredPanel.add(matrizParticularZ);
         centeredPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
         centeredPanel.add(aceptarButton);
 
         // Agregar panel centrado al panel principal
@@ -136,14 +156,17 @@ public class FormulaRotacion extends JFrame {
         // Agregar scroll
         JScrollPane scrollPane = new JScrollPane(mainPanel);
         scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBackground(new Color(252, 252, 252));
         add(scrollPane);
+
+        // Hacer la ventana visible
+        setVisible(true);
     }
 
     private JLabel createSectionLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(new Font("Arial", Font.BOLD, 14));
-        label.setForeground(new Color(70, 130, 180));
+        label.setFont(new Font("Arial", Font.BOLD, 16));
+        label.setForeground(new Color(30, 30, 30));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }
@@ -151,7 +174,7 @@ public class FormulaRotacion extends JFrame {
     private JLabel createContentLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(new Font("Arial", Font.PLAIN, 14));
-        label.setForeground(new Color(66, 66, 66));
+        label.setForeground(new Color(50, 50, 50));
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         return label;
     }

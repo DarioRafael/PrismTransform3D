@@ -1,8 +1,8 @@
 package PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.DirectorioContinuar;
 
 import PaginaPrincipalFolder.Settings.AjustesVentanaFormula;
-import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTBasicas.FormulaTraslacion;
-import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.FormulaRotacionSuc;
+import PaginaPrincipalFolder.Transformaciones.PaginasImport.FormulasTCompuestas.FormulaTraslacionSuc;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +13,7 @@ public class FormulaTraslacionSucC extends JFrame {
     AjustesVentanaFormula ajustesVentana = new AjustesVentanaFormula();
 
     public FormulaTraslacionSucC() {
-        setTitle("FÓRMULAS TRASLACIÓN SUCESIVA");
+        setTitle("FÓRMULAS DE LA TRASLACIÓN 3D SUCESIVA");
         setSize(ajustesVentana.getWindowSize());
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +35,7 @@ public class FormulaTraslacionSucC extends JFrame {
         centeredPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Título principal
-        JLabel titleLabel = new JLabel("FÓRMULAS TRASLACIÓN SUCESIVA");
+        JLabel titleLabel = new JLabel("FÓRMULAS DE LA TRASLACIÓN 3D SUCESIVA");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         titleLabel.setForeground(new Color(33, 33, 33));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -47,30 +47,32 @@ public class FormulaTraslacionSucC extends JFrame {
 
         // Procedimiento General
         JLabel procGeneralLabel = createSectionLabel("Procedimiento General");
-        JLabel pxyGeneralLabel = createContentLabel("P'(X', Y'):");
+        JLabel pxyGeneralLabel = createContentLabel("P'(X', Y', Z'):");
 
         JLabel matrizGeneral = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 14px;'>"
-                + "[X'' Y'' 1] = [X' Y' 1] · "
+                + "[X'' Y'' Z'' 1] = [X' Y' Z' 1] · "
                 + "<table align='center' style='margin-top: 10px;'>"
-                + "<tr><td>[</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>Tx₂</td><td>Ty₂</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>Tx2</td><td>Ty2</td><td>Tz2</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X'' Y'' 1] = [X'+Tx₂ Y'+Ty₂ 1]</div></div></html>");
+                + "<div style='margin-top: 10px;'>[X'' Y'' Z'' 1] = [X'+Tx2 Y'+Ty2 Z'+Tz2 1]</div></div></html>");
         matrizGeneral.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Procedimiento Particular
+// Procedimiento Particular
         JLabel procParticularLabel = createSectionLabel("Procedimiento Particular");
-        JLabel pxyParticularLabel = createContentLabel("P'1(X'1, Y'1):");
+        JLabel pxyParticularLabel = createContentLabel("P'1(X'1, Y'1, Z'1):");
 
         JLabel matrizParticular = new JLabel("<html><div style='text-align: center; font-family: Courier New; font-size: 14px;'>"
-                + "[X''₁ Y''₁ 1] = [X'₁ Y'₁ 1] · "
+                + "[X''₁ Y''₁ Z''₁ 1] = [X'₁ Y'₁ Z'₁ 1] · "
                 + "<table align='center' style='margin-top: 10px;'>"
-                + "<tr><td>[</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
-                + "<tr><td>[</td><td>Tx₂</td><td>Ty₂</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>&nbsp;0&nbsp;</td><td>&nbsp;0&nbsp;</td><td>&nbsp;1&nbsp;</td><td>&nbsp;0&nbsp;</td><td>]</td></tr>"
+                + "<tr><td>[</td><td>Tx2</td><td>Ty2</td><td>Tz2</td><td>&nbsp;1&nbsp;</td><td>]</td></tr>"
                 + "</table>"
-                + "<div style='margin-top: 10px;'>[X''₁ Y''₁ 1] = [X'₁+Tx₂ Y'₁+Ty₂ 1]</div></div></html>");
+                + "<div style='margin-top: 10px;'>[X''₁ Y''₁ Z''₁ 1] = [X'₁+Tx2 Y'₁+Ty2 Z'₁+Tz2 1]</div></div></html>");
         matrizParticular.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Sección de operaciones
@@ -85,9 +87,10 @@ public class FormulaTraslacionSucC extends JFrame {
         ));
 
         JLabel[] operaciones = {
-                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X'(1) + Y'(0) + 1(T₂) = X' + T₂</div></html>"),
-                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X'(0) + Y'(1) + 1(T₂) = Y' + T₂</div></html>"),
-                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X'(0) + Y'(0) + 1(1) = 1</div></html>")
+                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X(1) + Y(0) + Z'(0) + 1(Tx2) = X + Tx2</div></html>"),
+                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X(0) + Y(1) + Z'(0) + 1(Ty2) = Y + Ty2</div></html>"),
+                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X(0) + Y(0) + Z'(1) + 1(Tz2) = Z + Tz2</div></html>"),
+                new JLabel("<html><div style='font-family: Courier New; font-size: 14px;'>X(0) + Y(0) + Z'(0) + 1(1) = 1</div></html>")
         };
 
         // Botón Aceptar
@@ -111,7 +114,7 @@ public class FormulaTraslacionSucC extends JFrame {
         regresarButton.setForeground(Color.BLUE);
         regresarButton.setFocusPainted(false);
         regresarButton.addActionListener(e -> {
-            new FormulaTraslacion().setVisible(true);
+            new FormulaTraslacionSuc().setVisible(true);
             dispose();
         });
 
