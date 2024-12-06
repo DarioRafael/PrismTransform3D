@@ -155,7 +155,8 @@ public class PolilineasRotacionSuc extends JFrame {
 
         // Panel para primera rotación
         JPanel firstRotationPanel = new JPanel(new BorderLayout());
-        rotationTable1Label = new JLabel("Primera Rotación θ1 (0°)", SwingConstants.CENTER);
+        rotationTable1Label = new JLabel("Primera rotación: "+"R" +
+                ejeRotadoLabel+"(" +0 + "°)", SwingConstants.CENTER);
         rotationTable1Label.setFont(new Font("Arial", Font.BOLD, 12));
         firstRotationPanel.add(rotationTable1Label, BorderLayout.NORTH);
         JScrollPane firstRotationScrollPane = new JScrollPane(firstRotationTable);
@@ -164,7 +165,8 @@ public class PolilineasRotacionSuc extends JFrame {
 
         // Panel para segunda rotación
         JPanel secondRotationPanel = new JPanel(new BorderLayout());
-        rotationTable2Label = new JLabel("Segunda Rotación θ2 (0°)", SwingConstants.CENTER);
+        rotationTable2Label = new JLabel("Segunda rotación: "+"R" +
+                ejeRotadoLabel2+"(" +0 + "°)", SwingConstants.CENTER);
         rotationTable2Label.setFont(new Font("Arial", Font.BOLD, 12));
         secondRotationPanel.add(rotationTable2Label, BorderLayout.NORTH);
         JScrollPane secondRotationScrollPane = new JScrollPane(secondRotationTable);
@@ -337,7 +339,8 @@ public class PolilineasRotacionSuc extends JFrame {
             Component parent = firstRotationTable.getParent().getParent().getParent();
             if (parent instanceof JPanel) {
                 ((JLabel) ((JPanel) parent).getComponent(0)).setText
-                        ("Primera rotación: θ1 (" + primerAnguloField.getText() + "°)");
+                        ("Primera rotación: "+"R" +
+                                ejeRotadoLabel+"(" +primerAnguloField.getText() + "°)");
             }
 
             segundaRotacionButton.setEnabled(true);
@@ -450,7 +453,8 @@ public class PolilineasRotacionSuc extends JFrame {
             Component parent = secondRotationTable.getParent().getParent().getParent();
             if (parent instanceof JPanel) {
                 ((JLabel) ((JPanel) parent).getComponent(0)).setText
-                        ("Segunda rotación: θ2 (" + segundoAnguloField.getText() + "°)");
+                        ("Segunda rotación: "+"R" +
+                                ejeRotadoLabel2+"(" +segundoAnguloField.getText() + "°)");
             }
 
         } catch (NumberFormatException ex) {
