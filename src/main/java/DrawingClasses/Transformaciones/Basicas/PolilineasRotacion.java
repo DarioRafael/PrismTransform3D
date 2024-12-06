@@ -81,7 +81,7 @@ public class PolilineasRotacion extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma Cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
         titleLabel3 = new JLabel("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotacionLabel+"(" + 0 + "°) ", SwingConstants.CENTER);

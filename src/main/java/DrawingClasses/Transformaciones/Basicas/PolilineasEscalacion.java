@@ -80,7 +80,7 @@ public class PolilineasEscalacion extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Básica:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Prisma cuadrangular", SwingConstants.CENTER);
+        JLabel titleLabel2 = new JLabel("Prisma Cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
 
         titleLabel3 = new JLabel("Escalación 3D (Sx: 0, Sy: 0, Sz: 0)", SwingConstants.CENTER);
