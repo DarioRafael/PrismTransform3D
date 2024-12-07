@@ -145,8 +145,12 @@ public class PortadaTransformaciones extends JFrame {
         cardGbc.insets = new Insets(4, 0, 4, 0);
         addStyledLabel(cardPanel, "Transformaciones Geométricas 3D",
                 new Font("Segoe UI", Font.BOLD, 18), TEXT_COLOR, cardGbc);
-        addStyledLabel(cardPanel, "Prisma Cuadrangular",
-                new Font("Segoe UI Light", Font.PLAIN, 16), SECONDARY_COLOR, cardGbc);
+
+        addStyledLabel(cardPanel, "Modelo de Alambre: Método de Líneas",
+                new Font("Segoe UI Light", Font.BOLD, 16), SECONDARY_COLOR, cardGbc);
+
+        addStyledLabel(cardPanel, "Poliedro: Prisma Cuadrangular",
+                new Font("Segoe UI Light", Font.PLAIN, 14), SECONDARY_COLOR, cardGbc);
 
         entrarButton = createStyledButton("Entrar");
         cardGbc.insets = new Insets(10, 0, 8, 0);

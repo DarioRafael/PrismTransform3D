@@ -109,16 +109,20 @@ public class PolilineasRotacionSuc extends JFrame {
         JLabel titleLabel1 = new JLabel("Transformaciones Geométricas 3D Compuestas:", SwingConstants.CENTER);
         titleLabel1.setFont(new Font("Arial", Font.BOLD, 20));
 
-        JLabel titleLabel2 = new JLabel("Prisma Cuadrangular", SwingConstants.CENTER);
-        titleLabel2.setFont(new Font("Arial", Font.BOLD, 18));
+        JLabel titleLabel2pre = new JLabel("Modelo de alambre: Método de Líneas", SwingConstants.CENTER);
+        titleLabel2pre.setFont(new Font("Arial", Font.BOLD, 18));
+
+        JLabel titleLabel2 = new JLabel("Poliedro: Prisma Cuadrangular", SwingConstants.CENTER);
+        titleLabel2.setFont(new Font("Arial", Font.BOLD, 16));
 
         titleLabel3 = new JLabel("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotadoLabel+"(" + 0 + "°) ", SwingConstants.CENTER);
-        titleLabel3.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel3.setFont(new Font("Arial", Font.BOLD, 14));
 
         titleLabel4 = new JLabel("Rotación 3D "+ (String) rotacionesComboBox.getSelectedItem()+": R"+ejeRotadoLabel2+"(" + 0 + "°) ", SwingConstants.CENTER);
-        titleLabel4.setFont(new Font("Arial", Font.BOLD, 16));
+        titleLabel4.setFont(new Font("Arial", Font.BOLD, 14));
 
-        JPanel titlePanel = new JPanel(new GridLayout(3, 1));
+        JPanel titlePanel = new JPanel(new GridLayout(4, 1));
+        titlePanel.add(titleLabel2pre);
         titlePanel.add(titleLabel2);
         titlePanel.add(titleLabel3);
         titlePanel.add(titleLabel4);
