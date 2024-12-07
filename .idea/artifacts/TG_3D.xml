@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TG_3D">
+    <output-path>$PROJECT_DIR$/out/artifacts/TG_3D</output-path>
+    <root id="archive" name="TG_3D.jar">
+      <element id="module-output" name="TG_3D" />
+    </root>
+  </artifact>
+</component>
