@@ -101,7 +101,7 @@ public class PolilineasEscalacionSuc extends JFrame {
 
         JLabel titleLabel2 = new JLabel("Poliedro: Prisma Cuadrangular", SwingConstants.CENTER);
         titleLabel2.setFont(new Font("Arial", Font.BOLD, 16));
-        //
+        // Titulos de las escalaciones
         titleLabel3 = new JLabel("Escalación Sucesiva 3D: S1(Sx1: 0, Sy1: 0, Sz1: 0)", SwingConstants.CENTER);
         titleLabel3.setFont(new Font("Arial", Font.BOLD, 14));
 
